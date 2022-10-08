@@ -18,18 +18,14 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
-		$user = $_GET['user'];
-		$password = $_GET['password'];
-		$name = $_GET['name'];
-		$address = $_GET['address'];
-		$phone = $_GET['phone'];
-		$type = $_GET['type'];
-		$avatar = $_GET['avatar'];
-		$lat = $_GET['lat'];
-		$lng = $_GET['lng'];
+		$idBuyer = $_GET['idBuyer'];
+		$dateReserve = $_GET['dateReserve'];
+		$status = $_GET['status'];
+		
+		
 		
 							
-		$sql = "INSERT INTO `user`(`id`, `user`, `password`, `name`, `address`, `phone`, `type`, `avatar`, `lat`, `lng`) VALUES (Null,'$user','$password','$name','$address','$phone','$type','$avatar','$lat','$lng')";
+		$sql = "INSERT INTO `reserve`(`id`, `idBuyer`, `dateReserve`, `status`) VALUES (Null,'$idBuyer','$dateReserve','$status')";
 
 		$result = mysqli_query($link, $sql);
 
@@ -39,7 +35,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome bsruhorpak";
+	} else echo "poom";
    
 }
 	mysqli_close($link);

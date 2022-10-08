@@ -16,11 +16,10 @@ if (!$link->set_charset("utf8")) {
 	}
 
 if (isset($_GET)) {
-	if ($_GET['isAdd'] == 'true') {
-				
-		$idOwner = $_GET['idOwner'];
+	if (true) {
+					
 
-		$result = mysqli_query($link, "SELECT * FROM product WHERE idOwner = '$idOwner'");
+		$result = mysqli_query($link, "SELECT * FROM product WHERE type = 'owner'");
 
 		if ($result) {
 
@@ -33,7 +32,7 @@ if (isset($_GET)) {
 
 		} //if
 
-	} else echo "bsruhorpak";	// if2
+	} else echo "Welcome Master poom";	// if2
    
 }	// if1
 

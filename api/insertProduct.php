@@ -21,6 +21,7 @@ if (isset($_GET)) {
 		$idOwner = $_GET['idOwner'];
 		$nameOwner = $_GET['nameOwner'];
 		$name = $_GET['name'];
+		$phone = $_GET['phone'];
 		$price = $_GET['price'];
 		$detail = $_GET['detail'];
 		$address = $_GET['address'];
@@ -31,7 +32,7 @@ if (isset($_GET)) {
 		
 		
 							
-		$sql = "INSERT INTO `product`(`id`, `idOwner`, `nameOwner`, `name`, `price`, `detail`, `address`, `lat`, `lng`, `images`) VALUES (Null,'$idOwner','$nameOwner','$name','$price','$detail','$address','$lat','$lng','$images')";
+		$sql = "INSERT INTO `product`(`id`, `idOwner`, `nameOwner`, `name`, `phone`, `price`, `detail`, `address`, `lat`, `lng`, `images`) VALUES (Null,'$idOwner','$nameOwner','$name','$phone','$price','$detail','$address','$lat','$lng','$images')";
 
 		$result = mysqli_query($link, $sql);
 
@@ -41,7 +42,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome Master UNG";
+	} else echo "bsruhorpak";
    
 }
 	mysqli_close($link);

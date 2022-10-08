@@ -15,21 +15,20 @@ if (!$link->set_charset("utf8")) {
     exit();
 	}
 
+
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
-				
-		$user = $_GET['user'];
-		$password = $_GET['password'];
+			
+		$id = $_GET['id'];		
 		$name = $_GET['name'];
-		$address = $_GET['address'];
+		$price = $_GET['price'];
 		$phone = $_GET['phone'];
-		$type = $_GET['type'];
-		$avatar = $_GET['avatar'];
-		$lat = $_GET['lat'];
-		$lng = $_GET['lng'];
+		$address = $_GET['address'];
+		$detail = $_GET['detail'];
+		$images = $_GET['images'];
 		
 							
-		$sql = "INSERT INTO `user`(`id`, `user`, `password`, `name`, `address`, `phone`, `type`, `avatar`, `lat`, `lng`) VALUES (Null,'$user','$password','$name','$address','$phone','$type','$avatar','$lat','$lng')";
+		$sql = "UPDATE `product` SET `name` = '$name', `price` = '$price', `phone` = '$phone', `address` = '$address', `detail` = '$detail',`images` = '$images' WHERE id = '$id'";
 
 		$result = mysqli_query($link, $sql);
 
@@ -39,8 +38,9 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome bsruhorpak";
+	} else echo "Welcome BsruHorpak";
    
 }
+
 	mysqli_close($link);
 ?>
