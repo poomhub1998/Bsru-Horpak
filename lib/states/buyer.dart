@@ -93,7 +93,7 @@ class _BuyerState extends State<Buyer> {
                   children: <Widget>[
                     MaterialButton(
                       color: Colors.purple,
-                      minWidth: 100,
+                      minWidth: 90,
                       onPressed: () {
                         setState(() {
                           currentScreen =
@@ -109,7 +109,7 @@ class _BuyerState extends State<Buyer> {
                             color: currentTab == 0 ? Colors.white : Colors.grey,
                           ),
                           Text(
-                            'Home',
+                            'หน้าแรก',
                             style: TextStyle(
                               color:
                                   currentTab == 0 ? Colors.white : Colors.grey,
@@ -123,7 +123,7 @@ class _BuyerState extends State<Buyer> {
                       children: <Widget>[
                         MaterialButton(
                           color: Colors.purple,
-                          minWidth: 100,
+                          minWidth: 90,
                           onPressed: () {
                             setState(() {
                               currentScreen =
@@ -141,7 +141,7 @@ class _BuyerState extends State<Buyer> {
                                     : Colors.grey,
                               ),
                               Text(
-                                'จอง',
+                                'คุณสนใจ',
                                 style: TextStyle(
                                   color: currentTab == 1
                                       ? Colors.white
@@ -151,40 +151,75 @@ class _BuyerState extends State<Buyer> {
                             ],
                           ),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            MaterialButton(
-                              color: Colors.purple,
-                              minWidth: 100,
-                              onPressed: () {
-                                setState(() {
-                                  currentScreen =
-                                      SettingScreen(); // if user taps on this dashboard tab will be active
-                                  currentTab = 2;
-                                });
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.home,
-                                    color: currentTab == 2
-                                        ? Colors.white
-                                        : Colors.grey,
-                                  ),
-                                  Text(
-                                    'Setting',
-                                    style: TextStyle(
-                                      color: currentTab == 2
-                                          ? Colors.white
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ],
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        MaterialButton(
+                          color: Colors.purple,
+                          minWidth: 90,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen =
+                                  AlertScreen(); // if user taps on this dashboard tab will be active
+                              currentTab = 3;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.align_vertical_bottom,
+                                color: currentTab == 3
+                                    ? Colors.white
+                                    : Colors.grey,
                               ),
-                            ),
-                          ],
+                              Text(
+                                'แจ้งเตือน',
+                                style: TextStyle(
+                                  color: currentTab == 3
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        MaterialButton(
+                          color: Colors.purple,
+                          minWidth: 90,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen =
+                                  SettingScreen(); // if user taps on this dashboard tab will be active
+                              currentTab = 2;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.settings,
+                                color: currentTab == 2
+                                    ? Colors.white
+                                    : Colors.grey,
+                              ),
+                              Text(
+                                'ตั้งค่า',
+                                style: TextStyle(
+                                  color: currentTab == 2
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

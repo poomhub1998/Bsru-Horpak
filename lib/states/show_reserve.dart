@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:bsru_horpak/utility/my_dialog.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:bsru_horpak/models/product_model.dart';
 import 'package:bsru_horpak/models/sqlite_model.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class ShowReserve extends StatefulWidget {
   const ShowReserve({Key? key}) : super(key: key);
@@ -30,7 +33,7 @@ class _ShowReserveState extends State<ShowReserve> {
   int? total;
   String? idBuyer;
   String? dateTimeStr;
-  // int index = 0;
+  int index = 0;
 
   @override
   void initState() {
@@ -54,7 +57,7 @@ class _ShowReserveState extends State<ShowReserve> {
     setState(() {
       dateTimeStr = dateFormat.format(dateTime);
     });
-    print('เวลา = $dateTimeStr');
+    // print('เวลา = $dateTimeStr');
   }
 
   Future<Null> processReadSQLite() async {
@@ -117,7 +120,7 @@ class _ShowReserveState extends State<ShowReserve> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('จอง'),
+        title: Text('หอพักที่คุณสนใจ'),
       ),
       body: load
           ? ShowProgress()
@@ -133,7 +136,7 @@ class _ShowReserveState extends State<ShowReserve> {
                     ),
                     Center(
                       child: ShowTitle(
-                        title: 'ยังไม่ได้จองหอพัก',
+                        title: 'ยังไม่ได้เลือกหอพัก',
                         textStyle: MyConstant().h1Style(),
                       ),
                     ),
@@ -213,13 +216,13 @@ class _ShowReserveState extends State<ShowReserve> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ElevatedButton(
-          onPressed: () {
-            // print('ข้อมูล $sqliteModels คนจอง $userModel , ');
-            Navigator.pushNamed(context, MyConstant.conFrimReseve);
-          },
-          child: Text('จอง'),
-        ),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     // print('ข้อมูล $sqliteModels คนจอง $userModel , ');
+        //     Navigator.pushNamed(context, MyConstant.conFrimReseve);
+        //   },
+        //   child: Text('จอง'),
+        // ),
         Container(
           margin: EdgeInsets.only(left: 4, right: 8),
           child: ElevatedButton(
@@ -250,7 +253,7 @@ class _ShowReserveState extends State<ShowReserve> {
               padding: const EdgeInsets.only(left: 8),
               child: ShowTitle(
                 title: sqliteModels[index].name,
-                textStyle: MyConstant().h3Style(),
+                textStyle: MyConstant().h4Style(),
               ),
             ),
           ),
@@ -258,14 +261,60 @@ class _ShowReserveState extends State<ShowReserve> {
             flex: 1,
             child: ShowTitle(
               title: sqliteModels[index].price,
-              textStyle: MyConstant().h3Style(),
+              textStyle: MyConstant().h4Style(),
             ),
           ),
           Expanded(
             flex: 1,
             child: ShowTitle(
               title: sqliteModels[index].phone,
-              textStyle: MyConstant().h3Style(),
+              textStyle: MyConstant().h4Style(),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: ElevatedButton(
+              style: ButtonStyle(),
+              onPressed: () async {
+                int idSQLite = sqliteModels[index].id!;
+                // print(
+                //     'ข้อมูล ${sqliteModels[index]} คนจอง ${userModel!.name} ไอดี${userModel!.id}, ');
+                DateTime dateOrder = DateTime.now();
+
+                DateFormat dateOrDer = DateFormat('dd/MM/yyyy HH:mm');
+
+                dateTimeStr = dateOrDer.format(dateOrder);
+                String idBuyer = userModel!.id;
+
+                String nameBuyer = userModel!.name;
+                String name = sqliteModels[index].name;
+                String idOwner = sqliteModels[index].idOwner;
+                String nameOwner = sqliteModels[index].nameOwner;
+                String idProduct = sqliteModels[index].idProduct;
+                String nameProduct = sqliteModels[index].name;
+                String priceProduct = sqliteModels[index].price;
+                print(
+                    'idBuyer $idBuyer ผู้จอง $nameBuyer. idOwner $idOwner ชื่อเจ้าของหอ $nameOwner , ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
+                // print('เวลา = $dateTimeStr');
+                String url =
+                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&dateOrder=$dateOrder&idOwner=$idOwner&nameOwner=$nameOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&status=UserOrder';
+                await Dio().get(url).then((value) {
+                  if (value.toString() == 'true') {
+                    SQLiteHelper().deleteSQLiteWhereId(idSQLite).then((value) {
+                      print('ลบแล้ว');
+                      Navigator.pushNamed(context, MyConstant.routBuyer);
+                      MyDialog().normalDialog(
+                          context, 'จองหอพัก$nameProduct', 'สำเร็จ');
+                    });
+                  } else {
+                    MyDialog().normalDialog(
+                        context, 'จองหอพัก$nameProduct', 'ไม่สำเร็จ');
+                  }
+                });
+
+                // Navigator.pushNamed(context, MyConstant.conFrimReseve);
+              },
+              child: Text('จอง'),
             ),
           ),
           Expanded(
@@ -316,9 +365,13 @@ class _ShowReserveState extends State<ShowReserve> {
             Expanded(
               flex: 1,
               child: ShowTitle(
-                title: 'เบอร์โทรศัพท์',
+                title: 'เบอร์',
                 textStyle: MyConstant().h2Style(),
               ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(),
             ),
             Expanded(
               flex: 1,
@@ -342,5 +395,18 @@ class _ShowReserveState extends State<ShowReserve> {
         ],
       ),
     );
+  }
+
+  Future<Null> orderThread() async {
+    DateTime dateTime = DateTime.now();
+
+    DateFormat dateOrDer = DateFormat('dd/MM/yyyy HH:mm');
+
+    dateTimeStr = dateOrDer.format(dateTime);
+    // String idOwner = sqliteModels[].idOwner;
+    // String name = sqliteModels[].name;
+
+    // print('idOwner $idOwner, ชื่อหอ $name');
+    print('เวลา = $dateTimeStr');
   }
 }

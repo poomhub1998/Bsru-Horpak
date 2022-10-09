@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
-
+import 'package:toast/toast.dart';
 import 'package:bsru_horpak/models/product_model.dart';
 import 'package:bsru_horpak/models/sqlite_model.dart';
 import 'package:bsru_horpak/models/user_model.dart';
@@ -22,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -122,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String apiGetUserWhereId =
         '${MyConstant.domain}/bsruhorpak/getUserWhereId.php?isAdd=true&id=$id';
     await Dio().get(apiGetUserWhereId).then((value) {
-      print('vulue === $value');
+      // print('vulue === $value');
       for (var item in jsonDecode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
@@ -276,16 +277,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 lng1 = locationData.longitude;
                 lat2 = double.parse(productModels[index].lat);
                 lng2 = double.parse(productModels[index].lng);
-                print('lat1 = $lat1, lng1 = $lng1, lat2 = $lat2, lng2 = $lng2');
+                // print('lat1 = $lat1, lng1 = $lng1, lat2 = $lat2, lng2 = $lng2');
                 distance = calculateDistance(lat1!, lng1!, lat2!, lng2!);
-                print('sssss$distance');
+                // print('sssss$distance');
                 var myFormat = NumberFormat('##.0#', 'en_US');
                 distanceString = myFormat.format(distance);
 
                 transport = calculateTransport(distance!);
 
-                print('distance = $distance');
-                print('transport ==> $transport');
+                // print('distance = $distance');
+                // print('transport ==> $transport');
               },
             );
 
@@ -523,25 +524,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           String idOwner = productModels.idOwner;
                           String idProduct = productModels.id;
                           String name = productModels.name;
+                          String nameOwner = productModels.nameOwner;
                           String phone = productModels.phone;
                           String price = productModels.price;
                           SQLiteModel sqLiteModel = SQLiteModel(
                               idOwner: idOwner,
                               idProduct: idProduct,
                               name: name,
+                              nameOwner: nameOwner,
                               phone: phone,
                               price: price);
                           print(
-                              '### idOwner == $idOwner, idProduct ==$idProduct, name ==$name, phone ==$phone , price==$price');
+                              '### idOwner == $idOwner, idProduct ==$idProduct, name ==$name, nameOwner ==$nameOwner, phone ==$phone , price==$price');
 
                           await SQLiteHelper()
                               .insertValueToSQLite(sqLiteModel)
-                              .then((value) {
-                            Navigator.pop(context);
-                          });
+                              .then(
+                            (value) {
+                              Navigator.pop(context);
+                            },
+                          );
+                          MyDialog().normalDialog(context,
+                              'เพิ่มหอพักนี้ไปยังหน้าที่คุณสนใจแล้ว', '');
                         },
                         child: Text(
-                          'จองหอพัก',
+                          'สนใจหอพักนี้',
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -608,4 +615,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return result;
   }
+
+  // Future<Null> showToast(String msg, {int? gravity}) async {
+  //   Toast.show(msg, gravity: gravity);
+  // }
 }

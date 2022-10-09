@@ -6,6 +6,7 @@ class SQLiteModel {
   final String idOwner;
   final String idProduct;
   final String name;
+  final String nameOwner;
   final String phone;
   final String price;
   SQLiteModel({
@@ -13,6 +14,7 @@ class SQLiteModel {
     required this.idOwner,
     required this.idProduct,
     required this.name,
+    required this.nameOwner,
     required this.phone,
     required this.price,
   });
@@ -22,6 +24,7 @@ class SQLiteModel {
     String? idOwner,
     String? idProduct,
     String? name,
+    String? nameOwner,
     String? phone,
     String? price,
   }) {
@@ -30,6 +33,7 @@ class SQLiteModel {
       idOwner: idOwner ?? this.idOwner,
       idProduct: idProduct ?? this.idProduct,
       name: name ?? this.name,
+      nameOwner: nameOwner ?? this.nameOwner,
       phone: phone ?? this.phone,
       price: price ?? this.price,
     );
@@ -41,6 +45,7 @@ class SQLiteModel {
       'idOwner': idOwner,
       'idProduct': idProduct,
       'name': name,
+      'nameOwner': nameOwner,
       'phone': phone,
       'price': price,
     };
@@ -52,6 +57,7 @@ class SQLiteModel {
       idOwner: map['idOwner'] as String,
       idProduct: map['idProduct'] as String,
       name: map['name'] as String,
+      nameOwner: map['nameOwner'] as String,
       phone: map['phone'] as String,
       price: map['price'] as String,
     );
@@ -64,7 +70,7 @@ class SQLiteModel {
 
   @override
   String toString() {
-    return 'SQLiteModel(id: $id, idOwner: $idOwner, idProduct: $idProduct, name: $name, phone: $phone, price: $price)';
+    return 'SQLiteModel(id: $id, idOwner: $idOwner, idProduct: $idProduct, name: $name, nameOwner: $nameOwner, phone: $phone, price: $price)';
   }
 
   @override
@@ -75,6 +81,7 @@ class SQLiteModel {
         other.idOwner == idOwner &&
         other.idProduct == idProduct &&
         other.name == name &&
+        other.nameOwner == nameOwner &&
         other.phone == phone &&
         other.price == price;
   }
@@ -85,6 +92,7 @@ class SQLiteModel {
         idOwner.hashCode ^
         idProduct.hashCode ^
         name.hashCode ^
+        nameOwner.hashCode ^
         phone.hashCode ^
         price.hashCode;
   }
