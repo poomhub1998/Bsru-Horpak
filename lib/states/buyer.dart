@@ -7,6 +7,7 @@ import 'package:bsru_horpak/states/show_reserve.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/widgets/show_signuot.dart';
 import 'package:bsru_horpak/widgets/show_title.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -44,21 +45,32 @@ class _BuyerState extends State<Buyer> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // initFirebaseMessaging();
     findUserModel();
   }
+
+  // Future<Null> initFirebaseMessaging() async {
+  //   firebaseMessaging?.getToken().then((String? token) {
+  //     assert(token != null);
+  //   });
+  // }
 
   Future<Null> findUserModel() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
-    print('## id Logined ==> $id');
+    FirebaseMessaging? firebaseMessaging;
+    firebaseMessaging?.getToken().then((String? token) {
+      assert(token != null);
+      print('object');
+    });
     String apiGetUserWhereId =
         '${MyConstant.domain}/bsruhorpak/getUserWhereId.php?isAdd=true&id=$id';
     await Dio().get(apiGetUserWhereId).then((value) {
-      print('vulue === $value');
+      // print('vulue === $value');
       for (var item in jsonDecode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
-          print('name login ${userModel!.name}');
+          // print('name login ${userModel!.name}');
         });
       }
     });
@@ -84,7 +96,7 @@ class _BuyerState extends State<Buyer> {
           shape: CircularNotchedRectangle(),
           notchMargin: 20,
           child: Container(
-            height: 60,
+            height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -93,7 +105,7 @@ class _BuyerState extends State<Buyer> {
                   children: <Widget>[
                     MaterialButton(
                       color: Colors.purple,
-                      minWidth: 90,
+                      minWidth: 50,
                       onPressed: () {
                         setState(() {
                           currentScreen =
@@ -123,7 +135,7 @@ class _BuyerState extends State<Buyer> {
                       children: <Widget>[
                         MaterialButton(
                           color: Colors.purple,
-                          minWidth: 90,
+                          minWidth: 50,
                           onPressed: () {
                             setState(() {
                               currentScreen =
@@ -158,7 +170,7 @@ class _BuyerState extends State<Buyer> {
                       children: <Widget>[
                         MaterialButton(
                           color: Colors.purple,
-                          minWidth: 90,
+                          minWidth: 50,
                           onPressed: () {
                             setState(() {
                               currentScreen =
@@ -193,7 +205,7 @@ class _BuyerState extends State<Buyer> {
                       children: <Widget>[
                         MaterialButton(
                           color: Colors.purple,
-                          minWidth: 90,
+                          minWidth: 50,
                           onPressed: () {
                             setState(() {
                               currentScreen =

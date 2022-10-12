@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bsru_horpak/bodys/show_mange_owner.dart';
 import 'package:bsru_horpak/bodys/show_order_owner.dart';
@@ -9,11 +10,14 @@ import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
 import 'package:bsru_horpak/widgets/show_signuot.dart';
 import 'package:bsru_horpak/widgets/show_title.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Owner extends StatefulWidget {
   const Owner({Key? key}) : super(key: key);
@@ -30,8 +34,18 @@ class _OwnerState extends State<Owner> {
 
   @override
   void initState() {
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        debugPrint("onMessage:");
+        log("onMessage: $message");
+        final snackBar =
+            SnackBar(content: Text(message.notification?.title ?? ""));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+    );
     // TODO: implement initState
     super.initState();
+
     findUserModel();
   }
 

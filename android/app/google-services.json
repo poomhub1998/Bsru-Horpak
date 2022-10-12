@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "302264086409",
+    "project_id": "bsruhorpak-3e9ad",
+    "storage_bucket": "bsruhorpak-3e9ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302264086409:android:aec22d46cbfa397f67fb58",
+        "android_client_info": {
+          "package_name": "com.example.bsru_horpak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302264086409-bkvs33fhrdldsq6n8l8pccb4dpnounga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGlIcPXnQoJZ-4qFnUSmCvGb587JEvsCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302264086409-bkvs33fhrdldsq6n8l8pccb4dpnounga.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

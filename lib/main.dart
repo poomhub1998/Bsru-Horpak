@@ -6,8 +6,11 @@ import 'package:bsru_horpak/states/create_account.dart';
 import 'package:bsru_horpak/states/owner.dart';
 import 'package:bsru_horpak/states/show_reserve.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:dio/dio.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen': (BuildContext context) => Authen(),
@@ -21,12 +24,25 @@ final Map<String, WidgetBuilder> map = {
 String? initlalRoute;
 
 Future<Null> main() async {
-  // HttpOverrides.global = MyHttpOverride();
-
   WidgetsFlutterBinding.ensureInitialized();
+  future:
+  Firebase.initializeApp();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String? type = preferences.getString('type');
-  print('## type ===>> $type');
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  String? token = await firebaseMessaging.getToken();
+  print('token = $token');
+
+  String? id = preferences.getString('id');
+
+  print('id = $id');
+  String editToken =
+      '${MyConstant.domain}/bsruhorpak/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+  if (id != null && id.isNotEmpty) {
+    await Dio().get(editToken).then((value) => print('token ได้แล้ว'));
+  }
+
+  // print('## type ===>> $type');
   if (type?.isEmpty ?? true) {
     initlalRoute = MyConstant.routAuthen;
     runApp(MyApp());
@@ -35,10 +51,12 @@ Future<Null> main() async {
       case 'owner':
         initlalRoute = MyConstant.routOwner;
         runApp(MyApp());
+
         break;
       case 'buyer':
         initlalRoute = MyConstant.routBuyer;
         runApp(MyApp());
+
         break;
 
       default:

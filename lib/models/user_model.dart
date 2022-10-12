@@ -12,6 +12,7 @@ class UserModel {
   final String avatar;
   final String lat;
   final String lng;
+  final String token;
   UserModel({
     required this.id,
     required this.user,
@@ -23,6 +24,7 @@ class UserModel {
     required this.avatar,
     required this.lat,
     required this.lng,
+    required this.token,
   });
 
   UserModel copyWith({
@@ -36,6 +38,7 @@ class UserModel {
     String? avatar,
     String? lat,
     String? lng,
+    String? token,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -48,6 +51,7 @@ class UserModel {
       avatar: avatar ?? this.avatar,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
+      token: token ?? this.token,
     );
   }
 
@@ -63,6 +67,7 @@ class UserModel {
       'avatar': avatar,
       'lat': lat,
       'lng': lng,
+      'token': token,
     };
   }
 
@@ -78,6 +83,7 @@ class UserModel {
       avatar: map['avatar'] as String,
       lat: map['lat'] as String,
       lng: map['lng'] as String,
+      token: map['token'] as String,
     );
   }
 
@@ -88,7 +94,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, user: $user, password: $password, name: $name, address: $address, phone: $phone, type: $type, avatar: $avatar, lat: $lat, lng: $lng)';
+    return 'UserModel(id: $id, user: $user, password: $password, name: $name, address: $address, phone: $phone, type: $type, avatar: $avatar, lat: $lat, lng: $lng, token: $token)';
   }
 
   @override
@@ -104,7 +110,8 @@ class UserModel {
         other.type == type &&
         other.avatar == avatar &&
         other.lat == lat &&
-        other.lng == lng;
+        other.lng == lng &&
+        other.token == token;
   }
 
   @override
@@ -118,6 +125,7 @@ class UserModel {
         type.hashCode ^
         avatar.hashCode ^
         lat.hashCode ^
-        lng.hashCode;
+        lng.hashCode ^
+        token.hashCode;
   }
 }

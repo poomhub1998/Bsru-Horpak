@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:toast/toast.dart';
 import 'package:bsru_horpak/models/product_model.dart';
 import 'package:bsru_horpak/models/sqlite_model.dart';
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ProductModel> productModels = [];
   List<List<String>> lisImages = [];
   int indexImage = 0;
+  FirebaseMessaging? firebaseMessaging;
 
   @override
   void initState() {
@@ -59,6 +61,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     finalLocationData();
     findUserModel();
+    initFirebaseMessaging();
+  }
+
+  Future<Null> initFirebaseMessaging() async {
+    firebaseMessaging?.getToken().then((String? token) {
+      assert(token != null);
+      print("โทเกน : $token");
+    });
   }
 
   // Future<Null> readreserve() async {
@@ -229,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Container(
           color: Colors.white,
-          width: size * 0.90,
+          width: size * 0.99,
           height: size * 0.5,
           child: Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 0),
@@ -299,16 +309,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(4),
+                  padding: EdgeInsets.only(right: 10),
                   width: constraints.maxWidth * 0.5 - 4,
-                  height: constraints.maxWidth * 0.5,
+                  height: constraints.maxWidth * 0.5 - 4,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        width: constraints.maxWidth * 0.4,
-                        height: constraints.maxWidth * 0.4,
+                        width: constraints.maxWidth * 0.5 - 4,
+                        height: constraints.maxWidth * 0.4 - 4,
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: createUrl(productModels[index].images),
@@ -322,16 +332,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   width: constraints.maxWidth * 0.5 - 4,
-                  height: constraints.maxWidth * 0.5,
+                  height: constraints.maxWidth * 0.5 - 4,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ShowTitle(
-                              title: 'ชื่อหอพัก: ${productModels[index].name}',
+                              title: cutWrod(
+                                  'ชื่อหอพัก: ${productModels[index].name}'),
                               textStyle: MyConstant().h3Style()),
                         ],
                       ),
@@ -359,209 +370,212 @@ class _HomeScreenState extends State<HomeScreen> {
       ProductModel productModels, List<String> images) async {
     showDialog(
         context: context,
-        builder: (context) => StatefulBuilder(
-              builder: (context, setState) => AlertDialog(
-                title: ListTile(
-                  leading: ShowImage(path: MyConstant.logo),
-                  title: ShowTitle(
-                    title: productModels.name,
-                    textStyle: MyConstant().h2Style(),
+        builder: (context) => Container(
+              child: StatefulBuilder(
+                builder: (context, setState) => AlertDialog(
+                  title: ListTile(
+                    leading: ShowImage(path: MyConstant.logo),
+                    title: ShowTitle(
+                      title: productModels.name,
+                      textStyle: MyConstant().h2Style(),
+                    ),
                   ),
-                ),
-                content: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            '${MyConstant.domain}/bsruhorpak${images[indexImage]}',
-                        placeholder: (context, url) => ShowProgress(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 0;
-                                  print('### indexImage = $indexImage');
-                                });
-                              },
-                              icon: Icon(Icons.filter_1),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 1;
-                                  print('### indexImage = $indexImage');
-                                });
-                              },
-                              icon: Icon(Icons.filter_2),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 2;
-                                  print('### indexImage = $indexImage');
-                                });
-                              },
-                              icon: Icon(Icons.filter_3),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 3;
-                                  print('### indexImage = $indexImage');
-                                });
-                              },
-                              icon: Icon(Icons.filter_4),
-                            ),
-                          ],
+                  content: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl:
+                              '${MyConstant.domain}/bsruhorpak${images[indexImage]}',
+                          placeholder: (context, url) => ShowProgress(),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          ShowTitle(
-                              title: 'ราคา :',
-                              textStyle: MyConstant().h3Style()),
-                          ShowTitle(
-                              title: ' ${productModels.price} บาท/เดือน',
-                              textStyle: MyConstant().h3Style()),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          ShowTitle(
-                              title: 'ที่อยู่ :',
-                              textStyle: MyConstant().h3Style()),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: Row(
-                          children: [
-                            Container(
-                                width: 200,
-                                child: ShowTitle(
-                                    title: productModels.address,
-                                    textStyle: MyConstant().h3Style())),
-                          ],
-                        ),
-                      ),
-
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: ShowTitle(
-                                title: 'รายละเอียด :',
-                                textStyle: MyConstant().h3Style()),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 0;
+                                    print('### indexImage = $indexImage');
+                                  });
+                                },
+                                icon: Icon(Icons.filter_1),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 1;
+                                    print('### indexImage = $indexImage');
+                                  });
+                                },
+                                icon: Icon(Icons.filter_2),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 2;
+                                    print('### indexImage = $indexImage');
+                                  });
+                                },
+                                icon: Icon(Icons.filter_3),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 3;
+                                    print('### indexImage = $indexImage');
+                                  });
+                                },
+                                icon: Icon(Icons.filter_4),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12, bottom: 10),
-                        child: Row(
+                        ),
+                        Row(
                           children: [
-                            Container(
-                                width: 200,
-                                child: ShowTitle(
-                                    title: productModels.detail,
-                                    textStyle: MyConstant().h3Style())),
+                            ShowTitle(
+                                title: 'ราคา :',
+                                textStyle: MyConstant().h3Style()),
+                            ShowTitle(
+                                title: ' ${productModels.price} บาท/เดือน',
+                                textStyle: MyConstant().h3Style()),
                           ],
                         ),
-                      ),
-                      Row(
-                        children: [
-                          ShowTitle(
-                              title: 'เบอร์โทรศัพท์ :',
-                              textStyle: MyConstant().h3Style()),
-                          ShowTitle(
-                              title: ' ${productModels.phone} ',
-                              textStyle: MyConstant().h3Style()),
-                          IconButton(
-                            onPressed: () {
-                              Clipboard.setData(
-                                ClipboardData(text: productModels.phone),
-                              );
-                              // MyDialog().normalDialog(context, 'คักลอก',
-                              //     'คักลอกเบอร์โทรศัพท์สำเร็จ');
-                            },
-                            icon: Icon(
-                              Icons.copy,
-                              size: 16,
-                              color: MyConstant.primary,
+                        Row(
+                          children: [
+                            ShowTitle(
+                                title: 'ที่อยู่ :',
+                                textStyle: MyConstant().h3Style()),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12),
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: ShowTitle(
+                                      title: productModels.address,
+                                      textStyle: MyConstant().h3Style())),
+                            ],
+                          ),
+                        ),
+
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: ShowTitle(
+                                  title: 'รายละเอียด :',
+                                  textStyle: MyConstant().h3Style()),
                             ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          ShowTitle(
-                              title: distance == null
-                                  ? ''
-                                  : 'ระยะทาง : $distanceString กิโลเมตร',
-                              textStyle: MyConstant().h3Style()),
-                        ],
-                      ),
-                      showMap()
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12, bottom: 10),
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: ShowTitle(
+                                      title: productModels.detail,
+                                      textStyle: MyConstant().h3Style())),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            ShowTitle(
+                                title: 'เบอร์โทรศัพท์ :',
+                                textStyle: MyConstant().h3Style()),
+                            ShowTitle(
+                                title: ' ${productModels.phone} ',
+                                textStyle: MyConstant().h3Style()),
+                            IconButton(
+                              onPressed: () {
+                                Clipboard.setData(
+                                  ClipboardData(text: productModels.phone),
+                                );
+                                // MyDialog().normalDialog(context, 'คักลอก',
+                                //     'คักลอกเบอร์โทรศัพท์สำเร็จ');
+                              },
+                              icon: Icon(
+                                Icons.copy,
+                                size: 16,
+                                color: MyConstant.primary,
+                              ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            ShowTitle(
+                                title: distance == null
+                                    ? ''
+                                    : 'ระยะทาง : $distanceString กิโลเมตร',
+                                textStyle: MyConstant().h3Style()),
+                          ],
+                        ),
+                        showMap()
 
-                      // IconButton(
-                      //   onPressed: () {},
-                      //   icon: Icon(Icons.android),
-                      // ),
-                    ],
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: Icon(Icons.android),
+                        // ),
+                      ],
+                    ),
                   ),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            String idOwner = productModels.idOwner;
+                            String idProduct = productModels.id;
+                            String name = productModels.name;
+                            String nameOwner = productModels.nameOwner;
+                            String phone = productModels.phone;
+                            String price = productModels.price;
+
+                            SQLiteModel sqLiteModel = SQLiteModel(
+                                idOwner: idOwner,
+                                idProduct: idProduct,
+                                name: name,
+                                nameOwner: nameOwner,
+                                phone: phone,
+                                price: price);
+                            print(
+                                '### idOwner == $idOwner, idProduct ==$idProduct, name ==$name, nameOwner ==$nameOwner, phone ==$phone , price==$price');
+
+                            await SQLiteHelper()
+                                .insertValueToSQLite(sqLiteModel)
+                                .then(
+                              (value) {
+                                Navigator.pop(context);
+                              },
+                            );
+                            MyDialog().normalDialog(context,
+                                'เพิ่มหอพักนี้ไปยังหน้าที่คุณสนใจแล้ว', '');
+                          },
+                          child: Text(
+                            'สนใจหอพักนี้',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            'ยกเลิก',
+                            style: TextStyle(color: Colors.red, fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                actions: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: () async {
-                          String idOwner = productModels.idOwner;
-                          String idProduct = productModels.id;
-                          String name = productModels.name;
-                          String nameOwner = productModels.nameOwner;
-                          String phone = productModels.phone;
-                          String price = productModels.price;
-                          SQLiteModel sqLiteModel = SQLiteModel(
-                              idOwner: idOwner,
-                              idProduct: idProduct,
-                              name: name,
-                              nameOwner: nameOwner,
-                              phone: phone,
-                              price: price);
-                          print(
-                              '### idOwner == $idOwner, idProduct ==$idProduct, name ==$name, nameOwner ==$nameOwner, phone ==$phone , price==$price');
-
-                          await SQLiteHelper()
-                              .insertValueToSQLite(sqLiteModel)
-                              .then(
-                            (value) {
-                              Navigator.pop(context);
-                            },
-                          );
-                          MyDialog().normalDialog(context,
-                              'เพิ่มหอพักนี้ไปยังหน้าที่คุณสนใจแล้ว', '');
-                        },
-                        child: Text(
-                          'สนใจหอพักนี้',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          'ยกเลิก',
-                          style: TextStyle(color: Colors.red, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ));
   }
@@ -610,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String cutWrod(String string) {
     String result = string;
     if (result.length >= 100) {
-      result = result.substring(0, 150);
+      result = result.substring(0, 120);
       result = '$result....';
     }
     return result;

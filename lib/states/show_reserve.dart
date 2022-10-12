@@ -40,7 +40,7 @@ class _ShowReserveState extends State<ShowReserve> {
     // TODO: implement initState
     super.initState();
     findCurrentTime();
-    findDeraiIdOwner();
+    // findDeraiIdOwner();
     findUserModel();
     processReadSQLite();
     findIdBuyer();
@@ -68,7 +68,7 @@ class _ShowReserveState extends State<ShowReserve> {
       setState(() {
         load = false;
         sqliteModels = value;
-        findDeraiIdOwner();
+        // findDeraiIdOwner();
         // calculateTotal();
       });
     });
@@ -84,20 +84,20 @@ class _ShowReserveState extends State<ShowReserve> {
   //   }
   // }
 
-  Future<void> findDeraiIdOwner() async {
-    String idOwner = sqliteModels[0].idProduct;
-    print('### idadsad ===> $idOwner');
-    print('เวลา $dateTimeStr');
-    String apiGetUserWhereId =
-        '${MyConstant.domain}/bsruhorpak/getProductWhereIdOwner.php?isAdd=true&idOwner=$idOwner';
-    await Dio().get(apiGetUserWhereId).then((value) {
-      for (var item in jsonDecode(value.data)) {
-        setState(() {
-          productModel = ProductModel.fromMap(item);
-        });
-      }
-    });
-  }
+  // Future<void> findDeraiIdOwner() async {
+  //   String idOwner = sqliteModels[index].idProduct;
+  //   print('### idadsad ===> $idOwner');
+  //   print('เวลา $dateTimeStr');
+  //   String apiGetUserWhereId =
+  //       '${MyConstant.domain}/bsruhorpak/getProductWhereIdOwner.php?isAdd=true&idOwner=$idOwner';
+  //   await Dio().get(apiGetUserWhereId).then((value) {
+  //     for (var item in jsonDecode(value.data)) {
+  //       setState(() {
+  //         productModel = ProductModel.fromMap(item);
+  //       });
+  //     }
+  //   });
+  // }
 
   Future<Null> findUserModel() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -285,7 +285,6 @@ class _ShowReserveState extends State<ShowReserve> {
 
                 dateTimeStr = dateOrDer.format(dateOrder);
                 String idBuyer = userModel!.id;
-
                 String nameBuyer = userModel!.name;
                 String name = sqliteModels[index].name;
                 String idOwner = sqliteModels[index].idOwner;
@@ -293,6 +292,7 @@ class _ShowReserveState extends State<ShowReserve> {
                 String idProduct = sqliteModels[index].idProduct;
                 String nameProduct = sqliteModels[index].name;
                 String priceProduct = sqliteModels[index].price;
+
                 print(
                     'idBuyer $idBuyer ผู้จอง $nameBuyer. idOwner $idOwner ชื่อเจ้าของหอ $nameOwner , ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
                 // print('เวลา = $dateTimeStr');
@@ -302,9 +302,34 @@ class _ShowReserveState extends State<ShowReserve> {
                   if (value.toString() == 'true') {
                     SQLiteHelper().deleteSQLiteWhereId(idSQLite).then((value) {
                       print('ลบแล้ว');
-                      Navigator.pushNamed(context, MyConstant.routBuyer);
-                      MyDialog().normalDialog(
-                          context, 'จองหอพัก$nameProduct', 'สำเร็จ');
+                      String urlfindTokenOwner =
+                          '${MyConstant.domain}/bsruhorpak/getUserWhereid.php?isAdd=true&id=$idOwner';
+                      Dio().get(urlfindTokenOwner).then((value) async {
+                        var resul = jsonDecode(value.data);
+                        // print('value $resul');
+                        for (var json in resul) {
+                          // print(json);
+                          UserModel model = UserModel.fromMap(json);
+                          // print('model5555 $model');
+                          String tokenOwner = model.token;
+                          // print('TokenOwner $tokenOwner');
+                          String title = 'มีคนจองหอพักของคุณ';
+                          String body = 'กดเพื่อดูรายละเอียด';
+                          String urlSendToken =
+                              '${MyConstant.domain}/bsruhorpak/apiNotification.php?isAdd=true&token=$tokenOwner&title=$title&body=$body';
+
+                          print(
+                              'tile $title body $body tokenOwner $tokenOwner');
+                          await Dio().get(urlSendToken).then(
+                            (value) {
+                              Navigator.pushNamed(
+                                  context, MyConstant.routBuyer);
+                              MyDialog().normalDialog(
+                                  context, 'จองหอพัก$nameProduct', 'สำเร็จ');
+                            },
+                          );
+                        }
+                      });
                     });
                   } else {
                     MyDialog().normalDialog(
@@ -395,18 +420,5 @@ class _ShowReserveState extends State<ShowReserve> {
         ],
       ),
     );
-  }
-
-  Future<Null> orderThread() async {
-    DateTime dateTime = DateTime.now();
-
-    DateFormat dateOrDer = DateFormat('dd/MM/yyyy HH:mm');
-
-    dateTimeStr = dateOrDer.format(dateTime);
-    // String idOwner = sqliteModels[].idOwner;
-    // String name = sqliteModels[].name;
-
-    // print('idOwner $idOwner, ชื่อหอ $name');
-    print('เวลา = $dateTimeStr');
   }
 }

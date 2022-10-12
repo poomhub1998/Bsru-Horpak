@@ -243,8 +243,8 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
 
   String cutWrod(String string) {
     String result = string;
-    if (result.length >= 100) {
-      result = result.substring(0, 100);
+    if (result.length >= 80) {
+      result = result.substring(0, 50);
       result = '$result....';
     }
     return result;

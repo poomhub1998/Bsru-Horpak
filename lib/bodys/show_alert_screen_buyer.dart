@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bsru_horpak/models/Order_model.dart';
+import 'package:bsru_horpak/models/product_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/widgets/show_image.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:steps_indicator/steps_indicator.dart';
+import 'package:location/location.dart';
 
 class AlertScreen extends StatefulWidget {
   const AlertScreen({Key? key}) : super(key: key);
@@ -25,12 +27,68 @@ class _AlertScreenState extends State<AlertScreen> {
   bool load = true;
   List<OrderModel> ordermodels = [];
   List<int> ststusInts = [];
+  List<ProductModel> productModels = [];
+  ProductModel? productModel;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    finalLocationData();
     findBuyer();
+    loadValueFromAPIOrder();
+  }
+
+  Future<Null> loadValueFromAPI() async {
+    if (productModels.length != 0) {
+      productModels.clear();
+    } else {}
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString('id')!;
+    String apiGetProductWhereIdProduct =
+        '${MyConstant.domain}/bsruhorpak/getProductWhereTypeOwner.php';
+    await Dio().get(apiGetProductWhereIdProduct).then(
+      (value) {
+        if (value.toString() == 'null') {
+          // No Data
+
+          setState(() {
+            load = false;
+            haveData = false;
+          });
+        } else {
+          // Have Data
+          for (var item in jsonDecode(value.data)) {
+            ProductModel model = ProductModel.fromMap(item);
+            String string = model.images;
+            string = string.substring(1, string.length - 1);
+            List<String> strings = string.split(',');
+            int i = 0;
+            for (var item in strings) {
+              strings[i] = item.trim();
+              i++;
+            }
+
+            setState(() {
+              load = false;
+              haveData = true;
+              productModels.add(model);
+              // print('eeeee $value');
+            });
+          }
+        }
+      },
+    );
+  }
+
+  Future<LocationData?> finalLocationData() async {
+    Location location = Location();
+    try {
+      return await location.getLocation();
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -223,7 +281,7 @@ class _AlertScreenState extends State<AlertScreen> {
   //     }
   //   }
   // }
-  Future<Null> loadValueFromAPI() async {
+  Future<Null> loadValueFromAPIOrder() async {
     if (ordermodels.length != 0) {
       ordermodels.clear();
     } else {}

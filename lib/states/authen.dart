@@ -4,11 +4,15 @@ import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
 import 'package:bsru_horpak/widgets/show_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Authen extends StatefulWidget {
@@ -19,11 +23,17 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
+  FirebaseMessaging? firebaseMessaging;
   //ประกาศตัวแปร
   bool statusRedeye = true;
   final formKey = GlobalKey<FormState>();
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +101,24 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> checkAuthen({String? user, String? password}) async {
+    future:
+    Firebase.initializeApp();
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print('token = $token');
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    String? id = preferences.getString('id');
+
+    String editToken =
+        '${MyConstant.domain}/bsruhorpak/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+    if (id != null && id.isNotEmpty) {
+      await Dio().get(editToken).then((value) => print('token ได้แล้ว'));
+    }
     String apiCheckAuthen =
         '${MyConstant.domain}/bsruhorpak/getUserWhereUser.php?isAdd=true&user=$user';
     await Dio().get(apiCheckAuthen).then((value) async {
-      print('## value for API ==>> $value');
+      // print('## value for API ==>> $value');
       if (value.toString() == 'null') {
         MyDialog().normalDialog(
             context, 'ชื่อผู้ใช้ ผิด !!!', 'ไม่มี $user ในฐานช้อมูล');
@@ -104,7 +128,7 @@ class _AuthenState extends State<Authen> {
           if (password == model.password) {
             // Success Authen
             String type = model.type;
-            print('## Authen Success in Type ==> $type');
+            // print('## Authen Success in Type ==> $type');
 
             SharedPreferences preferences =
                 await SharedPreferences.getInstance();
