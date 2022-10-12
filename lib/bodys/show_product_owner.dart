@@ -90,11 +90,20 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
                     ],
                   ),
                 ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: MyConstant.dark,
-        onPressed: () => Navigator.pushNamed(context, MyConstant.routAddHorPak)
-            .then((value) => loadValueFromAPI()),
-        child: Text('เพิ่ม'),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 40),
+            child: FloatingActionButton(
+              backgroundColor: MyConstant.dark,
+              onPressed: () =>
+                  Navigator.pushNamed(context, MyConstant.routAddHorPak)
+                      .then((value) => loadValueFromAPI()),
+              child: Text('เพิ่ม'),
+            ),
+          ),
+        ],
       ),
     );
   }

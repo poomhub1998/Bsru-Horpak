@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:bsru_horpak/models/Order_model.dart';
 import 'package:bsru_horpak/models/product_model.dart';
+import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/widgets/show_image.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
 import 'package:bsru_horpak/widgets/show_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,7 +97,7 @@ class _AlertScreenState extends State<AlertScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('จอง'),
+        title: Text('หน้าสถานะการจอง'),
       ),
       body: load
           ? ShowProgress()
@@ -130,10 +132,42 @@ class _AlertScreenState extends State<AlertScreen> {
             // buildPrice(index),
             buildHead(),
             buildListHorpak(index),
+
             buildStepIndicator(ststusInts[index]),
+            buildbutton(),
+            // buildDivider(),
           ],
         ),
       );
+  Divider buildDivider() {
+    return Divider(
+      color: Colors.black,
+    );
+  }
+
+  Row buildbutton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        RaisedButton.icon(
+          color: Colors.red,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          onPressed: () async {
+            print('กดยกเลิก');
+          },
+          icon: Icon(
+            Icons.cancel,
+            color: Colors.white,
+          ),
+          label: Text(
+            'ยกเลิกการจอง',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget buildStepIndicator(int index) => Column(
         children: [
@@ -169,7 +203,7 @@ class _AlertScreenState extends State<AlertScreen> {
           Expanded(
             flex: 1,
             child: ShowTitle(
-              title: 'ราคา',
+              title: 'ราคา/เดือน',
               textStyle: MyConstant().h2WhiteStyle(),
             ),
           ),
@@ -194,7 +228,7 @@ class _AlertScreenState extends State<AlertScreen> {
           Expanded(
             flex: 1,
             child: ShowTitle(
-              title: ordermodels[index].priceProduct,
+              title: '${ordermodels[index].priceProduct} บาท',
               textStyle: MyConstant().h3BlackStyle(),
             ),
           ),
@@ -234,9 +268,31 @@ class _AlertScreenState extends State<AlertScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ShowTitle(
-            title: 'เจ้าหอพัก ${ordermodels[index].nameOwner}',
-            textStyle: MyConstant().h2BlueStyle(),
+          child: Row(
+            children: [
+              ShowTitle(
+                title: 'เจ้าหอพัก${ordermodels[index].nameOwner} ',
+                textStyle: MyConstant().h2BlueStyle(),
+              ),
+              ShowTitle(
+                title: ' ${ordermodels[index].phoneOwner} ',
+                textStyle: MyConstant().h2BlueStyle(),
+              ),
+              IconButton(
+                onPressed: () {
+                  Clipboard.setData(
+                    ClipboardData(text: ordermodels[index].phoneOwner),
+                  );
+                  // MyDialog().normalDialog(context, 'คักลอก',
+                  //     'คักลอกเบอร์โทรศัพท์สำเร็จ');
+                },
+                icon: Icon(
+                  Icons.copy,
+                  size: 16,
+                  color: MyConstant.primary,
+                ),
+              )
+            ],
           ),
         ),
       ],

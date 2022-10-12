@@ -5,9 +5,11 @@ class OrderModel {
   final String id;
   final String idBuyer;
   final String nameBuyer;
+  final String phoneBuyer;
   final String dateOrder;
   final String idOwner;
   final String nameOwner;
+  final String phoneOwner;
   final String idProduct;
   final String nameProduct;
   final String priceProduct;
@@ -16,9 +18,11 @@ class OrderModel {
     required this.id,
     required this.idBuyer,
     required this.nameBuyer,
+    required this.phoneBuyer,
     required this.dateOrder,
     required this.idOwner,
     required this.nameOwner,
+    required this.phoneOwner,
     required this.idProduct,
     required this.nameProduct,
     required this.priceProduct,
@@ -29,9 +33,11 @@ class OrderModel {
     String? id,
     String? idBuyer,
     String? nameBuyer,
+    String? phoneBuyer,
     String? dateOrder,
     String? idOwner,
     String? nameOwner,
+    String? phoneOwner,
     String? idProduct,
     String? nameProduct,
     String? priceProduct,
@@ -41,9 +47,11 @@ class OrderModel {
       id: id ?? this.id,
       idBuyer: idBuyer ?? this.idBuyer,
       nameBuyer: nameBuyer ?? this.nameBuyer,
+      phoneBuyer: phoneBuyer ?? this.phoneBuyer,
       dateOrder: dateOrder ?? this.dateOrder,
       idOwner: idOwner ?? this.idOwner,
       nameOwner: nameOwner ?? this.nameOwner,
+      phoneOwner: phoneOwner ?? this.phoneOwner,
       idProduct: idProduct ?? this.idProduct,
       nameProduct: nameProduct ?? this.nameProduct,
       priceProduct: priceProduct ?? this.priceProduct,
@@ -56,9 +64,11 @@ class OrderModel {
       'id': id,
       'idBuyer': idBuyer,
       'nameBuyer': nameBuyer,
+      'phoneBuyer': phoneBuyer,
       'dateOrder': dateOrder,
       'idOwner': idOwner,
       'nameOwner': nameOwner,
+      'phoneOwner': phoneOwner,
       'idProduct': idProduct,
       'nameProduct': nameProduct,
       'priceProduct': priceProduct,
@@ -71,9 +81,11 @@ class OrderModel {
       id: map['id'] as String,
       idBuyer: map['idBuyer'] as String,
       nameBuyer: map['nameBuyer'] as String,
+      phoneBuyer: map['phoneBuyer'] as String,
       dateOrder: map['dateOrder'] as String,
       idOwner: map['idOwner'] as String,
       nameOwner: map['nameOwner'] as String,
+      phoneOwner: map['phoneOwner'] as String,
       idProduct: map['idProduct'] as String,
       nameProduct: map['nameProduct'] as String,
       priceProduct: map['priceProduct'] as String,
@@ -88,7 +100,7 @@ class OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(id: $id, idBuyer: $idBuyer, nameBuyer: $nameBuyer, dateOrder: $dateOrder, idOwner: $idOwner, nameOwner: $nameOwner, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, status: $status)';
+    return 'OrderModel(id: $id, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, dateOrder: $dateOrder, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, status: $status)';
   }
 
   @override
@@ -98,9 +110,11 @@ class OrderModel {
     return other.id == id &&
         other.idBuyer == idBuyer &&
         other.nameBuyer == nameBuyer &&
+        other.phoneBuyer == phoneBuyer &&
         other.dateOrder == dateOrder &&
         other.idOwner == idOwner &&
         other.nameOwner == nameOwner &&
+        other.phoneOwner == phoneOwner &&
         other.idProduct == idProduct &&
         other.nameProduct == nameProduct &&
         other.priceProduct == priceProduct &&
@@ -112,9 +126,11 @@ class OrderModel {
     return id.hashCode ^
         idBuyer.hashCode ^
         nameBuyer.hashCode ^
+        phoneBuyer.hashCode ^
         dateOrder.hashCode ^
         idOwner.hashCode ^
         nameOwner.hashCode ^
+        phoneOwner.hashCode ^
         idProduct.hashCode ^
         nameProduct.hashCode ^
         priceProduct.hashCode ^

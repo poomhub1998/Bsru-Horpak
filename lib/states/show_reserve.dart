@@ -265,7 +265,7 @@ class _ShowReserveState extends State<ShowReserve> {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: ShowTitle(
               title: sqliteModels[index].phone,
               textStyle: MyConstant().h4Style(),
@@ -286,18 +286,20 @@ class _ShowReserveState extends State<ShowReserve> {
                 dateTimeStr = dateOrDer.format(dateOrder);
                 String idBuyer = userModel!.id;
                 String nameBuyer = userModel!.name;
+                String phoneBuyer = userModel!.phone;
                 String name = sqliteModels[index].name;
                 String idOwner = sqliteModels[index].idOwner;
                 String nameOwner = sqliteModels[index].nameOwner;
+                String phoneOwner = sqliteModels[index].phone;
                 String idProduct = sqliteModels[index].idProduct;
                 String nameProduct = sqliteModels[index].name;
                 String priceProduct = sqliteModels[index].price;
 
                 print(
-                    'idBuyer $idBuyer ผู้จอง $nameBuyer. idOwner $idOwner ชื่อเจ้าของหอ $nameOwner , ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
+                    'idBuyer $idBuyer ผู้จอง $nameBuyer, เบอร์คนจอง $phoneBuyer idOwner $idOwner ชื่อเจ้าของหอ $nameOwner เบอร์เจ้าของหอ $phoneOwner, ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
                 // print('เวลา = $dateTimeStr');
                 String url =
-                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&dateOrder=$dateOrder&idOwner=$idOwner&nameOwner=$nameOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&status=UserOrder';
+                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$dateOrder&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&status=UserOrder';
                 await Dio().get(url).then((value) {
                   if (value.toString() == 'true') {
                     SQLiteHelper().deleteSQLiteWhereId(idSQLite).then((value) {
@@ -388,7 +390,7 @@ class _ShowReserveState extends State<ShowReserve> {
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
                 title: 'เบอร์',
                 textStyle: MyConstant().h2Style(),

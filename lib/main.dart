@@ -1,3 +1,4 @@
+import 'package:bsru_horpak/bodys/show_order_owner.dart';
 import 'package:bsru_horpak/states/aad_horpak.dart';
 import 'package:bsru_horpak/states/authen.dart';
 import 'package:bsru_horpak/states/buyer.dart';
@@ -16,6 +17,7 @@ final Map<String, WidgetBuilder> map = {
   '/authen': (BuildContext context) => Authen(),
   '/createAccount': (BuildContext context) => CreateAccount(),
   '/buyyer': (BuildContext context) => Buyer(),
+  '/showOrderOwner': (BuildContext context) => ShowOrderOwner(),
   '/owner': (BuildContext context) => Owner(),
   '/addHorPak': (BuildContext context) => AddHorPak(),
   '/showReserve': (BuildContext context) => ShowReserve(),

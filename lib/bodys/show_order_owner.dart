@@ -1,13 +1,18 @@
 import 'dart:convert';
-
+import 'package:bsru_horpak/models/user_model.dart';
+import 'package:bsru_horpak/utility/my_dialog.dart';
+import 'package:steps_indicator/steps_indicator.dart';
+import 'package:bsru_horpak/models/Order_model.dart';
 import 'package:bsru_horpak/models/product_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
+import 'package:bsru_horpak/widgets/show_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowOrderOwner extends StatefulWidget {
   const ShowOrderOwner({Key? key}) : super(key: key);
@@ -18,35 +23,298 @@ class ShowOrderOwner extends StatefulWidget {
 
 class _ShowOrderOwnerState extends State<ShowOrderOwner> {
   bool load = true;
+  bool? haveData;
+
+  List<OrderModel> orderModels = [];
+  List<int> ststusInts = [];
 
   @override
   void initState() {
     super.initState();
+    findOwnerid();
   }
 
-  Future<Null> loadValueFromAPI() async {
+  Future<Null> findOwnerid() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     String id = preferences.getString('id')!;
+    print(id);
 
-    String apiGetProductWhereidOwner =
-        '${MyConstant.domain}/bsruhorpak/getOwnerWhereidOwner.php?isAdd=true&idOwner=$id';
-    await Dio().get(apiGetProductWhereidOwner).then(
+    String apifindOwner =
+        '${MyConstant.domain}/bsruhorpak/getOrderWhereIdOwner.php?isAdd=true&idOwner=$id';
+    await Dio().get(apifindOwner).then(
       (value) {
-        print('value $value');
-        for (var item in json.decode(value.data)) {
-          ProductModel model = ProductModel.fromMap(item);
-          print('dddd${model.name}');
+        if (value.toString() == 'null') {
+          // No Data
+
           setState(() {
             load = false;
+            haveData = false;
           });
+        } else {
+          editStatus() async* {
+            String editStatus =
+                '${MyConstant.domain}/bsruhorpak/editOrderWhereIdOwner.php?isAdd=true&id=$id&status=OwnerOrder';
+            print('id $id');
+            if (id != null && id.isNotEmpty) {
+              Dio().get(editStatus).then((value) => print('เปลี่ยนสำเร็จ '));
+            }
+          }
+
+          for (var item in jsonDecode(value.data)) {
+            OrderModel model = OrderModel.fromMap(item);
+            print(model.idProduct);
+            int status = 0;
+            switch (model.status) {
+              case 'UserOrder':
+                status = 0;
+                break;
+              case 'OwnerOrder':
+                status = 1;
+                break;
+              case 'Finish':
+                status = 3;
+                break;
+              default:
+            }
+            setState(() {
+              load = false;
+              haveData = true;
+              orderModels.add(model);
+              ststusInts.add(status);
+            });
+          }
         }
+
+        // print('Date = ${model.dateOrder}');
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: orderModels.length == 0
+          ? ShowProgress()
+          : ListView.builder(
+              itemCount: orderModels.length,
+              itemBuilder: (context, index) => Card(
+                color: index % 2 == 0 ? Colors.white : Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          ShowTitle(
+                              title: 'ชิ่อ ${orderModels[index].nameBuyer}',
+                              textStyle: MyConstant().h2BlueStyle()),
+                          ShowTitle(
+                              title: '   ${orderModels[index].phoneBuyer}',
+                              textStyle: MyConstant().h2BlueStyle()),
+                        ],
+                      ),
+                      Text(orderModels[index].dateOrder),
+                      buildTitle(),
+                      buildListHorpak(index),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          RaisedButton.icon(
+                            color: Colors.red,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            onPressed: () async {
+                              print('กดยกเลิก');
+                            },
+                            icon: Icon(
+                              Icons.cancel,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              'ยกเลิก',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          RaisedButton.icon(
+                            color: Colors.green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            onPressed: () async {
+                              SharedPreferences preferences =
+                                  await SharedPreferences.getInstance();
+                              String? id = preferences.getString('id');
+                              String? idProduct = orderModels[index].idProduct;
+                              String? status = 'OwnerOrder';
+                              String? idBuyer = orderModels[index].idBuyer;
+                              print('idbuyer = $idBuyer');
+                              String editstatus =
+                                  '${MyConstant.domain}/bsruhorpak/editOrderWhereIdOwner.php?isAdd=true&id=$id&idProduct=$idProduct&status=$status';
+
+                              await Dio().get(editstatus).then((value) {
+                                print(
+                                    'id === $id idProduct === $idProduct status === $status ');
+                                String urlfindTokenBuyer =
+                                    '${MyConstant.domain}/bsruhorpak/getUserWhereid.php?isAdd=true&id=$idBuyer';
+                                Dio()
+                                    .get(urlfindTokenBuyer)
+                                    .then((value) async {
+                                  var resul = jsonDecode(value.data);
+                                  // print('value $resul');
+                                  for (var json in resul) {
+                                    // print(json);
+                                    UserModel model = UserModel.fromMap(json);
+                                    // print('model5555 $model');
+                                    String tokenBuyer = model.token;
+                                    print('TokenOwner $tokenBuyer');
+                                    String title = 'เจ้าของหอตอบรับแล้ว';
+                                    String body = 'กดเพื่อดูรายละเอียด';
+                                    String urlSendToken =
+                                        '${MyConstant.domain}/bsruhorpak/apiNotification.php?isAdd=true&token=$tokenBuyer&title=$title&body=$body';
+
+                                    print(
+                                        'tile $title body $body tokenBuyer $tokenBuyer');
+                                    await Dio().get(urlSendToken).then(
+                                      (value) {
+                                        Navigator.popAndPushNamed(
+                                            context, MyConstant.routOwner);
+                                        MyDialog().normalDialog(
+                                            context, 'ตอบรับลูกค้า', 'สำเร็จ');
+                                      },
+                                    );
+                                  }
+                                });
+                              });
+                            },
+                            icon: Icon(
+                              Icons.restaurant,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              'ตอบรับ',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          RaisedButton.icon(
+                            color: Colors.green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            onPressed: () async {
+                              SharedPreferences preferences =
+                                  await SharedPreferences.getInstance();
+                              String? id = preferences.getString('id');
+                              String? idBuyer = orderModels[index].idBuyer;
+                              String? nameBuyer = orderModels[index].nameBuyer;
+
+                              String? idOwner = orderModels[index].idOwner;
+                              String? nameOwner = orderModels[index].nameOwner;
+                              String? idProduct = orderModels[index].idProduct;
+                              String? nameProduct =
+                                  orderModels[index].nameProduct;
+                              String? priceProduct =
+                                  orderModels[index].priceProduct;
+
+                              String? status = 'Finish';
+                              String editstatus =
+                                  '${MyConstant.domain}/bsruhorpak/editOrderWhereIdOwner.php?isAdd=true&id=$id&idProduct=$idProduct&status=$status';
+
+                              await Dio().get(editstatus).then((value) {
+                                print(value);
+                                print(
+                                    'idBuyer $idBuyer nameBuyer $nameBuyer nameProduct $nameProduct  ');
+                              });
+                            },
+                            icon: Icon(
+                              Icons.one_k,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              'ผู้ใช้เข้าอยู่แล้ว',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                      buildStepIndicator(ststusInts[index]),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+
+  Container buildListHorpak(int index) {
+    return Container(
+      padding: EdgeInsets.only(left: 8),
+      // decoration: BoxDecoration(color: Colors.grey),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: ShowTitle(
+              title: orderModels[index].nameProduct,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: ShowTitle(
+              title: orderModels[index].priceProduct,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildStepIndicator(index) => Column(
+        children: [
+          StepsIndicator(
+            lineLength: 110,
+            selectedStep: index,
+            nbSteps: 3,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('จอง'),
+              Text('ตอบรับ'),
+              Text('เสร็จสิ้น'),
+            ],
+          )
+        ],
+      );
+
+  Container buildTitle() {
+    return Container(
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(color: Colors.grey),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Text('ชื่อหอพัก'),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text('ราคา'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> editStatus() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? id = preferences.getString('id');
+    String? idProduct = preferences.getString('idProduct');
   }
 }
