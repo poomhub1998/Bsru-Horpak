@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bsru_horpak/bodys/show_alert_screen_buyer.dart';
 import 'package:bsru_horpak/bodys/show_homescreen_buyer.dart';
@@ -43,8 +44,18 @@ class _BuyerState extends State<Buyer> {
 
   @override
   void initState() {
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        debugPrint("onMessage:");
+        log("onMessage: $message");
+        final snackBar =
+            SnackBar(content: Text(message.notification?.title ?? ""));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+    );
     // TODO: implement initState
     super.initState();
+
     // initFirebaseMessaging();
     findUserModel();
   }
