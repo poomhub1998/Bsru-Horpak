@@ -123,7 +123,7 @@ class _AuthenState extends State<Authen> {
         MyDialog().normalDialog(
             context, 'ชื่อผู้ใช้ ผิด !!!', 'ไม่มี $user ในฐานช้อมูล');
       } else {
-        for (var item in json.decode(value.data)) {
+        for (var item in jsonDecode(value.data)) {
           UserModel model = UserModel.fromMap(item);
           if (password == model.password) {
             // Success Authen

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class OrderModel {
-  final String id;
+  final String idOrder;
   final String idBuyer;
   final String nameBuyer;
   final String phoneBuyer;
@@ -15,7 +15,7 @@ class OrderModel {
   final String priceProduct;
   final String status;
   OrderModel({
-    required this.id,
+    required this.idOrder,
     required this.idBuyer,
     required this.nameBuyer,
     required this.phoneBuyer,
@@ -30,7 +30,7 @@ class OrderModel {
   });
 
   OrderModel copyWith({
-    String? id,
+    String? idOrder,
     String? idBuyer,
     String? nameBuyer,
     String? phoneBuyer,
@@ -44,7 +44,7 @@ class OrderModel {
     String? status,
   }) {
     return OrderModel(
-      id: id ?? this.id,
+      idOrder: idOrder ?? this.idOrder,
       idBuyer: idBuyer ?? this.idBuyer,
       nameBuyer: nameBuyer ?? this.nameBuyer,
       phoneBuyer: phoneBuyer ?? this.phoneBuyer,
@@ -61,7 +61,7 @@ class OrderModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      'idOrder': idOrder,
       'idBuyer': idBuyer,
       'nameBuyer': nameBuyer,
       'phoneBuyer': phoneBuyer,
@@ -78,7 +78,7 @@ class OrderModel {
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
-      id: map['id'] as String,
+      idOrder: map['idOrder'] as String,
       idBuyer: map['idBuyer'] as String,
       nameBuyer: map['nameBuyer'] as String,
       phoneBuyer: map['phoneBuyer'] as String,
@@ -100,14 +100,14 @@ class OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(id: $id, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, dateOrder: $dateOrder, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, status: $status)';
+    return 'OrderModel(idOrder: $idOrder, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, dateOrder: $dateOrder, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, status: $status)';
   }
 
   @override
   bool operator ==(covariant OrderModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
+    return other.idOrder == idOrder &&
         other.idBuyer == idBuyer &&
         other.nameBuyer == nameBuyer &&
         other.phoneBuyer == phoneBuyer &&
@@ -123,7 +123,7 @@ class OrderModel {
 
   @override
   int get hashCode {
-    return id.hashCode ^
+    return idOrder.hashCode ^
         idBuyer.hashCode ^
         nameBuyer.hashCode ^
         phoneBuyer.hashCode ^

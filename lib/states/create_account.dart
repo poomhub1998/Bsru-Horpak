@@ -72,7 +72,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                 // buildTitle('ข้อมูลพื้นฐาน'),
                 // buildAddress(size),
-                // buildPhone(size),
+                buildPhone(size),
 
                 SizedBox(
                   height: 20,
@@ -82,8 +82,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildRadioUser(size),
                 buildRadioOwner(size),
                 // buildTitle('รูปภาพ'),
-                buildSubTitle(),
-                buildAvatar(size),
+                // buildSubTitle(),
+                // buildAvatar(size),
                 // buildMap(),
                 buildCreatAccount(size),
               ],

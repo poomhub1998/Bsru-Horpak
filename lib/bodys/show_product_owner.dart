@@ -220,7 +220,7 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
             placeholder: (context, url) => ShowProgress(),
           ),
           title: ShowTitle(
-            title: 'Delete ${productModel.name} ?',
+            title: 'ลบ ${productModel.name} ?',
             textStyle: MyConstant().h2Style(),
           ),
           subtitle: ShowTitle(
@@ -239,11 +239,11 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
                 loadValueFromAPI();
               });
             },
-            child: Text('Delete'),
+            child: Text('ลบ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('ยกเลิก'),
           ),
         ],
       ),

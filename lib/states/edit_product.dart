@@ -92,7 +92,7 @@ class _EditProductState extends State<EditProduct> {
                   buildPhone(constraints),
                   buildAddress(constraints),
                   buildDetail(constraints),
-                  buildTitle('แก้ไขรูปภาพ'),
+                  // buildTitle('แก้ไขรูปภาพ'),
                   buildImage(constraints, 0),
                   buildImage(constraints, 1),
                   buildImage(constraints, 2),

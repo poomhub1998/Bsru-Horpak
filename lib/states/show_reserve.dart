@@ -328,6 +328,7 @@ class _ShowReserveState extends State<ShowReserve> {
                                   context, MyConstant.routBuyer);
                               MyDialog().normalDialog(
                                   context, 'จองหอพัก$nameProduct', 'สำเร็จ');
+                              processReadSQLite();
                             },
                           );
                         }

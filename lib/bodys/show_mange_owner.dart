@@ -74,12 +74,12 @@ class _ShowMangeOwnerState extends State<ShowMangeOwner> {
                         title: 'ชื่อ  : ${userModel!.name}',
                         textStyle: MyConstant().h1Style()),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ShowTitle(
-                        title: 'ที่อยู่ : ${userModel!.address}',
-                        textStyle: MyConstant().h2Style()),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: ShowTitle(
+                  //       title: 'ที่อยู่ : ${userModel!.address}',
+                  //       textStyle: MyConstant().h2Style()),
+                  // ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: [
@@ -102,25 +102,26 @@ class _ShowMangeOwnerState extends State<ShowMangeOwner> {
                       textStyle: MyConstant().h2Style(),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: ShowTitle(
-                        title: 'รูปโปรไฟล์ :',
-                        textStyle: MyConstant().h2Style()),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
-                        width: constraints.maxWidth * 0.6,
-                        child: CachedNetworkImage(
-                          imageUrl: '${MyConstant.domain}${userModel!.avatar}',
-                          placeholder: (context, url) => ShowProgress(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 8),
+                  //   child: ShowTitle(
+                  //       title: 'รูปโปรไฟล์ :',
+                  //       textStyle: MyConstant().h2Style()),
+                  // ),
+
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Container(
+                  //       margin: EdgeInsets.symmetric(vertical: 16),
+                  //       width: constraints.maxWidth * 0.6,
+                  //       child: CachedNetworkImage(
+                  //         imageUrl: '${MyConstant.domain}${userModel!.avatar}',
+                  //         placeholder: (context, url) => ShowProgress(),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   ShowTitle(
                       title: 'Location :', textStyle: MyConstant().h2Style()),
                   Row(
