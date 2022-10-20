@@ -413,6 +413,9 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก รหัสผ่าน';
+              }
+              if (value.length <= 6) {
+                return 'กรุณากรอก รหัสผ่าน 6คัวขึ้นไป';
               } else {}
             },
             controller: passwordController,

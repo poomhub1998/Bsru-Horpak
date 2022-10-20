@@ -16,16 +16,22 @@ if (!$link->set_charset("utf8")) {
 	}
 
 if (isset($_GET)) {
-	if ($_GET['isAdd'] == 'true') {
-				
+	if ($_GET['isAdd'] == 'true') {	
+		
 		$idBuyer = $_GET['idBuyer'];
-		$dateReserve = $_GET['dateReserve'];
+		$nameBuyer = $_GET['nameBuyer'];
+		$phoneBuyer = $_GET['phoneBuyer'];
+		$dateOrder = $_GET['dateOrder'];
+		$idOwner = $_GET['idOwner'];
+		$nameOwner = $_GET['nameOwner'];
+		$phoneOwner = $_GET['phoneOwner'];
+		$idProduct = $_GET['idProduct'];
+		$nameProduct = $_GET['nameProduct'];
+		$priceProduct = $_GET['priceProduct'];
 		$status = $_GET['status'];
 		
-		
-		
 							
-		$sql = "INSERT INTO `reserve`(`id`, `idBuyer`, `dateReserve`, `status`) VALUES (Null,'$idBuyer','$dateReserve','$status')";
+		$sql = "INSERT INTO `reservetable`(`idOrder`, `idBuyer`, `nameBuyer`, `phoneBuyer`, `dateOrder`, `idOwner`, `nameOwner`, `phoneOwner`, `idProduct`, `nameProduct`, `priceProduct`, `status`) VALUES (Null,'$idBuyer','$nameBuyer','$phoneBuyer','$dateOrder','$idOwner','$nameOwner','$phoneOwner','$idProduct','$nameProduct','$priceProduct','$status')";
 
 		$result = mysqli_query($link, $sql);
 
@@ -35,7 +41,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "poom";
+	} else echo "bsruhorpak";
    
 }
 	mysqli_close($link);

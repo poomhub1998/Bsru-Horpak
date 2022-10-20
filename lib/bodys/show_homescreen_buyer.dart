@@ -604,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     Set<Marker> mySet() {
-      return <Marker>[userMarker(), shopMarker()].toSet();
+      return <Marker>[shopMarker()].toSet();
     }
 
     return Container(

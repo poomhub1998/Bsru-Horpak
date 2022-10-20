@@ -58,15 +58,19 @@ class _OwnerState extends State<Owner> {
     await Dio().get(apiGetUserWhereId).then((value) {
       print('vulue === $value');
       for (var item in jsonDecode(value.data)) {
-        setState(() {
-          userModel = UserModel.fromMap(item);
-          print('name login ${userModel!.name}');
-          widgets.add(ShowProductOwner());
-          widgets.add(ShowOrderOwner());
-          widgets.add(ShowMangeOwner(
-            userModel: userModel!,
-          ));
-        });
+        setState(
+          () {
+            userModel = UserModel.fromMap(item);
+            print('name login ${userModel!.name}');
+            widgets.add(ShowProductOwner());
+            widgets.add(ShowOrderOwner());
+            // widgets.add(
+            //   ShowMangeOwner(
+            //     userModel: userModel!,
+            //   ),
+            // );
+          },
+        );
       }
     });
   }

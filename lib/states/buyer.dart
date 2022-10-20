@@ -37,7 +37,7 @@ class _BuyerState extends State<Buyer> {
   UserModel? userModel;
   final List<Widget> screens = [
     HomeScreen(),
-    SettingScreen(),
+    // SettingScreen(),
     AlertScreen(),
     ShowReserve()
   ];
@@ -211,41 +211,41 @@ class _BuyerState extends State<Buyer> {
                         ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        MaterialButton(
-                          color: Colors.purple,
-                          minWidth: 50,
-                          onPressed: () {
-                            setState(() {
-                              currentScreen =
-                                  SettingScreen(); // if user taps on this dashboard tab will be active
-                              currentTab = 2;
-                            });
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.settings,
-                                color: currentTab == 2
-                                    ? Colors.white
-                                    : Colors.grey,
-                              ),
-                              Text(
-                                'ตั้งค่า',
-                                style: TextStyle(
-                                  color: currentTab == 2
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: <Widget>[
+                    //     MaterialButton(
+                    //       color: Colors.purple,
+                    //       minWidth: 50,
+                    //       onPressed: () {
+                    //         setState(() {
+                    //           currentScreen =
+                    //               SettingScreen(); // if user taps on this dashboard tab will be active
+                    //           currentTab = 2;
+                    //         });
+                    //       },
+                    //       child: Column(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: <Widget>[
+                    //           Icon(
+                    //             Icons.settings,
+                    //             color: currentTab == 2
+                    //                 ? Colors.white
+                    //                 : Colors.grey,
+                    //           ),
+                    //           Text(
+                    //             'ตั้งค่า',
+                    //             style: TextStyle(
+                    //               color: currentTab == 2
+                    //                   ? Colors.white
+                    //                   : Colors.grey,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ],
