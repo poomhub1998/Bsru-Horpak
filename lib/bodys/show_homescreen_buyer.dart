@@ -24,6 +24,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,6 +35,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //ตัวแปร
+  String query = '';
   String? currentIdOwner;
   UserModel? userModel;
   ProductModel? productModel;
@@ -44,9 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
   bool load = true;
   bool? haveData;
   final formKey = GlobalKey<FormState>();
+  String? horpak;
 
   List<UserModel> userModels = [];
   List<ProductModel> productModels = [];
+  List<ProductModel> results = [];
+
   List<List<String>> lisImages = [];
   int indexImage = 0;
   FirebaseMessaging? firebaseMessaging;
@@ -119,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               load = false;
               haveData = true;
               productModels.add(model);
+              List<ProductModel> horpak = List.from(productModels);
             });
           }
         }
@@ -208,9 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: formKey,
                     child: Stack(
                       children: [
-                        // buildSearch(size),
+                        buildSearch(size),
                         Padding(
-                          padding: const EdgeInsets.only(top: 0),
+                          padding: const EdgeInsets.only(top: 70),
                           child: LayoutBuilder(
                             builder: (context, constraints) =>
                                 buildListView(constraints),
@@ -239,23 +245,21 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Container(
           color: Colors.white,
-          width: size * 0.99,
+          width: size * 1,
           height: size * 0.5,
           child: Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 0),
+            padding: const EdgeInsets.all(6.0),
             child: TextFormField(
+              onChanged: (value) => searcHorpak(value),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: MyConstant.primary),
-                labelText: 'ค้นหา :',
+                hintText: 'ค้นหาหอพัก :',
                 prefixIcon: Icon(Icons.search, color: MyConstant.primary),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: MyConstant.primary,
                   ),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
             ),
@@ -318,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         width: constraints.maxWidth * 0.5 - 4,
-                        height: constraints.maxWidth * 0.4 - 4,
+                        height: constraints.maxWidth * 0.5 - 4,
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: createUrl(productModels[index].images),
@@ -512,15 +516,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 textStyle: MyConstant().h3Style()),
                             IconButton(
                               onPressed: () {
-                                Clipboard.setData(
-                                  ClipboardData(text: productModels.phone),
-                                );
-                                showToast('คักลอกเบอร์โทรศัพท์แล้ว');
-                                // MyDialog().normalDialog(context, 'คักลอก',
-                                //     'คักลอกเบอร์โทรศัพท์สำเร็จ');
+                                launch('tel://${productModels.phone}');
+                                // Clipboard.setData(
+                                //   ClipboardData(text: orderModels[index].phoneOwner),
+                                // );
+                                // showToast('คัดลอกเบอร์โทรศัพท์แล้ว');
                               },
                               icon: Icon(
-                                Icons.copy,
+                                Icons.phone,
                                 size: 16,
                                 color: MyConstant.primary,
                               ),
@@ -664,7 +667,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return result;
   }
 
+  void searcHorpak(String value) {
+    if (value.isEmpty) {
+      loadValueFromAPI();
+    } else {
+      productModels = productModels;
+      productModels = productModels
+          .where((productModels) =>
+              productModels.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      productModels = productModels;
+    });
+
+    // return nameHorpak.contains(input);
+  }
+
   // Future<Null> showToast(String msg, {int? gravity}) async {
   //   Toast.show(msg, gravity: gravity);
   // }
+
 }
