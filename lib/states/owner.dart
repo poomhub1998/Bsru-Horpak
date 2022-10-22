@@ -101,9 +101,11 @@ class _OwnerState extends State<Owner> {
                   Column(
                     children: [
                       buildHead(),
+
                       menuShowHorPakProduct(),
                       menuShowHorPak(),
-                      menuShowHorPakManage(),
+
+                      // menuShowHorPakManage(),
                     ],
                   ),
                 ],
@@ -115,23 +117,32 @@ class _OwnerState extends State<Owner> {
 
   UserAccountsDrawerHeader buildHead() {
     return UserAccountsDrawerHeader(
-        otherAccountsPictures: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.face_outlined,
-              size: 30,
-              color: Colors.white,
-            ),
-            tooltip: 'แก้ไข หอพัก',
-          )
-        ],
-        currentAccountPicture: CircleAvatar(
-          backgroundImage:
-              NetworkImage('${MyConstant.domain}${userModel!.avatar}'),
+      otherAccountsPictures: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.face_outlined,
+            size: 30,
+            color: Colors.white,
+          ),
+          tooltip: 'แก้ไข หอพัก',
         ),
-        accountName: Text(userModel == null ? 'name' : userModel!.name),
-        accountEmail: Text(userModel == null ? 'Type ?' : userModel!.type));
+      ],
+
+      // เพิ่มรูปโปรไฟ
+      // currentAccountPicture: CircleAvatar(
+      //   backgroundImage:
+      //       NetworkImage('${MyConstant.domain}${userModel!.avatar}'),
+      // ),
+
+      accountName: Text(
+        userModel == null ? 'name' : userModel!.name,
+        style: TextStyle(
+          fontSize: 20,
+        ),
+      ),
+      accountEmail: Text(''),
+    );
   }
 
   ListTile menuShowHorPakProduct() {
@@ -144,7 +155,7 @@ class _OwnerState extends State<Owner> {
         });
       },
       subtitle: Text('แสดงหอพัก'),
-      leading: Icon(Icons.file_copy_rounded),
+      leading: Icon(Icons.home),
       title: ShowTitle(
         title: 'เพิ่มข้อมูล หอพัก',
         textStyle: MyConstant().h2BackStyle(),
@@ -160,10 +171,10 @@ class _OwnerState extends State<Owner> {
           Navigator.pop(context);
         });
       },
-      subtitle: Text('หอ'),
+      subtitle: Text('สถานะจารจองหอพัก'),
       leading: Icon(Icons.file_copy_rounded),
       title: ShowTitle(
-        title: 'Show Oder',
+        title: 'หน้าจองหอพัก',
         textStyle: MyConstant().h2BackStyle(),
       ),
     );

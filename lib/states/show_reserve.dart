@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:bsru_horpak/models/Order_model.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
@@ -34,6 +35,14 @@ class _ShowReserveState extends State<ShowReserve> {
   String? idBuyer;
   String? dateTimeStr;
   int index = 0;
+  bool? haveData;
+
+  List<OrderModel> orderModels = [];
+  List<int> ststusInts = [];
+  List<ProductModel> productModels = [];
+
+  OrderModel? orderModel;
+  double? lat, lng;
 
   @override
   void initState() {
@@ -44,6 +53,56 @@ class _ShowReserveState extends State<ShowReserve> {
     findUserModel();
     processReadSQLite();
     findIdBuyer();
+    finfBuyer();
+  }
+
+  Future<Null> finfBuyer() async {
+    if (orderModels.length != 0) {
+      orderModels.clear();
+    } else {}
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString('id')!;
+    String apiGetOrderWhereIdBuyer =
+        '${MyConstant.domain}/bsruhorpak/getOrderWhereIdBuyer.php?isAdd=true&idBuyer=$id';
+    await Dio().get(apiGetOrderWhereIdBuyer).then(
+      (value) {
+        if (value.toString() == 'null') {
+          // No Data
+
+          setState(() {
+            load = false;
+            haveData = false;
+          });
+        } else {
+          // Have Data
+          for (var item in jsonDecode(value.data)) {
+            OrderModel model = OrderModel.fromMap(item);
+
+            int status = 0;
+            switch (model.status) {
+              case 'UserOrder':
+                status = 0;
+                break;
+              case 'OwnerOrder':
+                status = 1;
+                break;
+              case 'Finish':
+                status = 2;
+                break;
+              default:
+            }
+            setState(() {
+              load = false;
+              haveData = true;
+              orderModels.add(model);
+              ststusInts.add(status);
+              // print(model);
+            });
+          }
+        }
+      },
+    );
   }
 
   Future<void> findIdBuyer() async {
@@ -294,12 +353,14 @@ class _ShowReserveState extends State<ShowReserve> {
                 String idProduct = sqliteModels[index].idProduct;
                 String nameProduct = sqliteModels[index].name;
                 String priceProduct = sqliteModels[index].price;
+                String lat = sqliteModels[index].lat;
+                String lng = sqliteModels[index].lng;
 
                 print(
                     'idBuyer $idBuyer ผู้จอง $nameBuyer, เบอร์คนจอง $phoneBuyer idOwner $idOwner ชื่อเจ้าของหอ $nameOwner เบอร์เจ้าของหอ $phoneOwner, ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
                 // print('เวลา = $dateTimeStr');
                 String url =
-                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$dateOrder&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&status=UserOrder';
+                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$dateOrder&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&lat=$lat&lng=$lng&status=UserOrder';
                 await Dio().get(url).then((value) {
                   if (value.toString() == 'true') {
                     SQLiteHelper().deleteSQLiteWhereId(idSQLite).then((value) {
@@ -417,7 +478,7 @@ class _ShowReserveState extends State<ShowReserve> {
       child: Row(
         children: [
           ShowTitle(
-            title: sqliteModels == null ? '' : 'หอพักที่จอง',
+            title: sqliteModels == null ? '' : 'BSRU Horpak',
             textStyle: MyConstant().h1Style(),
           ),
         ],

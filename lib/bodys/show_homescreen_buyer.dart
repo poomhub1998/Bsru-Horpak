@@ -208,9 +208,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: formKey,
                     child: Stack(
                       children: [
-                        buildSearch(size),
+                        // buildSearch(size),
                         Padding(
-                          padding: const EdgeInsets.only(top: 75),
+                          padding: const EdgeInsets.only(top: 0),
                           child: LayoutBuilder(
                             builder: (context, constraints) =>
                                 buildListView(constraints),
@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ShowTitle(
                               title: cutWrod(
                                   'ชื่อหอพัก: ${productModels[index].name}'),
-                              textStyle: MyConstant().h3Style()),
+                              textStyle: MyConstant().h3Stylebold()),
                         ],
                       ),
                       ShowTitle(
@@ -354,6 +354,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           textStyle: MyConstant().h3Style()),
                       ShowTitle(
                           title: cutWrod('  ${productModels[index].detail}'),
+                          textStyle: MyConstant().h3Style()),
+                      ShowTitle(
+                          title: distance == null
+                              ? ''
+                              : 'ระยะทาง : ${distanceString} กิโลเมตร',
                           textStyle: MyConstant().h3Style()),
                     ],
                   ),
@@ -394,6 +399,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              // SizedBox(
+                              //   height: 200.0,
+                              //   width: double.infinity,
+                              //   child: Carousel(
+                              //     dotSize: 6.0,
+                              //     dotSpacing: 15.0,
+                              //     dotPosition: DotPosition.bottomCenter,
+                              //     images: [
+                              //       Image.asset(MyConstant.logo),
+                              //     ],
+                              //   ),
+                              // )
                               IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -498,6 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Clipboard.setData(
                                   ClipboardData(text: productModels.phone),
                                 );
+                                showToast('คักลอกเบอร์โทรศัพท์แล้ว');
                                 // MyDialog().normalDialog(context, 'คักลอก',
                                 //     'คักลอกเบอร์โทรศัพท์สำเร็จ');
                               },
@@ -539,6 +557,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             String nameOwner = productModels.nameOwner;
                             String phone = productModels.phone;
                             String price = productModels.price;
+                            String lat = productModels.lat;
+                            String lng = productModels.lng;
 
                             SQLiteModel sqLiteModel = SQLiteModel(
                                 idOwner: idOwner,
@@ -546,9 +566,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 name: name,
                                 nameOwner: nameOwner,
                                 phone: phone,
-                                price: price);
+                                price: price,
+                                lat: lat,
+                                lng: lng);
                             print(
-                                '### idOwner == $idOwner, idProduct ==$idProduct, name ==$name, nameOwner ==$nameOwner, phone ==$phone , price==$price');
+                                '### idOwner == $idOwner, idProduct ==$idProduct, name ==$name, nameOwner ==$nameOwner, phone ==$phone , price==$price, lat==$lat, lng==$lng');
 
                             await SQLiteHelper()
                                 .insertValueToSQLite(sqLiteModel)
@@ -557,8 +579,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.pop(context);
                               },
                             );
-                            MyDialog().normalDialog(context,
-                                'เพิ่มหอพักนี้ไปยังหน้าที่คุณสนใจแล้ว', '');
+                            // MyDialog().normalDialog(context,
+                            //     'เพิ่มหอพักนี้ไปยังหน้าที่คุณสนใจแล้ว', '');
+                            showToast('เพิ่มไปยังหน้าที่คุณสนใจ');
                           },
                           child: Text(
                             'สนใจหอพักนี้',
@@ -578,6 +601,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ));
+  }
+
+  void showToast(String? string) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(string!),
+        action: SnackBarAction(
+            label: 'ปิด', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
   }
 
   Container showMap() {
@@ -604,7 +638,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     Set<Marker> mySet() {
-      return <Marker>[shopMarker()].toSet();
+      return <Marker>[shopMarker(), userMarker()].toSet();
     }
 
     return Container(

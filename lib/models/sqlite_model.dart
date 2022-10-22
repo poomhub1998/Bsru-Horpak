@@ -9,6 +9,8 @@ class SQLiteModel {
   final String nameOwner;
   final String phone;
   final String price;
+  final String lat;
+  final String lng;
   SQLiteModel({
     this.id,
     required this.idOwner,
@@ -17,6 +19,8 @@ class SQLiteModel {
     required this.nameOwner,
     required this.phone,
     required this.price,
+    required this.lat,
+    required this.lng,
   });
 
   SQLiteModel copyWith({
@@ -27,6 +31,8 @@ class SQLiteModel {
     String? nameOwner,
     String? phone,
     String? price,
+    String? lat,
+    String? lng,
   }) {
     return SQLiteModel(
       id: id ?? this.id,
@@ -36,6 +42,8 @@ class SQLiteModel {
       nameOwner: nameOwner ?? this.nameOwner,
       phone: phone ?? this.phone,
       price: price ?? this.price,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
     );
   }
 
@@ -48,6 +56,8 @@ class SQLiteModel {
       'nameOwner': nameOwner,
       'phone': phone,
       'price': price,
+      'lat': lat,
+      'lng': lng,
     };
   }
 
@@ -60,6 +70,8 @@ class SQLiteModel {
       nameOwner: map['nameOwner'] as String,
       phone: map['phone'] as String,
       price: map['price'] as String,
+      lat: map['lat'] as String,
+      lng: map['lng'] as String,
     );
   }
 
@@ -70,7 +82,7 @@ class SQLiteModel {
 
   @override
   String toString() {
-    return 'SQLiteModel(id: $id, idOwner: $idOwner, idProduct: $idProduct, name: $name, nameOwner: $nameOwner, phone: $phone, price: $price)';
+    return 'SQLiteModel(id: $id, idOwner: $idOwner, idProduct: $idProduct, name: $name, nameOwner: $nameOwner, phone: $phone, price: $price, lat: $lat, lng: $lng)';
   }
 
   @override
@@ -83,7 +95,9 @@ class SQLiteModel {
         other.name == name &&
         other.nameOwner == nameOwner &&
         other.phone == phone &&
-        other.price == price;
+        other.price == price &&
+        other.lat == lat &&
+        other.lng == lng;
   }
 
   @override
@@ -94,6 +108,8 @@ class SQLiteModel {
         name.hashCode ^
         nameOwner.hashCode ^
         phone.hashCode ^
-        price.hashCode;
+        price.hashCode ^
+        lat.hashCode ^
+        lng.hashCode;
   }
 }

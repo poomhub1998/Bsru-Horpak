@@ -71,7 +71,7 @@ class _AuthenState extends State<Authen> {
         TextButton(
             onPressed: () =>
                 Navigator.pushNamed(context, MyConstant.routCreateAccount),
-            child: Text('สมัคร'))
+            child: Text('สมัครสมาชิก'))
       ],
     );
   }

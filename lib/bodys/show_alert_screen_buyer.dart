@@ -17,6 +17,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:steps_indicator/steps_indicator.dart';
 import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AlertScreen extends StatefulWidget {
   const AlertScreen({Key? key}) : super(key: key);
@@ -34,6 +38,9 @@ class _AlertScreenState extends State<AlertScreen> {
   List<ProductModel> productModels = [];
   ProductModel? productModel;
   OrderModel? orderModel;
+  double? lat, lng, lat2, lng2, distance;
+
+  CameraPosition? position;
 
   @override
   void initState() {
@@ -41,9 +48,34 @@ class _AlertScreenState extends State<AlertScreen> {
     super.initState();
 
     finfBuyer();
+    finalLocationData();
+    // findLatLng();
 
-    // finalLocationData();
     // findBuyer();
+  }
+
+  Future<LocationData?> finalLocationData() async {
+    Location location = Location();
+    try {
+      return await location.getLocation();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<Null> findLatLng() async {
+    print('findLatLng');
+    Position? position = await findPosition();
+  }
+
+  Future<Position?> findPosition() async {
+    Position position;
+    try {
+      position = await Geolocator.getCurrentPosition();
+      setState(() {
+        print('lat = $lat2 log = $lng2');
+      });
+    } catch (e) {}
   }
 
   Future<Null> finfBuyer() async {
@@ -146,6 +178,69 @@ class _AlertScreenState extends State<AlertScreen> {
 
               buildStepIndicator(ststusInts[index]),
               buildbutton(index),
+              TextButton(
+                onPressed: () async {
+                  LocationData? locationData = await finalLocationData();
+                  setState(() {
+                    lat = locationData!.latitude;
+                    lng = locationData.longitude;
+                    lat2 = double.parse(orderModels[index].lat);
+                    lng2 = double.parse(orderModels[index].lng);
+                    print('lat ==$lat lng == $lng lat2 == $lat2 lng2 == $lng2');
+
+                    // print('distance = $distance');
+                    // print('transport ==> $transport');
+                    showDialog(
+                      context: context,
+                      builder: (context) => Container(
+                        child: StatefulBuilder(
+                          builder: (context, setState) => AlertDialog(
+                            title: ListTile(
+                              leading: ShowImage(path: MyConstant.logo),
+                              title: ShowTitle(
+                                title: orderModels[index].nameProduct,
+                                textStyle: MyConstant().h2Style(),
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: showMap(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+                },
+                child: Text('ดูแผนที่ '),
+              )
+
+              // showMap(),
+              // Container(
+              //   margin: EdgeInsets.symmetric(vertical: 16),
+              //   width: 250,
+              //   height: 150,
+              //   child: GoogleMap(
+              //     initialCameraPosition: CameraPosition(
+              //       target: LatLng(
+              //         double.parse(orderModels[index].lat),
+              //         double.parse(orderModels[index].lng),
+              //       ),
+              //       zoom: 16,
+              //     ),
+              //     markers: <Marker>[
+              //       Marker(
+              //           markerId: MarkerId('id'),
+              //           position: LatLng(
+              //             double.parse(orderModels[index].lat),
+              //             double.parse(orderModels[index].lng),
+              //           ),
+              //           infoWindow: InfoWindow(
+              //               title: 'You Here ',
+              //               snippet:
+              //                   'lat = ${orderModels[index].lat}, lng = ${orderModels[index].lng}')),
+              //     ].toSet(),
+              //   ),
+              // ),
 
               // buildDivider(),
             ],
@@ -269,7 +364,11 @@ class _AlertScreenState extends State<AlertScreen> {
     );
   }
 
-  Container buildListHorpak(int index) {
+  Container buildListHorpak(index) {
+    // print('lat2 $lat2 lng2 $lng2');
+
+    // print('lat $lat lng $lng');
+
     return Container(
       padding: EdgeInsets.only(left: 8),
       // decoration: BoxDecoration(color: Colors.grey),
@@ -285,10 +384,26 @@ class _AlertScreenState extends State<AlertScreen> {
           Expanded(
             flex: 1,
             child: ShowTitle(
-              title: '${orderModels[index].priceProduct} บาท',
+              title: orderModels[index].lat,
               textStyle: MyConstant().h3BlackStyle(),
             ),
-          ),
+
+            //     Container(
+            //   color: Colors.grey,
+            //   width: 250,
+            //   height: 150,
+            //   child: lat == null
+            //       ? ShowProgress()
+            //       : GoogleMap(
+            //           initialCameraPosition: CameraPosition(
+            //             target: LatLng(lat!, lng!),
+            //             zoom: 16,
+            //           ),
+            //           onMapCreated: (controller) {},
+            //           // markers: setMarker(),
+            //         ),
+            // ),
+          )
         ],
       ),
     );
@@ -337,11 +452,12 @@ class _AlertScreenState extends State<AlertScreen> {
               ),
               IconButton(
                 onPressed: () {
+                  // final tel = orderModels[index].phoneOwner;
+                  // launch('tel://99999');
                   Clipboard.setData(
                     ClipboardData(text: orderModels[index].phoneOwner),
                   );
-                  // MyDialog().normalDialog(context, 'คักลอก',
-                  //     'คักลอกเบอร์โทรศัพท์สำเร็จ');
+                  showToast('คัดลอกเบอร์โทรศัพท์แล้ว');
                 },
                 icon: Icon(
                   Icons.copy,
@@ -360,42 +476,56 @@ class _AlertScreenState extends State<AlertScreen> {
         child: Text('ไม่มีข้อมูล'),
       );
 
-  // Future<Null> findBuyer() async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   idBuyer = preferences.getString('id');
-  //   print('idUser = $idBuyer');
-  //   // loadValueFromAPI();
-  //   // readOrderFromIdUser();
+  void showToast(String? string) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(string!),
+        action: SnackBarAction(
+            label: 'ปิด', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
 
-  // }
+  Container showMap() {
+    if (lat2 != null) {
+      LatLng latLng1 = LatLng(lat2!, lng2!);
+      position = CameraPosition(target: latLng1, zoom: 17);
+    }
+    Marker userMarker() {
+      return Marker(
+        markerId: MarkerId('userMarker'),
+        position: LatLng(lat!, lng!),
+        icon: BitmapDescriptor.defaultMarkerWithHue(60.0),
+        infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
+      );
+    }
 
-  // Future<Null> readOrderFromidBuyer() async {
-  //   if (idBuyer != null) {
-  //     String url =
-  //         '${MyConstant.domain}/bsruhorpak/getOrderWhereidBuyer.php?isAdd=true&idBuyer=$idBuyer';
-  //     Response response = await Dio().get(url);
-  //     print('response $response');
-  //     // if (response.toString() != 'null') {
-  //     //   setState(() {
-  //     //     load = false;
-  //     //   });
-  //     // }
-  //     if (response.toString() == 'null') {
-  //       setState(() {
-  //         load = false;
-  //         haveData = false;
-  //       });
-  //     } else {
-  //       for (var item in jsonDecode(response.data)) {
-  //         OrderModel model = OrderModel.fromJson(item);
-  //         setState(() {
-  //           load = false;
-  //           haveData = true;
-  //           ordermodels.add(model);
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
+    Marker shopMarker() {
+      return Marker(
+        markerId: MarkerId('shopMarker'),
+        position: LatLng(lat2!, lng2!),
+        icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
+        infoWindow: InfoWindow(title: 'หอพัก'),
+      );
+    }
 
+    Set<Marker> mySet() {
+      return <Marker>[shopMarker(), userMarker()].toSet();
+    }
+
+    return Container(
+      height: 250,
+      width: 250,
+      color: Colors.grey,
+      child: lat2 == null
+          ? ShowProgress()
+          : GoogleMap(
+              initialCameraPosition: position!,
+              mapType: MapType.normal,
+              onMapCreated: (context) {},
+              markers: mySet(),
+            ),
+    );
+  }
 }

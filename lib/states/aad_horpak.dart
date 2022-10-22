@@ -157,7 +157,7 @@ class _AddHorPakState extends State<AddHorPak> {
         onPressed: () {
           processAddProduct();
         },
-        child: Text('เพิ่มสินค้า'),
+        child: Text('เพิ่มข้อมูลหอพัก'),
       ),
     );
   }

@@ -13,6 +13,8 @@ class OrderModel {
   final String idProduct;
   final String nameProduct;
   final String priceProduct;
+  final String lat;
+  final String lng;
   final String status;
   OrderModel({
     required this.idOrder,
@@ -26,6 +28,8 @@ class OrderModel {
     required this.idProduct,
     required this.nameProduct,
     required this.priceProduct,
+    required this.lat,
+    required this.lng,
     required this.status,
   });
 
@@ -41,6 +45,8 @@ class OrderModel {
     String? idProduct,
     String? nameProduct,
     String? priceProduct,
+    String? lat,
+    String? lng,
     String? status,
   }) {
     return OrderModel(
@@ -55,6 +61,8 @@ class OrderModel {
       idProduct: idProduct ?? this.idProduct,
       nameProduct: nameProduct ?? this.nameProduct,
       priceProduct: priceProduct ?? this.priceProduct,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
       status: status ?? this.status,
     );
   }
@@ -72,6 +80,8 @@ class OrderModel {
       'idProduct': idProduct,
       'nameProduct': nameProduct,
       'priceProduct': priceProduct,
+      'lat': lat,
+      'lng': lng,
       'status': status,
     };
   }
@@ -89,6 +99,8 @@ class OrderModel {
       idProduct: map['idProduct'] as String,
       nameProduct: map['nameProduct'] as String,
       priceProduct: map['priceProduct'] as String,
+      lat: map['lat'] as String,
+      lng: map['lng'] as String,
       status: map['status'] as String,
     );
   }
@@ -100,7 +112,7 @@ class OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(idOrder: $idOrder, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, dateOrder: $dateOrder, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, status: $status)';
+    return 'OrderModel(idOrder: $idOrder, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, dateOrder: $dateOrder, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, lat: $lat, lng: $lng, status: $status)';
   }
 
   @override
@@ -118,6 +130,8 @@ class OrderModel {
         other.idProduct == idProduct &&
         other.nameProduct == nameProduct &&
         other.priceProduct == priceProduct &&
+        other.lat == lat &&
+        other.lng == lng &&
         other.status == status;
   }
 
@@ -134,6 +148,8 @@ class OrderModel {
         idProduct.hashCode ^
         nameProduct.hashCode ^
         priceProduct.hashCode ^
+        lat.hashCode ^
+        lng.hashCode ^
         status.hashCode;
   }
 }
