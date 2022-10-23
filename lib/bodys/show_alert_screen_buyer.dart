@@ -73,7 +73,7 @@ class _AlertScreenState extends State<AlertScreen> {
     try {
       position = await Geolocator.getCurrentPosition();
       setState(() {
-        print('lat = $lat2 log = $lng2');
+        // print('lat = $lat2 log = $lng2');
       });
     } catch (e) {}
   }
@@ -383,9 +383,12 @@ class _AlertScreenState extends State<AlertScreen> {
           ),
           Expanded(
             flex: 1,
-            child: ShowTitle(
-              title: orderModels[index].lat,
-              textStyle: MyConstant().h3BlackStyle(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ShowTitle(
+                title: orderModels[index].priceProduct,
+                textStyle: MyConstant().h3BlackStyle(),
+              ),
             ),
 
             //     Container(
@@ -439,30 +442,28 @@ class _AlertScreenState extends State<AlertScreen> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(0.0),
           child: Row(
             children: [
               ShowTitle(
-                title: 'เจ้าหอพัก${orderModels[index].nameOwner} ',
+                title: 'เจ้าของหอพัก${orderModels[index].nameOwner} ',
                 textStyle: MyConstant().h2BlueStyle(),
               ),
               ShowTitle(
                 title: ' ${orderModels[index].phoneOwner} ',
-                textStyle: MyConstant().h2BlueStyle(),
+                textStyle: MyConstant().h3BlackStyleBold(),
               ),
               IconButton(
                 onPressed: () {
-                  // final tel = orderModels[index].phoneOwner;
-                  // launch('tel://99999');
-                  Clipboard.setData(
-                    ClipboardData(text: orderModels[index].phoneOwner),
-                  );
-                  showToast('คัดลอกเบอร์โทรศัพท์แล้ว');
+                  launch('tel://${orderModels[index].phoneOwner}');
+                  // Clipboard.setData(
+                  //   ClipboardData(text: orderModels[index].phoneOwner),
+                  // );
+                  // showToast('คัดลอกเบอร์โทรศัพท์แล้ว');
                 },
                 icon: Icon(
-                  Icons.copy,
+                  Icons.phone,
                   size: 16,
-                  color: MyConstant.primary,
                 ),
               )
             ],

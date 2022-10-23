@@ -412,7 +412,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                 .then(
                                               (value) {
                                                 String? indasd =
-                                                    '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct';
+                                                    '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct';
                                                 Dio()
                                                     .get(indasd)
                                                     .then((value) => null);
@@ -420,14 +420,14 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                     '${MyConstant.domain}/bsruhorpak/deleteReservetableWhereIdOrder.php?isAdd=true&idOrder=$idOrder';
                                                 Dio()
                                                     .get(deleteReserve)
-                                                    .then((value) {});
-                                                Navigator.pop(context,
+                                                    .then((value) async {});
+                                                Navigator.pushNamed(context,
                                                     MyConstant.routOwner);
                                                 MyDialog().normalDialog(context,
                                                     'ผู้ใช้เข้าอยู่', 'สำเร็จ');
+                                                findOwnerid(ststusInts);
                                               },
                                             );
-                                            await findOwnerid(ststusInts);
                                           },
                                           child: Text('เข้าอยู่แล้ว'),
                                         ),

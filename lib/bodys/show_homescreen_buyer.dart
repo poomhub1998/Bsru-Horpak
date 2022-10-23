@@ -246,10 +246,9 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           color: Colors.white,
           width: size * 1,
-          height: size * 0.5,
           child: Padding(
             padding: const EdgeInsets.all(6.0),
-            child: TextFormField(
+            child: TextField(
               onChanged: (value) => searcHorpak(value),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: MyConstant.primary),
@@ -315,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   padding: EdgeInsets.only(right: 10),
                   width: constraints.maxWidth * 0.5 - 4,
-                  height: constraints.maxWidth * 0.5 - 4,
+                  height: constraints.maxWidth * 0.5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -671,7 +670,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (value.isEmpty) {
       loadValueFromAPI();
     } else {
-      productModels = productModels;
       productModels = productModels
           .where((productModels) =>
               productModels.name.toLowerCase().contains(value.toLowerCase()))

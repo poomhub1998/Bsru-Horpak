@@ -105,9 +105,9 @@ class _BuyerState extends State<Buyer> {
         child: BottomAppBar(
           color: Colors.purple,
           shape: CircularNotchedRectangle(),
-          notchMargin: 20,
+          // notchMargin: 20,
           child: Container(
-            height: 50,
+            // height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[

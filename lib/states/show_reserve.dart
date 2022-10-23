@@ -360,7 +360,7 @@ class _ShowReserveState extends State<ShowReserve> {
                     'idBuyer $idBuyer ผู้จอง $nameBuyer, เบอร์คนจอง $phoneBuyer idOwner $idOwner ชื่อเจ้าของหอ $nameOwner เบอร์เจ้าของหอ $phoneOwner, ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
                 // print('เวลา = $dateTimeStr');
                 String url =
-                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$dateOrder&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&lat=$lat&lng=$lng&status=UserOrder';
+                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$dateTimeStr&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&lat=$lat&lng=$lng&status=UserOrder';
                 await Dio().get(url).then((value) {
                   if (value.toString() == 'true') {
                     SQLiteHelper().deleteSQLiteWhereId(idSQLite).then((value) {
