@@ -21,6 +21,7 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
 //ตัวแปร
   String? typeUser;
+  bool statusRedeye = true;
   String avatar = '';
   File? file;
   double? lat, lng;
@@ -419,7 +420,24 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             controller: passwordController,
+            obscureText: statusRedeye,
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    statusRedeye = !statusRedeye;
+                  });
+                },
+                icon: statusRedeye
+                    ? Icon(
+                        Icons.remove_red_eye,
+                        color: MyConstant.primary,
+                      )
+                    : Icon(
+                        Icons.remove_red_eye_outlined,
+                        color: MyConstant.primary,
+                      ),
+              ),
               labelStyle: TextStyle(color: MyConstant.primary),
               labelText: 'รหัสผ่าน :',
               prefixIcon: Icon(Icons.lock, color: MyConstant.primary),

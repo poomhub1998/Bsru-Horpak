@@ -139,30 +139,31 @@ class _AlertScreenState extends State<AlertScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('หน้าสถานะการจอง'),
-        ),
-        body: load
-            ? ShowProgress()
-            : haveData!
-                ? buildContent()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 200,
-                        child: ShowImage(
-                          path: MyConstant.logo,
-                        ),
+      appBar: AppBar(
+        title: Text('หน้าสถานะการจอง'),
+      ),
+      body: load
+          ? ShowProgress()
+          : haveData!
+              ? buildContent()
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 200,
+                      child: ShowImage(
+                        path: MyConstant.logo,
                       ),
-                      Center(
-                        child: ShowTitle(
-                          title: 'ยังไม่มีข้อมูลการจอง',
-                          textStyle: MyConstant().h1Style(),
-                        ),
+                    ),
+                    Center(
+                      child: ShowTitle(
+                        title: 'ยังไม่มีข้อมูลการจอง',
+                        textStyle: MyConstant().h1Style(),
                       ),
-                    ],
-                  ));
+                    ),
+                  ],
+                ),
+    );
   }
 
   Widget buildContent() => ListView.builder(

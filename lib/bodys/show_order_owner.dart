@@ -13,6 +13,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowOrderOwner extends StatefulWidget {
   const ShowOrderOwner({Key? key}) : super(key: key);
@@ -107,7 +108,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
               ? ListView.builder(
                   itemCount: orderModels.length,
                   itemBuilder: (context, index) => Card(
-                    color: index % 2 == 0 ? Colors.white : Colors.white,
+                    color: index % 2 == 0 ? Colors.white : Colors.grey[120],
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -119,9 +120,27 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                   title:
                                       '${index + 1} ชิ่อผู้จอง ${orderModels[index].nameBuyer}',
                                   textStyle: MyConstant().h2BlueStyle()),
-                              ShowTitle(
-                                  title: '   ${orderModels[index].phoneBuyer}',
-                                  textStyle: MyConstant().h2BlueStyle()),
+                              TextButton(
+                                onPressed: () {
+                                  launch(
+                                      'tel://${orderModels[index].phoneBuyer}');
+                                },
+                                child: Text(orderModels[index].phoneBuyer),
+                              ),
+                              // IconButton(
+                              //   onPressed: () {
+                              //     launch(
+                              //         'tel://${orderModels[index].phoneOwner}');
+                              //     // Clipboard.setData(
+                              //     //   ClipboardData(text: orderModels[index].phoneOwner),
+                              //     // );
+                              //     // showToast('คัดลอกเบอร์โทรศัพท์แล้ว');
+                              //   },
+                              //   icon: Icon(
+                              //     Icons.phone,
+                              //     size: 16,
+                              //   ),
+                              // )
                             ],
                           ),
                           Text(orderModels[index].dateOrder),
@@ -345,7 +364,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                   );
                                 },
                                 icon: Icon(
-                                  Icons.restaurant,
+                                  Icons.add_task,
                                   color: Colors.white,
                                 ),
                                 label: Text(
@@ -396,6 +415,8 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                 orderModels[index].idOwner;
                                             String? nameOwner =
                                                 orderModels[index].nameOwner;
+                                            String? phoneOwner =
+                                                orderModels[index].phoneOwner;
                                             String? idOrder =
                                                 orderModels[index].idOrder;
                                             String? nameProduct =
@@ -412,7 +433,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                 .then(
                                               (value) {
                                                 String? indasd =
-                                                    '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct';
+                                                    '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct';
                                                 Dio()
                                                     .get(indasd)
                                                     .then((value) => null);
@@ -441,7 +462,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                   );
                                 },
                                 icon: Icon(
-                                  Icons.one_k,
+                                  Icons.add_home_work,
                                   color: Colors.white,
                                 ),
                                 label: Text(

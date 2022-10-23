@@ -251,14 +251,22 @@ class _HomeScreenState extends State<HomeScreen> {
             child: TextField(
               onChanged: (value) => searcHorpak(value),
               decoration: InputDecoration(
-                labelStyle: TextStyle(color: MyConstant.primary),
-                hintText: 'ค้นหาหอพัก :',
-                prefixIcon: Icon(Icons.search, color: MyConstant.primary),
+                // filled: true,
+                hintStyle: TextStyle(color: MyConstant.primary),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none),
+                hintText: 'ค้นหาหอพัก',
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: MyConstant.primary,
+                ),
+
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.primary),
+                ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: MyConstant.primary,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: MyConstant.primary),
                 ),
               ),
             ),
@@ -309,19 +317,20 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
           child: Card(
+            color: Colors.grey[10],
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: EdgeInsets.all(10),
                   width: constraints.maxWidth * 0.5 - 4,
-                  height: constraints.maxWidth * 0.5,
+                  height: constraints.maxWidth * 0.5 - 4,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
                         width: constraints.maxWidth * 0.5 - 4,
-                        height: constraints.maxWidth * 0.5 - 4,
+                        height: constraints.maxWidth * 0.4 - 4,
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: createUrl(productModels[index].images),

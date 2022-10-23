@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:bsru_horpak/bodys/show_history.dart';
 import 'package:bsru_horpak/bodys/show_mange_owner.dart';
 import 'package:bsru_horpak/bodys/show_order_owner.dart';
 import 'package:bsru_horpak/bodys/show_product_owner.dart';
@@ -64,11 +65,12 @@ class _OwnerState extends State<Owner> {
             print('name login ${userModel!.name}');
             widgets.add(ShowProductOwner());
             widgets.add(ShowOrderOwner());
-            // widgets.add(
-            //   ShowMangeOwner(
-            //     userModel: userModel!,
-            //   ),
-            // );
+            widgets.add(History_Screen());
+            widgets.add(
+              ShowMangeOwner(
+                userModel: userModel!,
+              ),
+            );
           },
         );
       }
@@ -101,10 +103,9 @@ class _OwnerState extends State<Owner> {
                   Column(
                     children: [
                       buildHead(),
-
                       menuShowHorPakProduct(),
                       menuShowHorPak(),
-
+                      menuShowHistory(),
                       // menuShowHorPakManage(),
                     ],
                   ),
@@ -171,10 +172,27 @@ class _OwnerState extends State<Owner> {
           Navigator.pop(context);
         });
       },
-      subtitle: Text('สถานะจารจองหอพัก'),
-      leading: Icon(Icons.file_copy_rounded),
+      subtitle: Text('แสดงสถานะการจองหอพัก'),
+      leading: Icon(Icons.add_alert),
       title: ShowTitle(
-        title: 'หน้าจองหอพัก',
+        title: 'การจองหอพัก',
+        textStyle: MyConstant().h2BackStyle(),
+      ),
+    );
+  }
+
+  ListTile menuShowHistory() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          indexWidget = 2;
+          Navigator.pop(context);
+        });
+      },
+      subtitle: Text('ประวัติ'),
+      leading: Icon(Icons.history),
+      title: ShowTitle(
+        title: 'ผู้ใช้ที่เข้าพัก',
         textStyle: MyConstant().h2BackStyle(),
       ),
     );
@@ -184,7 +202,7 @@ class _OwnerState extends State<Owner> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 2;
+          indexWidget = 3;
           Navigator.pop(context);
         });
       },

@@ -352,7 +352,7 @@ class _AddHorPakState extends State<AddHorPak> {
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           labelStyle: TextStyle(color: MyConstant.primary),
-          labelText: 'ราคา :',
+          labelText: 'ราคา/เดือน :',
           prefixIcon: Icon(Icons.money, color: MyConstant.primary),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -465,7 +465,7 @@ class _AddHorPakState extends State<AddHorPak> {
         decoration: InputDecoration(
           labelStyle: TextStyle(color: MyConstant.primary),
           labelText: 'ที่อยู่ :',
-          prefixIcon: Icon(Icons.details, color: MyConstant.primary),
+          prefixIcon: Icon(Icons.home_filled, color: MyConstant.primary),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),

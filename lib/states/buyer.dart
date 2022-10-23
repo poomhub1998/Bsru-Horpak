@@ -199,7 +199,7 @@ class _BuyerState extends State<Buyer> {
                                     : Colors.grey,
                               ),
                               Text(
-                                'แจ้งเตือน',
+                                'สถานะการจอง',
                                 style: TextStyle(
                                   color: currentTab == 3
                                       ? Colors.white

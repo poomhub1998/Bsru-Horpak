@@ -1,3 +1,4 @@
+import 'package:bsru_horpak/bodys/show_history.dart';
 import 'package:bsru_horpak/bodys/show_order_owner.dart';
 import 'package:bsru_horpak/states/aad_horpak.dart';
 import 'package:bsru_horpak/states/authen.dart';
@@ -22,6 +23,7 @@ final Map<String, WidgetBuilder> map = {
   '/addHorPak': (BuildContext context) => AddHorPak(),
   '/showReserve': (BuildContext context) => ShowReserve(),
   '/conFrimReseve': (BuildContext context) => ConFrimReseve(),
+  '/showHistory': (BuildContext context) => History_Screen(),
 };
 String? initlalRoute;
 
