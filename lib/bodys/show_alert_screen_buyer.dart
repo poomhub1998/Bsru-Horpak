@@ -6,6 +6,8 @@ import 'package:bsru_horpak/models/product_model.dart';
 import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
+import 'package:bsru_horpak/widgets/loading_widget.dart';
+import 'package:bsru_horpak/widgets/location_widget.dart';
 import 'package:bsru_horpak/widgets/show_image.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
 import 'package:bsru_horpak/widgets/show_title.dart';
@@ -20,6 +22,7 @@ import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class AlertScreen extends StatefulWidget {
@@ -141,6 +144,11 @@ class _AlertScreenState extends State<AlertScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('หน้าสถานะการจอง'),
+        actions: [
+          // Image.asset(
+          //   "assets/images/loading.json",
+          // ),
+        ],
       ),
       body: load
           ? ShowProgress()
@@ -149,11 +157,11 @@ class _AlertScreenState extends State<AlertScreen> {
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Image.asset(
+                    //   "assets/images/watching-you-cat.gif",
+                    // ),
                     Container(
-                      width: 200,
-                      child: ShowImage(
-                        path: MyConstant.logo,
-                      ),
+                      child: LoadingView(),
                     ),
                     Center(
                       child: ShowTitle(
@@ -173,47 +181,62 @@ class _AlertScreenState extends State<AlertScreen> {
             children: [
               buildNameHorpak(index),
               buildDate(index),
+
               // buildPrice(index),
               buildHead(),
               buildListHorpak(index),
 
               buildStepIndicator(ststusInts[index]),
               buildbutton(index),
+
               TextButton(
                 onPressed: () async {
                   LocationData? locationData = await finalLocationData();
-                  setState(() {
-                    lat = locationData!.latitude;
-                    lng = locationData.longitude;
-                    lat2 = double.parse(orderModels[index].lat);
-                    lng2 = double.parse(orderModels[index].lng);
-                    print('lat ==$lat lng == $lng lat2 == $lat2 lng2 == $lng2');
+                  setState(
+                    () {
+                      lat = locationData!.latitude;
+                      lng = locationData.longitude;
+                      lat2 = double.parse(orderModels[index].lat);
+                      lng2 = double.parse(orderModels[index].lng);
+                      print(
+                          'lat ==$lat lng == $lng lat2 == $lat2 lng2 == $lng2');
 
-                    // print('distance = $distance');
-                    // print('transport ==> $transport');
-                    showDialog(
-                      context: context,
-                      builder: (context) => Container(
-                        child: StatefulBuilder(
-                          builder: (context, setState) => AlertDialog(
-                            title: ListTile(
-                              leading: ShowImage(path: MyConstant.logo),
-                              title: ShowTitle(
-                                title: orderModels[index].nameProduct,
-                                textStyle: MyConstant().h2Style(),
+                      // print('distance = $distance');
+                      // print('transport ==> $transport');
+                      showDialog(
+                        context: context,
+                        builder: (context) => Container(
+                          child: StatefulBuilder(
+                            builder: (context, setState) => AlertDialog(
+                              title: ListTile(
+                                leading: ShowImage(path: MyConstant.logo),
+                                title: ShowTitle(
+                                  title: orderModels[index].nameProduct,
+                                  textStyle: MyConstant().h2Style(),
+                                ),
                               ),
-                            ),
-                            content: SingleChildScrollView(
-                              child: showMap(),
+                              content: SingleChildScrollView(
+                                child: showMap(),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  });
+                      );
+                    },
+                  );
                 },
-                child: Text('ดูแผนที่ '),
-              )
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'ดูแผนที่ ',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    LocationView(),
+                  ],
+                ),
+              ),
 
               // showMap(),
               // Container(
@@ -248,6 +271,7 @@ class _AlertScreenState extends State<AlertScreen> {
           ),
         ),
       );
+
   Divider buildDivider() {
     return Divider(
       color: Colors.black,

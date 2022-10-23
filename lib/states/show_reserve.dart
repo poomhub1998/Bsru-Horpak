@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:bsru_horpak/models/Order_model.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
+import 'package:bsru_horpak/widgets/loading_widget.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:bsru_horpak/models/product_model.dart';
@@ -187,20 +188,31 @@ class _ShowReserveState extends State<ShowReserve> {
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 200,
-                      child: ShowImage(
-                        path: MyConstant.logo,
-                      ),
-                    ),
-                    Center(
-                      child: ShowTitle(
-                        title: 'ยังไม่ได้เลือกหอพัก',
-                        textStyle: MyConstant().h1Style(),
-                      ),
+                    LoadingView(),
+                    ShowTitle(
+                      title: 'ยังไม่ได้เลือกหอพัก',
+                      textStyle: MyConstant().h1Style(),
                     ),
                   ],
                 )
+
+              // Column(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Container(
+              //         width: 200,
+              //         child: ShowImage(
+              //           path: MyConstant.logo,
+              //         ),
+              //       ),
+              //       Center(
+              //         child: ShowTitle(
+              //           title: 'ยังไม่ได้เลือกหอพัก',
+              //           textStyle: MyConstant().h1Style(),
+              //         ),
+              //       ),
+              //     ],
+              //   )
               : buildContent(),
     );
   }
@@ -376,8 +388,9 @@ class _ShowReserveState extends State<ShowReserve> {
                           // print('model5555 $model');
                           String tokenOwner = model.token;
                           // print('TokenOwner $tokenOwner');
-                          String title = 'มีคนจองหอพักของคุณ';
-                          String body = 'กดเพื่อดูรายละเอียด';
+                          String title =
+                              'มีคนจองหอของคุณเช็ดที่หน้าออเดอร์ด้วยครับ';
+                          String body = 'เช็ดที่หน้าออเดอร์ด้วยครับ';
                           String urlSendToken =
                               '${MyConstant.domain}/bsruhorpak/apiNotification.php?isAdd=true&token=$tokenOwner&title=$title&body=$body';
 

@@ -412,17 +412,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               // SizedBox(
-                              //   height: 200.0,
+                              //   height: 100.0,
                               //   width: double.infinity,
                               //   child: Carousel(
-                              //     dotSize: 6.0,
-                              //     dotSpacing: 15.0,
-                              //     dotPosition: DotPosition.bottomCenter,
                               //     images: [
-                              //       Image.asset(MyConstant.logo),
+                              //       indexImage = 0,
                               //     ],
                               //   ),
-                              // )
+                              // ),
+
                               IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -678,15 +676,25 @@ class _HomeScreenState extends State<HomeScreen> {
   void searcHorpak(String value) {
     if (value.isEmpty) {
       loadValueFromAPI();
-    } else {
-      productModels = productModels
-          .where((productModels) =>
-              productModels.name.toLowerCase().contains(value.toLowerCase()))
-          .toList();
     }
     setState(() {
-      productModels = productModels;
+      productModels = productModels.where((productModels) {
+        var elementName = productModels.name.toLowerCase();
+        var userTyped = value.toLowerCase();
+        return elementName.contains(userTyped);
+      }).toList();
     });
+    // if (value.isEmpty) {
+    //   loadValueFromAPI();
+    // } else {
+    //   productModels = productModels
+    //       .where((productModels) =>
+    //           productModels.name.toLowerCase().contains(value.toLowerCase()))
+    //       .toList();
+    // }
+    // setState(() {
+    //   productModels = productModels;
+    // });
 
     // return nameHorpak.contains(input);
   }
