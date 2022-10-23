@@ -33,6 +33,23 @@ class _AuthenState extends State<Authen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    findToken();
+  }
+
+  Future<Null> findToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? id = preferences.getString('id');
+    print('มา');
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print(token);
+
+    print('id = $id');
+    String editToken =
+        '${MyConstant.domain}/bsruhorpak/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+    if (id != null && id.isNotEmpty) {
+      await Dio().get(editToken).then((value) => print('token ได้แล้ว'));
+    }
   }
 
   @override
@@ -91,6 +108,8 @@ class _AuthenState extends State<Authen> {
                 String password = passwordController.text;
                 print('## user = $user, password = $password');
                 checkAuthen(user: user, password: password);
+                findToken();
+                print('อัปเดท แล้ว');
               }
             },
             child: Text('เข้าสู้ระบบ'),
@@ -101,7 +120,6 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> checkAuthen({String? user, String? password}) async {
-    future:
     Firebase.initializeApp();
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     String? token = await firebaseMessaging.getToken();

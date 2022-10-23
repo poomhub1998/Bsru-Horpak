@@ -367,11 +367,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ShowTitle(
                           title: cutWrod('  ${productModels[index].detail}'),
                           textStyle: MyConstant().h3Style()),
-                      ShowTitle(
-                          title: distance == null
-                              ? ''
-                              : 'ระยะทาง : ${distanceString} กิโลเมตร',
-                          textStyle: MyConstant().h3Style()),
+                      // ShowTitle(
+                      //     title: distance == null
+                      //         ? ''
+                      //         : 'ระยะทาง : ${distanceString} กิโลเมตร',
+                      //     textStyle: MyConstant().h3Style()),
                     ],
                   ),
                 ),

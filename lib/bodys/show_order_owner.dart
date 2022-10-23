@@ -36,10 +36,10 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
   void initState() {
     super.initState();
 
-    findOwnerid(ststusInts);
+    findOwnerid();
   }
 
-  Future<Null> findOwnerid(List<int> ststusInts) async {
+  Future<Null> findOwnerid() async {
     if (orderModels.length != 0) {
       orderModels.clear();
     } else {}
@@ -217,7 +217,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                           .get(urlSendToken)
                                                           .then(
                                                         (value) async {
-                                                          Navigator.pushNamed(
+                                                          Navigator.pop(
                                                               context,
                                                               MyConstant
                                                                   .routOwner);
@@ -238,7 +238,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                     'ยกเลิกการจอง', 'สำเร็จ');
                                               },
                                             );
-                                            await findOwnerid(ststusInts);
+                                            await findOwnerid();
                                           },
                                           child: Text('ยืนยัน'),
                                         ),
@@ -340,17 +340,16 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                           MyDialog()
                                                               .normalDialog(
                                                                   context,
-                                                                  'ยกเลิก',
+                                                                  'ตอบรับ',
                                                                   'สำเร็จ');
                                                         },
                                                       );
+                                                      await findOwnerid();
                                                     }
                                                   },
                                                 );
                                               },
                                             );
-                                            await findOwnerid(ststusInts);
-                                            print('ทำต้องนี้');
                                           },
                                           child: Text('ตอบรับ'),
                                         ),
@@ -431,7 +430,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                             await Dio()
                                                 .get(apiDeleteProductWhereId)
                                                 .then(
-                                              (value) {
+                                              (value) async {
                                                 String? indasd =
                                                     '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct';
                                                 Dio()
@@ -444,11 +443,12 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                     .then((value) async {});
                                                 Navigator.pushNamed(context,
                                                     MyConstant.routOwner);
+
                                                 MyDialog().normalDialog(context,
                                                     'ผู้ใช้เข้าอยู่', 'สำเร็จ');
-                                                findOwnerid(ststusInts);
                                               },
                                             );
+                                            await findOwnerid();
                                           },
                                           child: Text('เข้าอยู่แล้ว'),
                                         ),

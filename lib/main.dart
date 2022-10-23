@@ -29,7 +29,7 @@ String? initlalRoute;
 
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  future:
+
   Firebase.initializeApp();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String? type = preferences.getString('type');

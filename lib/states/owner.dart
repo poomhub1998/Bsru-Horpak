@@ -48,6 +48,23 @@ class _OwnerState extends State<Owner> {
     super.initState();
 
     findUserModel();
+    findToken();
+  }
+
+  Future<Null> findToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? id = preferences.getString('id');
+    print('มา');
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print(token);
+
+    print('id = $id');
+    String editToken =
+        '${MyConstant.domain}/bsruhorpak/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+    if (id != null && id.isNotEmpty) {
+      await Dio().get(editToken).then((value) => print('token ได้แล้ว'));
+    }
   }
 
   Future<Null> findUserModel() async {

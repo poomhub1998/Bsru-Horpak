@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:bsru_horpak/utility/my_dialog.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _CreateAccountState extends State<CreateAccount> {
   void initState() {
     super.initState();
     checkPermission();
+    findToken();
   }
 
   @override
@@ -182,6 +184,13 @@ class _CreateAccountState extends State<CreateAccount> {
         print('lat = $lat log = $lng');
       });
     } catch (e) {}
+  }
+
+  Future<Null> findToken() async {
+    print('มา');
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print(token);
   }
 
   Future chooseImage(ImageSource source) async {
@@ -415,7 +424,7 @@ class _CreateAccountState extends State<CreateAccount> {
               if (value!.isEmpty) {
                 return 'กรุณากรอก รหัสผ่าน';
               }
-              if (value.length <= 6) {
+              if (value.length <= 5) {
                 return 'กรุณากรอก รหัสผ่าน 6คัวขึ้นไป';
               } else {}
             },
@@ -525,6 +534,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       'กรุณาเลือก ที่ ชนิดของผู้ใช้ ที่ต้องการ');
                 } else {
                   print('Process Insert to Database');
+                  findToken();
                   uploadPictureAndInsertData();
                 }
               }
@@ -542,8 +552,13 @@ class _CreateAccountState extends State<CreateAccount> {
     String phone = phoneController.text;
     String user = userController.text;
     String password = passwordController.text;
+
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print('token');
+
     print(
-        '## name = $name, address = $address, phone = $phone, user = $user, password = $password');
+        '## name = $name, address = $address, phone = $phone, user = $user, password = $password, token = $token');
     String path =
         '${MyConstant.domain}/bsruhorpak/getUserWhereUser.php?isAdd=true&user=$user';
     await Dio().get(path).then((value) async {
@@ -554,12 +569,12 @@ class _CreateAccountState extends State<CreateAccount> {
         if (file == null) {
           // No Avatar
           processInsertMySQL(
-            name: name,
-            address: address,
-            phone: phone,
-            user: user,
-            password: password,
-          );
+              name: name,
+              address: address,
+              phone: phone,
+              user: user,
+              password: password,
+              token: token);
         } else {
           // Have Avatar
           print('### process Upload Avatar');
@@ -590,15 +605,17 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Future<Null> processInsertMySQL(
       {String? name,
+
       // String? address,
       String? phone,
       String? type,
       String? user,
       String? address,
-      String? password}) async {
+      String? password,
+      String? token}) async {
     print('### processInsertMySQL Work and avatar ==>> $avatar');
     String apiInsertUser =
-        '${MyConstant.domain}/bsruhorpak/insertUser.php?isAdd=true&user=$user&password=$password&name=$name&address=$address&phone=$phone&type=$typeUser&avatar=$avatar&lat=$lat&lng=$lng';
+        '${MyConstant.domain}/bsruhorpak/insertUser.php?isAdd=true&user=$user&password=$password&name=$name&address=$address&phone=$phone&type=$typeUser&avatar=$avatar&lat=$lat&lng=$lng&token=$token';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);
