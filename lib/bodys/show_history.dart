@@ -4,6 +4,8 @@ import 'package:bsru_horpak/models/History_model.dart';
 import 'package:bsru_horpak/models/Order_model.dart';
 import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
+import 'package:bsru_horpak/widgets/history_widget.dart';
+import 'package:bsru_horpak/widgets/loading_widget.dart';
 import 'package:bsru_horpak/widgets/show_image.dart';
 import 'package:bsru_horpak/widgets/show_progress.dart';
 import 'package:bsru_horpak/widgets/show_title.dart';
@@ -113,15 +115,10 @@ class _History_ScreenState extends State<History_Screen> {
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 200,
-                      child: ShowImage(
-                        path: MyConstant.logo,
-                      ),
-                    ),
+                    HistoryView(),
                     Center(
                       child: ShowTitle(
-                        title: 'ยังไม่มีข้อมูลการจอง',
+                        title: 'ยังไม่มีประวัติ',
                         textStyle: MyConstant().h1Style(),
                       ),
                     ),

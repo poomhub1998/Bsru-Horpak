@@ -15,6 +15,8 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../widgets/loading_widget.dart';
+
 class ShowOrderOwner extends StatefulWidget {
   const ShowOrderOwner({Key? key}) : super(key: key);
 
@@ -482,6 +484,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      LoadingView(),
                       ShowTitle(
                           title: ' ยังไม่มีการจอง',
                           textStyle: MyConstant().h1Style()),

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
 import 'package:bsru_horpak/widgets/show_image.dart';
@@ -23,13 +26,15 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddHorPak extends StatefulWidget {
-  const AddHorPak({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const AddHorPak({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<AddHorPak> createState() => _AddHorPakState();
 }
 
 class _AddHorPakState extends State<AddHorPak> {
+  UserModel? userModel;
   String? typeUser = 'owner';
   final formKey = GlobalKey<FormState>();
   double? lat, lng;
@@ -47,12 +52,31 @@ class _AddHorPakState extends State<AddHorPak> {
     super.initState();
     checkPermission();
     initiaFile();
+    fildUser();
+    userModel = widget.userModel;
+    phoneController.text = userModel!.phone;
   }
 
   void initiaFile() {
     for (var i = 0; i < 4; i++) {
       files.add(null);
     }
+  }
+
+  Future<Null> fildUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? user = preferences.getString('user');
+    String apiGetUser =
+        '${MyConstant.domain}/bsruhorpak/getUserWhereUser.php?isAdd=true&user=$user';
+    await Dio().get(apiGetUser).then((value) {
+      for (var item in jsonDecode(value.data)) {
+        setState(() {
+          userModel = UserModel.fromMap(item);
+
+          print(user);
+        });
+      }
+    });
   }
 
   @override

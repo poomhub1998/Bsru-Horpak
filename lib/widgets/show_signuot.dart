@@ -22,11 +22,11 @@ class ShowSignOut extends StatelessWidget {
                         context, MyConstant.routAuthen, (route) => false),
                   );
             },
-            tileColor: Colors.yellow,
-            leading: Icon(Icons.exit_to_app),
+            tileColor: Colors.red[700],
+            leading: Icon(Icons.exit_to_app, color: Colors.white),
             title: ShowTitle(
               title: 'ออกจากระบบ',
-              textStyle: MyConstant().h2Style(),
+              textStyle: MyConstant().h2WhiteStyle(),
             )),
       ],
     );

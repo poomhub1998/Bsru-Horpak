@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:bsru_horpak/bodys/show_alert_screen_buyer.dart';
 import 'package:bsru_horpak/bodys/show_homescreen_buyer.dart';
 import 'package:bsru_horpak/bodys/show_settings_screen_buyer.dart';
@@ -14,7 +14,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/user_model.dart';
 
 class Buyer extends StatefulWidget {
@@ -228,47 +229,124 @@ class _BuyerState extends State<Buyer> {
                         ),
                       ],
                     ),
-                    // Row(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: <Widget>[
-                    //     MaterialButton(
-                    //       color: Colors.purple,
-                    //       minWidth: 50,
-                    //       onPressed: () {
-                    //         setState(() {
-                    //           currentScreen =
-                    //               SettingScreen(); // if user taps on this dashboard tab will be active
-                    //           currentTab = 2;
-                    //         });
-                    //       },
-                    //       child: Column(
-                    //         mainAxisAlignment: MainAxisAlignment.center,
-                    //         children: <Widget>[
-                    //           Icon(
-                    //             Icons.settings,
-                    //             color: currentTab == 2
-                    //                 ? Colors.white
-                    //                 : Colors.grey,
-                    //           ),
-                    //           Text(
-                    //             'ตั้งค่า',
-                    //             style: TextStyle(
-                    //               color: currentTab == 2
-                    //                   ? Colors.white
-                    //                   : Colors.grey,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        MaterialButton(
+                          color: Colors.purple,
+                          minWidth: 50,
+                          onPressed: () {
+                            setState(() {
+                              currentScreen = SettingScreen(
+                                userModel: userModel!,
+                              ); // if user taps on this dashboard tab will be active
+                              currentTab = 2;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.settings,
+                                color: currentTab == 3
+                                    ? Colors.white
+                                    : Colors.grey,
+                              ),
+                              Text(
+                                'ตั้งค่า',
+                                style: TextStyle(
+                                  color: currentTab == 2
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ],
             ),
           ),
         ),
+      ),
+      // floatingActionButton: buildhelp(),
+    );
+  }
+
+  Container buildhelp() {
+    return Container(
+      child: FabCircularMenu(
+        animationCurve: Curves.linear,
+        fabOpenIcon: Icon(Icons.headphones_rounded),
+        alignment: Alignment.bottomRight,
+        ringColor: Colors.white.withAlpha(25),
+        ringDiameter: 300.0,
+        ringWidth: 150.0,
+        fabSize: 60.0,
+        fabElevation: 10.0,
+        fabIconBorder: CircleBorder(),
+        children: <Widget>[
+          RawMaterialButton(
+            onPressed: () {
+              launch('tel://0962874208');
+              // print('โทร');
+            },
+            elevation: 10.0,
+            fillColor: Colors.green,
+            child: Icon(
+              Icons.phone,
+              size: 20.0,
+            ),
+            padding: EdgeInsets.all(15.0),
+            shape: CircleBorder(),
+          ),
+          RawMaterialButton(
+            onPressed: () async {
+              String email = Uri.encodeComponent("phorinat@hotmail.com");
+              String subject = Uri.encodeComponent("ติดต่อ/แจ้งปัญหา");
+              String body = Uri.encodeComponent("แจ้งเรื่องได้เลยครับ");
+              print(subject); //output: Hello%20Flutter
+              Uri mail = Uri.parse("mailto:$email?subject=$subject&body=$body");
+              if (await launchUrl(mail)) {
+                //email app opened
+              } else {
+                print('กรุณาลองใหม่ภายหลัง');
+              }
+            },
+            elevation: 10.0,
+            fillColor: Colors.orange,
+            child: Icon(
+              Icons.email,
+              size: 20.0,
+            ),
+            padding: EdgeInsets.all(15.0),
+            shape: CircleBorder(),
+          ),
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.blue,
+            child: IconButton(
+                icon: Icon(
+                  Icons.facebook,
+                  size: 20.0,
+                ),
+                onPressed: () {
+                  print('เฟส');
+                }),
+          ),
+          // IconButton(
+          //     icon: Icon(
+          //       Icons.star,
+          //       color: Colors.brown,
+          //       size: 40,
+          //     ),
+          //     onPressed: () {
+          //       // R
+          //     }),
+        ],
       ),
     );
   }

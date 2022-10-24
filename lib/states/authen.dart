@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:bsru_horpak/main.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
@@ -14,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key, pathImage}) : super(key: key);
@@ -76,6 +78,160 @@ class _AuthenState extends State<Authen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: Builder(
+        builder: (context) => FabCircularMenu(
+          // Cannot be `Alignment.center`
+          alignment: Alignment.bottomRight,
+          ringColor: Colors.white.withAlpha(25),
+          ringDiameter: 350.0,
+          ringWidth: 150.0,
+          fabSize: 50.0,
+          fabElevation: 8.0,
+          fabIconBorder: CircleBorder(),
+          // Also can use specific color based on wether
+          // the menu is open or not:
+          // fabOpenColor: Colors.white
+          // fabCloseColor: Colors.white
+          // These properties take precedence over fabColor
+          fabColor: Colors.purple,
+          fabOpenIcon: Icon(
+            Icons.headphones,
+          ),
+          fabCloseIcon: Icon(
+            Icons.close,
+          ),
+          fabMargin: const EdgeInsets.all(16.0),
+          animationDuration: const Duration(milliseconds: 800),
+          animationCurve: Curves.easeInOutCirc,
+          onDisplayChange: (isOpen) {},
+          children: <Widget>[
+            RawMaterialButton(
+                onPressed: () {},
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(24.0),
+                child: Text('')),
+            RawMaterialButton(
+              onPressed: () {
+                launch('tel://0962874208');
+              },
+              shape: CircleBorder(),
+              padding: const EdgeInsets.all(24.0),
+              child: Icon(
+                Icons.phone,
+                color: Colors.green,
+                size: 30,
+              ),
+            ),
+            RawMaterialButton(
+              onPressed: () async {
+                String email = Uri.encodeComponent("phorinat@hotmail.com");
+                String subject = Uri.encodeComponent("ติดต่อ/แจ้งปัญหา");
+                String body = Uri.encodeComponent("แจ้งเรื่องได้เลยครับ");
+                print(subject); //output: Hello%20Flutter
+                Uri mail =
+                    Uri.parse("mailto:$email?subject=$subject&body=$body");
+                if (await launchUrl(mail)) {
+                  //email app opened
+                } else {
+                  print('กรุณาลองใหม่ภายหลัง');
+                }
+              },
+              shape: CircleBorder(),
+              padding: const EdgeInsets.all(24.0),
+              child: Icon(
+                Icons.mail,
+                color: Colors.red,
+                size: 30,
+              ),
+            ),
+            RawMaterialButton(
+              onPressed: () {},
+              shape: CircleBorder(),
+              padding: const EdgeInsets.all(24.0),
+              child: Icon(
+                Icons.facebook,
+                color: Colors.blue,
+                size: 30,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container buildhelp() {
+    return Container(
+      child: FabCircularMenu(
+        animationCurve: Curves.linear,
+        fabOpenIcon: Icon(Icons.headphones_rounded),
+        alignment: Alignment.bottomRight,
+        ringColor: Colors.white.withAlpha(25),
+        ringDiameter: 300.0,
+        ringWidth: 150.0,
+        fabSize: 60.0,
+        fabElevation: 10.0,
+        fabIconBorder: CircleBorder(),
+        children: <Widget>[
+          RawMaterialButton(
+            onPressed: () {
+              launch('tel://0962874208');
+              // print('โทร');
+            },
+            elevation: 10.0,
+            fillColor: Colors.green,
+            child: Icon(
+              Icons.phone,
+              size: 20.0,
+            ),
+            padding: EdgeInsets.all(15.0),
+            shape: CircleBorder(),
+          ),
+          RawMaterialButton(
+            onPressed: () async {
+              String email = Uri.encodeComponent("phorinat@hotmail.com");
+              String subject = Uri.encodeComponent("ติดต่อ/แจ้งปัญหา");
+              String body = Uri.encodeComponent("แจ้งเรื่องได้เลยครับ");
+              print(subject); //output: Hello%20Flutter
+              Uri mail = Uri.parse("mailto:$email?subject=$subject&body=$body");
+              if (await launchUrl(mail)) {
+                //email app opened
+              } else {
+                print('กรุณาลองใหม่ภายหลัง');
+              }
+            },
+            elevation: 10.0,
+            fillColor: Colors.orange,
+            child: Icon(
+              Icons.email,
+              size: 20.0,
+            ),
+            padding: EdgeInsets.all(15.0),
+            shape: CircleBorder(),
+          ),
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.blue,
+            child: IconButton(
+                icon: Icon(
+                  Icons.facebook,
+                  size: 20.0,
+                ),
+                onPressed: () {
+                  print('เฟส');
+                }),
+          ),
+          // IconButton(
+          //     icon: Icon(
+          //       Icons.star,
+          //       color: Colors.brown,
+          //       size: 40,
+          //     ),
+          //     onPressed: () {
+          //       // R
+          //     }),
+        ],
       ),
     );
   }
@@ -294,6 +450,15 @@ class _AuthenState extends State<Authen> {
           child: Image.asset('assets/images/logohorpak.png'),
         ),
       ],
+    );
+  }
+
+  void displayMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(milliseconds: 1000),
+      ),
     );
   }
 }

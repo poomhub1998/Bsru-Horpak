@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class MyConstant {
   static String appName = 'BSRU HORPAK';
-  static String domain = 'https://7bb5-49-49-237-211.ap.ngrok.io';
+  static String domain = 'https://dae7-49-49-249-84.ap.ngrok.io';
   //Route
   static String routAuthen = '/authen';
   static String routCreateAccount = '/createAccount';
@@ -16,6 +16,7 @@ class MyConstant {
   static String conFrimReseve = '/conFrimReseve';
   static String routShowOrderOwner = '/showOrderOwner';
   static String routShowHistory = '/showHistory';
+  static String routEditProfileOwner = '/editProfileOwner';
 
   //Image
   static String logo = 'assets/images/logohorpak.png';
@@ -124,6 +125,11 @@ class MyConstant {
   TextStyle h3BlackStyle() => TextStyle(
         fontSize: 14,
         color: Colors.black,
+        fontWeight: FontWeight.normal,
+      );
+  TextStyle h3BuleStyle() => TextStyle(
+        fontSize: 14,
+        color: Colors.blue.shade800,
         fontWeight: FontWeight.normal,
       );
 

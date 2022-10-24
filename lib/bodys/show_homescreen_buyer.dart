@@ -187,20 +187,20 @@ class _HomeScreenState extends State<HomeScreen> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            color: Colors.white,
-            onPressed: () async {
-              SharedPreferences preferences =
-                  await SharedPreferences.getInstance();
-              preferences.clear().then(
-                    (value) => Navigator.pushNamedAndRemoveUntil(
-                        context, MyConstant.routAuthen, (route) => false),
-                  );
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.exit_to_app),
+        //     color: Colors.white,
+        //     onPressed: () async {
+        //       SharedPreferences preferences =
+        //           await SharedPreferences.getInstance();
+        //       preferences.clear().then(
+        //             (value) => Navigator.pushNamedAndRemoveUntil(
+        //                 context, MyConstant.routAuthen, (route) => false),
+        //           );
+        //     },
+        //   ),
+        // ],
         title: Text('หอพักทั้งหมด'),
       ),
       body: load
@@ -330,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         width: constraints.maxWidth * 0.5 - 4,
-                        height: constraints.maxWidth * 0.4 - 4,
+                        height: constraints.maxWidth * 0.4 - 6,
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
                           imageUrl: createUrl(productModels[index].images),
@@ -344,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   width: constraints.maxWidth * 0.5 - 4,
-                  height: constraints.maxWidth * 0.5 - 4,
+                  height: constraints.maxWidth * 0.52 - 4,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,7 +359,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       ShowTitle(
-                          title: 'ราคา: ${productModels[index].price} บาท',
+                          title:
+                              'ราคา: ${productModels[index].price} บาท/เดือน',
                           textStyle: MyConstant().h3Style()),
                       ShowTitle(
                           title: 'รายละเอียด:',
@@ -367,11 +368,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       ShowTitle(
                           title: cutWrod('  ${productModels[index].detail}'),
                           textStyle: MyConstant().h3Style()),
+                      Row(
+                        children: [
+                          ShowTitle(
+                            title: cutWrod(
+                                'ติดต่อ  ${productModels[index].phone}'),
+                            textStyle: MyConstant().h3BuleStyle(),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              launch('tel://${productModels[index].phone}');
+                            },
+                            icon: Icon(
+                              Icons.phone,
+                              size: 16,
+                              color: Colors.blue.shade800,
+                            ),
+                          )
+                        ],
+                      ),
+
                       // ShowTitle(
-                      //     title: distance == null
-                      //         ? ''
-                      //         : 'ระยะทาง : ${distanceString} กิโลเมตร',
-                      //     textStyle: MyConstant().h3Style()),
+                      //   title:
+                      //       cutWrod('ติดต่อ  ${productModels[index].phone}'),
+                      //   textStyle: MyConstant().h3Style(),
+                      // ),
                     ],
                   ),
                 ),

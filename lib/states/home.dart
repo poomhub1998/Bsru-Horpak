@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
     '/createAccount': (BuildContext context) => CreateAccount(),
     '/buyyer': (BuildContext context) => Buyer(),
     '/owner': (BuildContext context) => Owner(),
-    '/addHorPak': (BuildContext context) => AddHorPak(),
+    // '/addHorPak': (BuildContext context) => AddHorPak(),
     '/showReserve': (BuildContext context) => ShowReserve(),
     '/conFrimReseve': (BuildContext context) => ConFrimReseve(),
   };

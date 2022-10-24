@@ -145,9 +145,7 @@ class _AlertScreenState extends State<AlertScreen> {
       appBar: AppBar(
         title: Text('หน้าสถานะการจอง'),
         actions: [
-          // Image.asset(
-          //   "assets/images/loading.json",
-          // ),
+          // LocationView(),
         ],
       ),
       body: load

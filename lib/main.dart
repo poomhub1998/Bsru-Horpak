@@ -5,6 +5,7 @@ import 'package:bsru_horpak/states/authen.dart';
 import 'package:bsru_horpak/states/buyer.dart';
 import 'package:bsru_horpak/states/confrim_reserve.dart';
 import 'package:bsru_horpak/states/create_account.dart';
+import 'package:bsru_horpak/states/edit_profile_owner.dart';
 import 'package:bsru_horpak/states/owner.dart';
 import 'package:bsru_horpak/states/show_reserve.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
@@ -20,10 +21,11 @@ final Map<String, WidgetBuilder> map = {
   '/buyyer': (BuildContext context) => Buyer(),
   '/showOrderOwner': (BuildContext context) => ShowOrderOwner(),
   '/owner': (BuildContext context) => Owner(),
-  '/addHorPak': (BuildContext context) => AddHorPak(),
+  // '/addHorPak': (BuildContext context) => AddHorPak(userModel: user,),
   '/showReserve': (BuildContext context) => ShowReserve(),
   '/conFrimReseve': (BuildContext context) => ConFrimReseve(),
   '/showHistory': (BuildContext context) => History_Screen(),
+  // '/editProfileOwner': (BuildContext context) => EditProfileOwner(),
 };
 String? initlalRoute;
 

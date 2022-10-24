@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bsru_horpak/models/product_model.dart';
+import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/states/aad_horpak.dart';
 import 'package:bsru_horpak/states/edit_product.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
@@ -15,13 +16,15 @@ import 'package:dio/dio.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ShowProductOwner extends StatefulWidget {
-  const ShowProductOwner({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const ShowProductOwner({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<ShowProductOwner> createState() => _ShowProductOwnerState();
 }
 
 class _ShowProductOwnerState extends State<ShowProductOwner> {
+  UserModel? userModel;
   bool load = true;
   bool? haveData;
 
@@ -31,6 +34,7 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
   void initState() {
     super.initState();
     loadValueFromAPI();
+    userModel = widget.userModel;
   }
 
   Future<Null> loadValueFromAPI() async {
@@ -97,9 +101,13 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
             padding: const EdgeInsets.only(bottom: 40),
             child: FloatingActionButton(
               backgroundColor: MyConstant.dark,
-              onPressed: () =>
-                  Navigator.pushNamed(context, MyConstant.routAddHorPak)
-                      .then((value) => loadValueFromAPI()),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddHorPak(
+                      userModel: userModel!,
+                    ),
+                  )).then((value) => loadValueFromAPI()),
               child: Text('เพิ่ม'),
             ),
           ),
@@ -196,7 +204,7 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
                             icon: Icon(
                               Icons.delete_outline,
                               size: 20,
-                              color: MyConstant.dark,
+                              color: Colors.red[700],
                             )),
                       ],
                     )

@@ -34,11 +34,13 @@ dependencies:
 
 dev_dependencies:
   cached_network_image: ^3.2.0
-  # carousel_pro: ^1.0.0
   carousel_slider: ^4.1.1
+  cupertino_icons: ^1.0.5
   device_info_plus: ^6.0.0
   dio: ^4.0.6
+  fab_circular_menu: ^1.0.2
   firebase_core: ^1.24.0
+  flutter_launch: ^0.3.0
   flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
   flutter_local_notifications: ^12.0.2
