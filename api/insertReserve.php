@@ -28,10 +28,12 @@ if (isset($_GET)) {
 		$idProduct = $_GET['idProduct'];
 		$nameProduct = $_GET['nameProduct'];
 		$priceProduct = $_GET['priceProduct'];
+		$lat = $_GET['lat'];
+		$lng = $_GET['lng'];
 		$status = $_GET['status'];
 		
 							
-		$sql = "INSERT INTO `reservetable`(`idOrder`, `idBuyer`, `nameBuyer`, `phoneBuyer`, `dateOrder`, `idOwner`, `nameOwner`, `phoneOwner`, `idProduct`, `nameProduct`, `priceProduct`, `status`) VALUES (Null,'$idBuyer','$nameBuyer','$phoneBuyer','$dateOrder','$idOwner','$nameOwner','$phoneOwner','$idProduct','$nameProduct','$priceProduct','$status')";
+		$sql = "INSERT INTO `reservetable`(`idOrder`, `idBuyer`, `nameBuyer`, `phoneBuyer`, `dateOrder`, `idOwner`, `nameOwner`, `phoneOwner`, `idProduct`, `nameProduct`, `priceProduct`, `lat`, `lng`, `status`) VALUES (Null,'$idBuyer','$nameBuyer','$phoneBuyer','$dateOrder','$idOwner','$nameOwner','$phoneOwner','$idProduct','$nameProduct','$priceProduct','$lat','$lng','$status')";
 
 		$result = mysqli_query($link, $sql);
 

@@ -27,9 +27,10 @@ if (isset($_GET)) {
 		$avatar = $_GET['avatar'];
 		$lat = $_GET['lat'];
 		$lng = $_GET['lng'];
+		$token = $_GET['token'];
 		
 							
-		$sql = "INSERT INTO `user`(`id`, `user`, `password`, `name`, `address`, `phone`, `type`, `avatar`, `lat`, `lng`) VALUES (Null,'$user','$password','$name','$address','$phone','$type','$avatar','$lat','$lng')";
+		$sql = "INSERT INTO `user`(`id`, `user`, `password`, `name`, `address`, `phone`, `type`, `avatar`, `lat`, `lng`, `token`) VALUES (Null,'$user','$password','$name','$address','$phone','$type','$avatar','$lat','$lng','$token')";
 
 		$result = mysqli_query($link, $sql);
 

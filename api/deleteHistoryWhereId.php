@@ -16,7 +16,7 @@ if (!$link) {
 			
 		$id = $_GET['id'];		
 									
-		$sql = "DELETE FROM product WHERE id = '$id'";
+		$sql = "DELETE FROM history WHERE id = '$id'";
 
 		$result = mysqli_query($link, $sql);
 
@@ -26,7 +26,7 @@ if (!$link) {
 			echo "False";
 		}
 
-	} else echo "BSRUHORPAK";
+	} else echo "Welcome Master UNG";
    
 }
 	

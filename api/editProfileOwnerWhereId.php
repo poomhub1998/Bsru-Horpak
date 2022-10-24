@@ -15,21 +15,18 @@ if (!$link->set_charset("utf8")) {
     exit();
 	}
 
+
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
-				
-		$id = $_GET['id'];
-		$idOwner = $_GET['idOwner'];
-		$nameOwner = $_GET['nameOwner'];
-		$phoneOwner = $_GET['phoneOwner'];
-        $idBuyer = $_GET['idBuyer'];
-        $nameBuyer = $_GET['nameBuyer'];
-        $phoneBuyer = $_GET['phoneBuyer'];
-        $nameProduct = $_GET['nameProduct'];
+			
+		$id = $_GET['id'];		
+		$user = $_GET['user'];
+		$name = $_GET['name'];
+		$phone = $_GET['phone'];
 		
 		
 							
-		$sql = "INSERT INTO `history`(`id`, `idOwner`, `nameOwner`, `phoneOwner`, `idBuyer`, `nameBuyer`, `phoneBuyer`, `nameProduct`) VALUES (Null,'$idOwner','$nameOwner','$phoneOwner','$idBuyer','$nameBuyer','$phoneBuyer','$nameProduct')";
+		$sql = "UPDATE `user` SET `user` = '$user', `name` = '$name', `phone` = '$phone' WHERE id = '$id'";
 
 		$result = mysqli_query($link, $sql);
 
@@ -39,8 +36,9 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome Master UNG";
+	} else echo "BSRUHORPAK";
    
 }
+
 	mysqli_close($link);
 ?>
