@@ -491,7 +491,7 @@ class _ShowReserveState extends State<ShowReserve> {
       child: Row(
         children: [
           ShowTitle(
-            title: sqliteModels == null ? '' : 'BSRU Horpak',
+            title: sqliteModels == null ? '' : 'BSRU HORPAK',
             textStyle: MyConstant().h1Style(),
           ),
         ],

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/loading_widget.dart';
 
@@ -33,12 +34,21 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
   UserModel? userModel;
   OrderModel? orderModel;
   int? index = 1;
-
+  String? dateTimeStr;
   @override
   void initState() {
     super.initState();
 
     findOwnerid();
+  }
+
+  void findCurrentTime() {
+    DateTime dateTime = DateTime.now();
+    DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm');
+    setState(() {
+      dateTimeStr = dateFormat.format(dateTime);
+    });
+    // print('เวลา = $dateTimeStr');
   }
 
   Future<Null> findOwnerid() async {
@@ -145,9 +155,16 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                               // )
                             ],
                           ),
-                          Text(orderModels[index].dateOrder),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                'วันเวลา ที่จอง ${orderModels[index].dateOrder}'),
+                          ),
                           buildTitle(),
                           buildListHorpak(index),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -242,12 +259,24 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                             );
                                             await findOwnerid();
                                           },
-                                          child: Text('ยืนยัน'),
+                                          child: Text(
+                                            'ยืนยัน',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 162, 0, 0),
+                                            ),
+                                          ),
                                         ),
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('ยกเลิก'),
+                                          child: Text(
+                                            'ปิด',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 4, 225, 11),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -263,7 +292,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                 ),
                               ),
                               RaisedButton.icon(
-                                color: Colors.green,
+                                color: Colors.blue,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30)),
                                 onPressed: () async {
@@ -273,7 +302,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                       title: ListTile(
                                         title: ShowTitle(
                                           title:
-                                              'ตอบรับ ${orderModels[index].nameBuyer} ?',
+                                              'ตอบรับ ${orderModels[index].nameBuyer} ',
                                           textStyle: MyConstant().h2Style(),
                                         ),
                                         subtitle: ShowTitle(
@@ -353,12 +382,24 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                               },
                                             );
                                           },
-                                          child: Text('ตอบรับ'),
+                                          child: Text(
+                                            'ตอบรับ',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 4, 225, 11),
+                                            ),
+                                          ),
                                         ),
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('ยกเลิก'),
+                                          child: Text(
+                                            'ปิด',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 162, 0, 0),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -426,6 +467,13 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                 orderModels[index].priceProduct;
                                             String? phoneBuyer =
                                                 orderModels[index].phoneBuyer;
+                                            DateTime dateOrder = DateTime.now();
+
+                                            DateFormat dateOrDer =
+                                                DateFormat('dd/MM/yyyy HH:mm');
+
+                                            dateTimeStr =
+                                                dateOrDer.format(dateOrder);
 
                                             String apiDeleteProductWhereId =
                                                 '${MyConstant.domain}/bsruhorpak/editOrderWhereIdOwner.php?isAdd=true&idOrder=$idOrder&status=$status';
@@ -434,7 +482,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                 .then(
                                               (value) async {
                                                 String? indasd =
-                                                    '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct';
+                                                    '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct&dateOrder=$dateTimeStr';
                                                 Dio()
                                                     .get(indasd)
                                                     .then((value) => null);
@@ -452,12 +500,24 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                             );
                                             await findOwnerid();
                                           },
-                                          child: Text('เข้าอยู่แล้ว'),
+                                          child: Text(
+                                            'ผู้ใช้เข้าอยู่แล้ว',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 4, 225, 11),
+                                            ),
+                                          ),
                                         ),
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('ยกเลิก'),
+                                          child: Text(
+                                            'ปิด',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 162, 0, 0),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -506,14 +566,14 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
             flex: 2,
             child: ShowTitle(
               title: orderModels[index].nameProduct,
-              textStyle: MyConstant().h2Style(),
+              textStyle: MyConstant().h3Style(),
             ),
           ),
           Expanded(
             flex: 1,
             child: ShowTitle(
-              title: orderModels[index].priceProduct,
-              textStyle: MyConstant().h2Style(),
+              title: '${orderModels[index].priceProduct} บาท',
+              textStyle: MyConstant().h3Style(),
             ),
           ),
         ],
@@ -542,16 +602,22 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
   Container buildTitle() {
     return Container(
       padding: EdgeInsets.all(4),
-      decoration: BoxDecoration(color: Colors.grey),
+      decoration: BoxDecoration(color: MyConstant.dark),
       child: Row(
         children: [
           Expanded(
             flex: 3,
-            child: Text('ชื่อหอพัก'),
+            child: Text(
+              'ชื่อหอพัก',
+              style: MyConstant().h2WhiteStyle(),
+            ),
           ),
           Expanded(
             flex: 1,
-            child: Text('ราคา'),
+            child: Text(
+              'ราคา',
+              style: MyConstant().h2WhiteStyle(),
+            ),
           ),
         ],
       ),

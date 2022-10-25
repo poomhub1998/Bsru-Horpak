@@ -25,6 +25,7 @@ import 'package:location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:anim_search_bar/anim_search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,6 +35,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
   //ตัวแปร
   String query = '';
   String? currentIdOwner;
@@ -358,6 +360,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               textStyle: MyConstant().h3Stylebold()),
                         ],
                       ),
+
+                      // Text(NumberFormat.simpleCurrency(
+                      //         locale: 'th-Th', decimalDigits: 0)
+                      //     .format(10000)),
                       ShowTitle(
                           title:
                               'ราคา: ${productModels[index].price} บาท/เดือน',

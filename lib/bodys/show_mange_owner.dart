@@ -251,16 +251,16 @@ class _ShowMangeOwnerState extends State<ShowMangeOwner> {
                 size: 30,
               ),
             ),
-            RawMaterialButton(
-              onPressed: () {},
-              shape: CircleBorder(),
-              padding: const EdgeInsets.all(24.0),
-              child: Icon(
-                Icons.facebook,
-                color: Colors.blue,
-                size: 30,
-              ),
-            )
+            // RawMaterialButton(
+            //   onPressed: () {},
+            //   shape: CircleBorder(),
+            //   padding: const EdgeInsets.all(24.0),
+            //   child: Icon(
+            //     Icons.facebook,
+            //     color: Colors.blue,
+            //     size: 30,
+            //   ),
+            // )
           ],
         ),
       ),
@@ -284,7 +284,7 @@ class _ShowMangeOwnerState extends State<ShowMangeOwner> {
           RawMaterialButton(
             onPressed: () {
               launch('tel://0962874208');
-              print('โทร');
+              // print('โทร');
             },
             elevation: 10.0,
             fillColor: Colors.green,

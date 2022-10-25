@@ -247,11 +247,14 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
                 loadValueFromAPI();
               });
             },
-            child: Text('ลบ'),
+            child: Text(
+              'ลบ',
+              style: TextStyle(color: Colors.red.shade800),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('ยกเลิก'),
+            child: Text('ยกเลิก', style: TextStyle(color: Colors.green)),
           ),
         ],
       ),

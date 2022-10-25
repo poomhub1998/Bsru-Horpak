@@ -7,7 +7,7 @@ class ProductModel {
   final String nameOwner;
   final String name;
   final String phone;
-  final String price;
+  late final String price;
   final String detail;
   final String address;
   final String lat;

@@ -41,12 +41,12 @@ class _AuthenState extends State<Authen> {
   Future<Null> findToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? id = preferences.getString('id');
-    print('มา');
+    // print('มา');
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     String? token = await firebaseMessaging.getToken();
-    print(token);
+    // print(token);
 
-    print('id = $id');
+    // print('id = $id');
     String editToken =
         '${MyConstant.domain}/bsruhorpak/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
     if (id != null && id.isNotEmpty) {
@@ -145,16 +145,16 @@ class _AuthenState extends State<Authen> {
                 size: 30,
               ),
             ),
-            RawMaterialButton(
-              onPressed: () {},
-              shape: CircleBorder(),
-              padding: const EdgeInsets.all(24.0),
-              child: Icon(
-                Icons.facebook,
-                color: Colors.blue,
-                size: 30,
-              ),
-            )
+            // RawMaterialButton(
+            //   onPressed: () {},
+            //   shape: CircleBorder(),
+            //   padding: const EdgeInsets.all(24.0),
+            //   child: Icon(
+            //     Icons.facebook,
+            //     color: Colors.blue,
+            //     size: 30,
+            //   ),
+            // )
           ],
         ),
       ),

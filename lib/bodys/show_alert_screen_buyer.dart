@@ -320,11 +320,17 @@ class _AlertScreenState extends State<AlertScreen> {
                       );
                       await finfBuyer();
                     },
-                    child: Text('ยืนยัน'),
+                    child: Text(
+                      'ยืนยัน',
+                      style: TextStyle(color: Color.fromARGB(255, 1, 99, 5)),
+                    ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('ยกเลิก'),
+                    child: Text(
+                      'ยกเลิก',
+                      style: TextStyle(color: Color.fromARGB(255, 238, 17, 1)),
+                    ),
                   ),
                 ],
               ),

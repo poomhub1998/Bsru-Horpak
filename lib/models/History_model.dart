@@ -10,6 +10,7 @@ class HistoryModel {
   final String nameOwner;
   final String phoneOwner;
   final String nameProduct;
+  final String dateOrder;
   HistoryModel({
     required this.id,
     required this.idBuyer,
@@ -19,6 +20,7 @@ class HistoryModel {
     required this.nameOwner,
     required this.phoneOwner,
     required this.nameProduct,
+    required this.dateOrder,
   });
 
   HistoryModel copyWith({
@@ -30,6 +32,7 @@ class HistoryModel {
     String? nameOwner,
     String? phoneOwner,
     String? nameProduct,
+    String? dateOrder,
   }) {
     return HistoryModel(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class HistoryModel {
       nameOwner: nameOwner ?? this.nameOwner,
       phoneOwner: phoneOwner ?? this.phoneOwner,
       nameProduct: nameProduct ?? this.nameProduct,
+      dateOrder: dateOrder ?? this.dateOrder,
     );
   }
 
@@ -53,6 +57,7 @@ class HistoryModel {
       'nameOwner': nameOwner,
       'phoneOwner': phoneOwner,
       'nameProduct': nameProduct,
+      'dateOrder': dateOrder,
     };
   }
 
@@ -66,6 +71,7 @@ class HistoryModel {
       nameOwner: map['nameOwner'] as String,
       phoneOwner: map['phoneOwner'] as String,
       nameProduct: map['nameProduct'] as String,
+      dateOrder: map['dateOrder'] as String,
     );
   }
 
@@ -76,7 +82,7 @@ class HistoryModel {
 
   @override
   String toString() {
-    return 'HistoryModel(id: $id, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, nameProduct: $nameProduct)';
+    return 'HistoryModel(id: $id, idBuyer: $idBuyer, nameBuyer: $nameBuyer, phoneBuyer: $phoneBuyer, idOwner: $idOwner, nameOwner: $nameOwner, phoneOwner: $phoneOwner, nameProduct: $nameProduct, dateOrder: $dateOrder)';
   }
 
   @override
@@ -90,7 +96,8 @@ class HistoryModel {
         other.idOwner == idOwner &&
         other.nameOwner == nameOwner &&
         other.phoneOwner == phoneOwner &&
-        other.nameProduct == nameProduct;
+        other.nameProduct == nameProduct &&
+        other.dateOrder == dateOrder;
   }
 
   @override
@@ -102,6 +109,7 @@ class HistoryModel {
         idOwner.hashCode ^
         nameOwner.hashCode ^
         phoneOwner.hashCode ^
-        nameProduct.hashCode;
+        nameProduct.hashCode ^
+        dateOrder.hashCode;
   }
 }

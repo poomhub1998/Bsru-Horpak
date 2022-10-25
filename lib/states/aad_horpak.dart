@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:pattern_formatter/pattern_formatter.dart';
 import 'package:bsru_horpak/models/user_model.dart';
 import 'package:bsru_horpak/utility/my_constant.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
@@ -24,6 +24,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+import 'package:anim_search_bar/anim_search_bar.dart';
 
 class AddHorPak extends StatefulWidget {
   final UserModel userModel;
@@ -34,9 +36,17 @@ class AddHorPak extends StatefulWidget {
 }
 
 class _AddHorPakState extends State<AddHorPak> {
+  _AddHorPakState() {
+    _selected = _horpaklist[0];
+  }
+
+  NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
   UserModel? userModel;
+  String? typeHorpak;
   String? typeUser = 'owner';
   final formKey = GlobalKey<FormState>();
+  final _horpaklist = ['ห้องพัดลม', 'ห้องแอร์'];
+  String? _selected = '';
   double? lat, lng;
   List<File?> files = [];
   File? file;
@@ -104,9 +114,27 @@ class _AddHorPakState extends State<AddHorPak> {
                     buildHorPak(constraints),
                     buildPhone(constraints),
                     buildImage(constraints),
+                    // buildRadiofan(constraints),
+                    // buildRadioAir(constraints),
+                    // DropdownButton(
+                    //   value: _selected,
+                    //   items: _horpaklist
+                    //       .map((e) => DropdownMenuItem(
+                    //             child: Text(e),
+                    //             value: e,
+                    //           ))
+                    //       .toList(),
+                    //   onChanged: (val) {
+                    //     setState(() {
+                    //       _selected = val as String;
+                    //     });
+                    //   },
+                    // ),
+                    // buildDropdownButton(),
                     buildHorPakPrice(constraints),
                     buildHorPakDetail(constraints),
                     buildHorPakAddress(constraints),
+                    buildTitle('หอพักคุณอยู่ตรงนี้'),
                     buildMap(),
                     addHorPakButton(constraints)
                   ],
@@ -116,6 +144,97 @@ class _AddHorPakState extends State<AddHorPak> {
           ),
         ),
       ),
+    );
+  }
+
+  DropdownButtonFormField<String> buildDropdownButton() {
+    return DropdownButtonFormField(
+      value: _selected,
+      items: _horpaklist
+          .map((e) => DropdownMenuItem(
+                child: Text(e),
+                value: e,
+              ))
+          .toList(),
+      onChanged: (val) {
+        setState(() {
+          _selected = val as String;
+        });
+      },
+      icon: const Icon(Icons.arrow_drop_down_circle),
+      decoration: InputDecoration(
+        labelText: 'ประเภทหอพัก',
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Row buildRadioAir(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: constraints.maxWidth * 0.6,
+          child: RadioListTile(
+            title: Text(
+              'ห้องแอร์',
+              style: TextStyle(color: MyConstant.primary),
+            ),
+            value: 'air',
+            groupValue: typeHorpak,
+            onChanged: (value) {
+              setState(() {
+                typeHorpak = value as String?;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildRadiofan(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: constraints.maxWidth * 0.6,
+          child: RadioListTile(
+            title: Text(
+              'ห้องพัดลม',
+              style: TextStyle(color: MyConstant.primary),
+            ),
+            value: 'fan',
+            groupValue: typeHorpak,
+            onChanged: (value) {
+              setState(() {
+                typeHorpak = value as String?;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  DropdownButton<String> buildDrop() {
+    return DropdownButton(
+      items: _horpaklist.map((e) {
+        return DropdownMenuItem(
+          child: Text(e),
+          value: e,
+        );
+      }).toList(),
+      onChanged: (val) {
+        setState(() {
+          _selected = val as String;
+        });
+      },
+      icon: const Icon(
+        Icons.arrow_drop_down_circle,
+        color: Colors.deepPurple,
+      ),
+      dropdownColor: Colors.deepPurple.shade500,
     );
   }
 
@@ -142,7 +261,7 @@ class _AddHorPakState extends State<AddHorPak> {
         title: ListTile(
           leading: ShowImage(path: MyConstant.camera),
           title: ShowTitle(
-              title: 'Source Image ${index + 1} ?',
+              title: 'เลือกรูปที่ ${index + 1} ',
               textStyle: MyConstant().h2Style()),
           subtitle: ShowTitle(
               title: 'Please Tab on Camera or Gallery',
@@ -179,6 +298,16 @@ class _AddHorPakState extends State<AddHorPak> {
       width: constraints.maxHeight * 0.6,
       child: ElevatedButton(
         onPressed: () {
+          // if (formKey.currentState!.validate()) {
+          //   if (typeHorpak == null) {
+          //     print('ยังไม่ได้เลือก ชนิดของหอพัก');
+          //     MyDialog().normalDialog(context, 'ยังไม่ได้เลือก ชนิดของหอพัก',
+          //         'กรุณาเลือก ที่ ชนิดของผู้ใช้ ที่ต้องการ');
+          //   } else {
+          //     print('Process Insert to Database');
+          //     processAddProduct();
+          //   }
+          // }
           processAddProduct();
         },
         child: Text('เพิ่มข้อมูลหอพัก'),
@@ -365,6 +494,7 @@ class _AddHorPakState extends State<AddHorPak> {
       width: constraints.maxWidth * 0.75,
       margin: EdgeInsets.only(top: 16),
       child: TextFormField(
+        inputFormatters: [ThousandsFormatter()],
         controller: priceController,
         validator: (value) {
           if (value!.isEmpty) {
@@ -556,6 +686,17 @@ class _AddHorPakState extends State<AddHorPak> {
       MyDialog()
           .alerLocation(context, 'Location ปิดอยู่', 'กรุณาเปิด Location');
     }
+  }
+
+  Row buildTitle(String title) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ShowTitle(title: title, textStyle: MyConstant().h2Style()),
+        ),
+      ],
+    );
   }
 
   Future<Null> findLatLng() async {

@@ -74,6 +74,9 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
                 // buildUser(constraints),
                 buildName(constraints),
                 buildPhone(constraints),
+                SizedBox(
+                  height: 20,
+                ),
                 buildButtonEditProfile()
               ],
             ),
@@ -174,8 +177,11 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
     );
   }
 
-  ElevatedButton buildButtonEditProfile() => ElevatedButton.icon(
-      onPressed: () => processEditProfileSeller(),
-      icon: Icon(Icons.edit),
-      label: Text('แก้ไขข้อมูล'));
+  Container buildButtonEditProfile() => Container(
+        width: 200,
+        child: ElevatedButton.icon(
+            onPressed: () => processEditProfileSeller(),
+            icon: Icon(Icons.edit),
+            label: Text('แก้ไขข้อมูล')),
+      );
 }

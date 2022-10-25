@@ -240,7 +240,7 @@ class _BuyerState extends State<Buyer> {
                               currentScreen = SettingScreen(
                                 userModel: userModel!,
                               ); // if user taps on this dashboard tab will be active
-                              currentTab = 2;
+                              currentTab = 4;
                             });
                           },
                           child: Column(
@@ -248,14 +248,14 @@ class _BuyerState extends State<Buyer> {
                             children: <Widget>[
                               Icon(
                                 Icons.settings,
-                                color: currentTab == 3
+                                color: currentTab == 4
                                     ? Colors.white
                                     : Colors.grey,
                               ),
                               Text(
                                 'ตั้งค่า',
                                 style: TextStyle(
-                                  color: currentTab == 2
+                                  color: currentTab == 4
                                       ? Colors.white
                                       : Colors.grey,
                                 ),

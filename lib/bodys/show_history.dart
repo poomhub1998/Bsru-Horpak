@@ -132,6 +132,19 @@ class _History_ScreenState extends State<History_Screen> {
         itemBuilder: (context, index) => Card(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShowTitle(
+                      title:
+                          'วันเวลาที่เข้าพัก ${historyModels[index].dateOrder}',
+                      textStyle: MyConstant().h2Style(),
+                    ),
+                  ],
+                ),
+              ),
               buildHead(),
               buildListHorpak(index),
             ],
@@ -141,7 +154,7 @@ class _History_ScreenState extends State<History_Screen> {
   Container buildHead() {
     return Container(
       padding: EdgeInsets.only(left: 8),
-      decoration: BoxDecoration(color: Colors.grey),
+      decoration: BoxDecoration(color: Colors.blue),
       child: Row(
         children: [
           Expanded(
@@ -188,7 +201,7 @@ class _History_ScreenState extends State<History_Screen> {
             flex: 1,
             child: ShowTitle(
               title: historyModels[index].nameProduct,
-              textStyle: MyConstant().h3Style(),
+              textStyle: MyConstant().h3BlackStyle(),
             ),
           ),
           Expanded(
@@ -197,7 +210,7 @@ class _History_ScreenState extends State<History_Screen> {
               padding: const EdgeInsets.all(0.0),
               child: ShowTitle(
                 title: historyModels[index].nameBuyer,
-                textStyle: MyConstant().h3Style(),
+                textStyle: MyConstant().h3BlackStyle(),
               ),
             ),
           ),
@@ -209,7 +222,10 @@ class _History_ScreenState extends State<History_Screen> {
                 onPressed: () {
                   launch('tel://${historyModels[index].phoneBuyer}');
                 },
-                child: Text(historyModels[index].phoneBuyer),
+                child: Text(
+                  historyModels[index].phoneBuyer,
+                  style: MyConstant().h3BlackStyle(),
+                ),
               ),
               // ShowTitle(
               //   title: historyModels[index].phoneBuyer,
