@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<Null> initFirebaseMessaging() async {
     firebaseMessaging?.getToken().then((String? token) {
       assert(token != null);
-      print("โทเกน : $token");
+      // print("โทเกน : $token");
     });
   }
 
@@ -126,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen> {
               load = false;
               haveData = true;
               productModels.add(model);
-              List<ProductModel> horpak = List.from(productModels);
             });
           }
         }
@@ -701,29 +700,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void searcHorpak(String value) {
-    if (value.isEmpty) {
-      loadValueFromAPI();
-    }
-    setState(() {
-      productModels = productModels.where((productModels) {
-        var elementName = productModels.name.toLowerCase();
-        var userTyped = value.toLowerCase();
-        return elementName.contains(userTyped);
-      }).toList();
-    });
     // if (value.isEmpty) {
     //   loadValueFromAPI();
-    // } else {
-    //   productModels = productModels
-    //       .where((productModels) =>
-    //           productModels.name.toLowerCase().contains(value.toLowerCase()))
-    //       .toList();
     // }
     // setState(() {
-    //   productModels = productModels;
+    //   productModels = productModels.where((productModels) {
+    //     var elementName = productModels.name.toLowerCase();
+    //     var price = productModels.price.toLowerCase();
+    //     return elementName.contains(price);
+    //   }).toList();
     // });
-
-    // return nameHorpak.contains(input);
+    if (value.isEmpty) {
+      loadValueFromAPI();
+    } else {
+      productModels = productModels
+          .where((productModels) =>
+              productModels.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      productModels = productModels;
+    });
   }
 
   // Future<Null> showToast(String msg, {int? gravity}) async {

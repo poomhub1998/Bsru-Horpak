@@ -214,7 +214,8 @@ class _AlertScreenState extends State<AlertScreen> {
                                 ),
                               ),
                               content: SingleChildScrollView(
-                                child: showMap(),
+                                child:
+                                    lat2 == null ? ShowProgress() : showMap(),
                               ),
                             ),
                           ),
@@ -322,14 +323,14 @@ class _AlertScreenState extends State<AlertScreen> {
                     },
                     child: Text(
                       'ยืนยัน',
-                      style: TextStyle(color: Color.fromARGB(255, 1, 99, 5)),
+                      style: TextStyle(color: Color.fromARGB(255, 223, 5, 5)),
                     ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       'ยกเลิก',
-                      style: TextStyle(color: Color.fromARGB(255, 238, 17, 1)),
+                      style: TextStyle(color: Color.fromARGB(255, 1, 177, 71)),
                     ),
                   ),
                 ],
@@ -371,7 +372,7 @@ class _AlertScreenState extends State<AlertScreen> {
   Container buildHead() {
     return Container(
       padding: EdgeInsets.only(left: 8),
-      decoration: BoxDecoration(color: Colors.grey),
+      decoration: BoxDecoration(color: MyConstant.dark),
       child: Row(
         children: [
           Expanded(
@@ -415,7 +416,7 @@ class _AlertScreenState extends State<AlertScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ShowTitle(
-                title: orderModels[index].priceProduct,
+                title: '${orderModels[index].priceProduct} บาท',
                 textStyle: MyConstant().h3BlackStyle(),
               ),
             ),
