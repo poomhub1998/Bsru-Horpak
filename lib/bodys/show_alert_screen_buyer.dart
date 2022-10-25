@@ -281,72 +281,135 @@ class _AlertScreenState extends State<AlertScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        RaisedButton.icon(
-          color: Colors.red,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          onPressed: () async {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: ListTile(
-                  title: ShowTitle(
-                    title:
-                        'ยกเลิกหารจอง หอพัก${orderModels[index].nameProduct} ?',
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  subtitle: ShowTitle(
-                    title: '',
-                    textStyle: MyConstant().h3Style(),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      String? id = preferences.getString('id');
-                      String? idOrder = orderModels[index].idOrder;
-
-                      print(' idOrder ${orderModels[index].idOrder}');
-
-                      String? deleteReserve =
-                          '${MyConstant.domain}/bsruhorpak/deleteReservetableWhereIdOrder.php?isAdd=true&idOrder=$idOrder';
-                      await Dio().get(deleteReserve).then(
-                        (value) {
-                          Navigator.pop(context, MyConstant.routBuyer);
-                          MyDialog()
-                              .normalDialog(context, 'ยกเลิกการจอง', 'สำเร็จ');
-                        },
-                      );
-                      await finfBuyer();
-                    },
-                    child: Text(
-                      'ยืนยัน',
-                      style: TextStyle(color: Color.fromARGB(255, 223, 5, 5)),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      'ยกเลิก',
-                      style: TextStyle(color: Color.fromARGB(255, 1, 177, 71)),
-                    ),
-                  ),
-                ],
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
               ),
-            );
-            // print('กดยกเลิก');
-          },
-          icon: Icon(
-            Icons.cancel,
-            color: Colors.white,
-          ),
-          label: Text(
-            'ยกเลิกการจอง',
-            style: TextStyle(color: Colors.white),
-          ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: ListTile(
+                      title: ShowTitle(
+                        title:
+                            'ยกเลิกหารจอง หอพัก${orderModels[index].nameProduct} ?',
+                        textStyle: MyConstant().h2Style(),
+                      ),
+                      subtitle: ShowTitle(
+                        title: '',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          String? id = preferences.getString('id');
+                          String? idOrder = orderModels[index].idOrder;
+
+                          print(' idOrder ${orderModels[index].idOrder}');
+
+                          String? deleteReserve =
+                              '${MyConstant.domain}/bsruhorpak/deleteReservetableWhereIdOrder.php?isAdd=true&idOrder=$idOrder';
+                          await Dio().get(deleteReserve).then(
+                            (value) {
+                              Navigator.pop(context, MyConstant.routBuyer);
+                              MyDialog().normalDialog(
+                                  context, 'ยกเลิกการจอง', 'สำเร็จ');
+                            },
+                          );
+                          await finfBuyer();
+                        },
+                        child: Text(
+                          'ยืนยัน',
+                          style:
+                              TextStyle(color: Color.fromARGB(255, 223, 5, 5)),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          'ยกเลิก',
+                          style:
+                              TextStyle(color: Color.fromARGB(255, 1, 177, 71)),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icon(Icons.cancel),
+              label: Text('ยกเลิกการจอง')),
         ),
+        // RaisedButton.icon(
+        //   color: Colors.red,
+        //   shape:
+        //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        //   onPressed: () async {
+        //     showDialog(
+        //       context: context,
+        //       builder: (context) => AlertDialog(
+        //         title: ListTile(
+        //           title: ShowTitle(
+        //             title:
+        //                 'ยกเลิกหารจอง หอพัก${orderModels[index].nameProduct} ?',
+        //             textStyle: MyConstant().h2Style(),
+        //           ),
+        //           subtitle: ShowTitle(
+        //             title: '',
+        //             textStyle: MyConstant().h3Style(),
+        //           ),
+        //         ),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () async {
+        //               SharedPreferences preferences =
+        //                   await SharedPreferences.getInstance();
+        //               String? id = preferences.getString('id');
+        //               String? idOrder = orderModels[index].idOrder;
+
+        //               print(' idOrder ${orderModels[index].idOrder}');
+
+        //               String? deleteReserve =
+        //                   '${MyConstant.domain}/bsruhorpak/deleteReservetableWhereIdOrder.php?isAdd=true&idOrder=$idOrder';
+        //               await Dio().get(deleteReserve).then(
+        //                 (value) {
+        //                   Navigator.pop(context, MyConstant.routBuyer);
+        //                   MyDialog()
+        //                       .normalDialog(context, 'ยกเลิกการจอง', 'สำเร็จ');
+        //                 },
+        //               );
+        //               await finfBuyer();
+        //             },
+        //             child: Text(
+        //               'ยืนยัน',
+        //               style: TextStyle(color: Color.fromARGB(255, 223, 5, 5)),
+        //             ),
+        //           ),
+        //           TextButton(
+        //             onPressed: () => Navigator.pop(context),
+        //             child: Text(
+        //               'ยกเลิก',
+        //               style: TextStyle(color: Color.fromARGB(255, 1, 177, 71)),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     );
+        //     // print('กดยกเลิก');
+        //   },
+        //   icon: Icon(
+        //     Icons.cancel,
+        //     color: Colors.white,
+        //   ),
+        //   label: Text(
+        //     'ยกเลิกการจอง',
+        //     style: TextStyle(color: Colors.white),
+        //   ),
+        // ),
       ],
     );
   }
