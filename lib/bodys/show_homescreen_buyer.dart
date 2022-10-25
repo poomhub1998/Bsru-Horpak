@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? haveData;
   final formKey = GlobalKey<FormState>();
   String? horpak;
+  bool _expanded = false;
 
   List<UserModel> userModels = [];
   List<ProductModel> productModels = [];
@@ -62,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    productModels = productModels;
 
     loadValueFromAPI();
     // readreserve();
@@ -215,6 +217,58 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: formKey,
                     child: Stack(
                       children: [
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     AnimatedContainer(
+                        //       duration: const Duration(milliseconds: 200),
+                        //       width: _expanded
+                        //           ? MediaQuery.of(context).size.width - 20
+                        //           : 70,
+                        //       height: 70,
+                        //       decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(33),
+                        //           color: Colors.white,
+                        //           boxShadow: kElevationToShadow[6]),
+                        //       child: Row(
+                        //         children: [
+                        //           Material(
+                        //             type: MaterialType.transparency,
+                        //             child: Padding(
+                        //               padding: const EdgeInsets.all(8.0),
+                        //               child: IconButton(
+                        //                 onPressed: () {
+                        //                   setState(() {
+                        //                     _expanded = !_expanded;
+                        //                     loadValueFromAPI();
+                        //                   });
+                        //                 },
+                        //                 icon: Icon(_expanded
+                        //                     ? Icons.close
+                        //                     : Icons.search),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //           Expanded(
+                        //               child: Container(
+                        //             child: _expanded
+                        //                 ? TextFormField(
+                        //                     onChanged: (value) async {
+                        //                       searcHorpak(value);
+                        //                       // await loadValueFromAPI();
+                        //                     },
+                        //                     // onChanged: v ,
+                        //                     decoration: InputDecoration(
+                        //                         hintText: 'Search',
+                        //                         border: InputBorder.none),
+                        //                   )
+                        //                 : null,
+                        //           )),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         buildSearch(size),
                         Padding(
                           padding: const EdgeInsets.only(top: 70),
@@ -250,7 +304,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Padding(
             padding: const EdgeInsets.all(6.0),
             child: TextField(
-              onChanged: (value) => searcHorpak(value),
+              onChanged: (value) {
+                searcHorpak(value);
+              },
               decoration: InputDecoration(
                 // filled: true,
                 hintStyle: TextStyle(color: MyConstant.primary),
@@ -389,7 +445,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               size: 16,
                               color: Colors.blue.shade800,
                             ),
-                          )
+                          ),
+                          // IconButton(
+                          //   onPressed: () {
+                          //     launch('tel://${productModels[index].phone}');
+                          //   },
+                          //   icon: Icon(
+                          //     Icons.phone,
+                          //     size: 16,
+                          //     color: Colors.blue.shade800,
+                          //   ),
+                          // ),
                         ],
                       ),
 
@@ -559,7 +625,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 size: 16,
                                 color: MyConstant.primary,
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Row(

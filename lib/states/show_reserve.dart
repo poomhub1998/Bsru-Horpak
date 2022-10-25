@@ -389,8 +389,8 @@ class _ShowReserveState extends State<ShowReserve> {
                           String tokenOwner = model.token;
                           // print('TokenOwner $tokenOwner');
                           String title =
-                              'มีคนจองหอของคุณเช็ดที่หน้าออเดอร์ด้วยครับ';
-                          String body = 'เช็ดที่หน้าออเดอร์ด้วยครับ';
+                              'มีคนจองหอของคุณเช็ดที่หน้าการจองหอพักด้วยครับ';
+                          String body = 'เช็ดที่หน้าการจองหอพักด้วยครับ';
                           String urlSendToken =
                               '${MyConstant.domain}/bsruhorpak/apiNotification.php?isAdd=true&token=$tokenOwner&title=$title&body=$body';
 

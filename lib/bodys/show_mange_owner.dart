@@ -218,14 +218,19 @@ class _ShowMangeOwnerState extends State<ShowMangeOwner> {
                 padding: const EdgeInsets.all(24.0),
                 child: Text('')),
             RawMaterialButton(
-              onPressed: () {
-                launch('tel://0962874208');
+              onPressed: () async {
+                const url = "https://m.me/icez007";
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
               },
               shape: CircleBorder(),
               padding: const EdgeInsets.all(24.0),
               child: Icon(
-                Icons.phone,
-                color: Colors.green,
+                Icons.facebook_rounded,
+                color: Colors.blue,
                 size: 30,
               ),
             ),
