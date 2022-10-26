@@ -28,6 +28,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
+  // final ProductModel productModel;
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -63,9 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    productModels = productModels;
 
     loadValueFromAPI();
+    // productModel = widget.productModel;
+
     // readreserve();
 
     finalLocationData();
@@ -189,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         // actions: [
         //   IconButton(
@@ -313,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none),
-                hintText: 'ค้นหาหอพัก',
+                hintText: 'ค้นหาชื่อหอพัก',
                 prefixIcon: Icon(
                   Icons.search,
                   color: MyConstant.primary,
@@ -419,10 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Text(NumberFormat.simpleCurrency(
                       //         locale: 'th-Th', decimalDigits: 0)
                       //     .format(10000)),
-                      ShowTitle(
-                          title:
-                              'ราคา: ${productModels[index].price} บาท/เดือน',
-                          textStyle: MyConstant().h3Style()),
+                      buildPrice(index),
                       ShowTitle(
                           title: 'รายละเอียด:',
                           textStyle: MyConstant().h3Style()),
@@ -473,6 +473,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  ShowTitle buildPrice(int index) {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
+    return ShowTitle(
+        title: 'ราคา: ${productModels[index].price} บาท/เดือน',
+        textStyle: MyConstant().h3Style());
   }
 
   Future<Null> showAlerlDialog(

@@ -124,7 +124,7 @@ class _ShowReserveState extends State<ShowReserve> {
     var toShow = now.yearInBuddhistCalendar;
 
     // var formatter = DateFormat('dd/MM/yyyy HH:mm');
-    var formatter = DateFormat('dd/MMM/yyyy HH:mm');
+    var formatter = DateFormat('dd/MMMM/yyyy HH:mm');
     // var formatter = DateFormat('dd/MM/yyyy HH:mm');
 
     var showDate = formatter.formatInBuddhistCalendarThai(now);
@@ -342,8 +342,8 @@ class _ShowReserveState extends State<ShowReserve> {
             child: Padding(
               padding: const EdgeInsets.only(left: 8),
               child: ShowTitle(
-                title: sqliteModels[index].name,
-                textStyle: MyConstant().h4Style(),
+                title: ' ${sqliteModels[index].name}',
+                textStyle: MyConstant().h3BlackStyle(),
               ),
             ),
           ),
@@ -351,14 +351,14 @@ class _ShowReserveState extends State<ShowReserve> {
             flex: 1,
             child: ShowTitle(
               title: sqliteModels[index].price,
-              textStyle: MyConstant().h4Style(),
+              textStyle: MyConstant().h3BlackStyle(),
             ),
           ),
           Expanded(
             flex: 2,
             child: ShowTitle(
               title: sqliteModels[index].phone,
-              textStyle: MyConstant().h4Style(),
+              textStyle: MyConstant().h3BlackStyle(),
             ),
           ),
           Expanded(
@@ -371,7 +371,7 @@ class _ShowReserveState extends State<ShowReserve> {
                 //     'ข้อมูล ${sqliteModels[index]} คนจอง ${userModel!.name} ไอดี${userModel!.id}, ');
                 var now = DateTime.now();
                 var toShow = now.yearInBuddhistCalendar;
-                var formatter = DateFormat('dd/MMM/yyy HH:mm');
+                var formatter = DateFormat('dd/MMMM/yyy HH:mm');
                 // var formatter = DateFormat.yMMMMEEEEdHH:mm();
                 var showDate = formatter.formatInBuddhistCalendarThai(now);
 
@@ -468,7 +468,7 @@ class _ShowReserveState extends State<ShowReserve> {
 
   Container buildHead() {
     return Container(
-      decoration: BoxDecoration(color: Color.fromARGB(255, 111, 177, 232)),
+      decoration: BoxDecoration(color: Colors.purple),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
@@ -479,7 +479,7 @@ class _ShowReserveState extends State<ShowReserve> {
                 padding: const EdgeInsets.only(left: 8),
                 child: ShowTitle(
                   title: 'ชื่อหอพัก',
-                  textStyle: MyConstant().h2Style(),
+                  textStyle: MyConstant().h2WhiteStyle(),
                 ),
               ),
             ),
@@ -487,14 +487,14 @@ class _ShowReserveState extends State<ShowReserve> {
               flex: 1,
               child: ShowTitle(
                 title: 'ราคา',
-                textStyle: MyConstant().h2Style(),
+                textStyle: MyConstant().h2WhiteStyle(),
               ),
             ),
             Expanded(
               flex: 2,
               child: ShowTitle(
                 title: 'เบอร์',
-                textStyle: MyConstant().h2Style(),
+                textStyle: MyConstant().h2WhiteStyle(),
               ),
             ),
             Expanded(

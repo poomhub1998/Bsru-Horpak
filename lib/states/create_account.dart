@@ -425,7 +425,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'กรุณากรอก รหัสผ่าน';
               }
               if (value.length <= 5) {
-                return 'กรุณากรอก รหัสผ่าน 6คัวขึ้นไป';
+                return 'กรุณากรอกรหัสผ่าน6คัวขึ้นไป';
               } else {}
             },
             controller: passwordController,
@@ -598,7 +598,8 @@ class _CreateAccountState extends State<CreateAccount> {
           });
         }
       } else {
-        MyDialog().normalDialog(context, 'User False ?', 'Please Change User');
+        MyDialog().normalDialog(
+            context, 'มีชื่อผู้ใช้นี้แล็ว ?', 'กรุณาเปลี่ยนชื่อผู้ใช้');
       }
     });
   }
@@ -621,7 +622,7 @@ class _CreateAccountState extends State<CreateAccount> {
         Navigator.pop(context);
       } else {
         MyDialog().normalDialog(
-            context, 'Create New User False !!!', 'Please Try Again');
+            context, 'สร้างบัญชีผู้ใช้ไม่ได้ !!!', 'กรุณาลองใหม่ภายหลัง');
       }
     });
   }

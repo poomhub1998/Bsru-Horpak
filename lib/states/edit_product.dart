@@ -11,6 +11,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
+import 'dart:math';
 
 class EditProduct extends StatefulWidget {
   final ProductModel productModel;
@@ -206,6 +209,7 @@ class _EditProductState extends State<EditProduct> {
             margin: EdgeInsets.symmetric(vertical: 16),
             width: constraints.maxWidth * 0.75,
             child: TextFormField(
+              inputFormatters: [ThousandsFormatter()],
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'กรอกราคาที่ต้องเปลี่ยน';

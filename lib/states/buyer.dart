@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:bsru_horpak/models/product_model.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:bsru_horpak/bodys/show_alert_screen_buyer.dart';
 import 'package:bsru_horpak/bodys/show_homescreen_buyer.dart';
@@ -19,16 +20,18 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/user_model.dart';
 
 class Buyer extends StatefulWidget {
-  const Buyer({
-    Key? key,
-  }) : super(key: key);
+  const Buyer({Key? key}) : super(key: key);
 
   @override
   State<Buyer> createState() => _BuyerState();
 }
 
+ProductModel? productModel;
+
 final PageStorageBucket bucket = PageStorageBucket();
 Widget currentScreen = HomeScreen(
+    // productModel: productModel!,
+
     // userModel: userModel!,
     );
 
@@ -37,7 +40,9 @@ class _BuyerState extends State<Buyer> {
   List<Widget> widgets = [];
   UserModel? userModel;
   final List<Widget> screens = [
-    HomeScreen(),
+    HomeScreen(
+        // productModel: productModel!,
+        ),
     // SettingScreen(),
     AlertScreen(),
     ShowReserve()
@@ -65,10 +70,9 @@ class _BuyerState extends State<Buyer> {
   Future<Null> findToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? id = preferences.getString('id');
-    print('มา');
+    // print('มา');
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     String? token = await firebaseMessaging.getToken();
-    print(token);
 
     print('id = $id');
     String editToken =
@@ -137,8 +141,9 @@ class _BuyerState extends State<Buyer> {
                       minWidth: 50,
                       onPressed: () {
                         setState(() {
-                          currentScreen =
-                              HomeScreen(); // if user taps on this dashboard tab will be active
+                          currentScreen = HomeScreen(
+                              // productModel: productModel!,
+                              ); // if user taps on this dashboard tab will be active
                           currentTab = 0;
                         });
                       },

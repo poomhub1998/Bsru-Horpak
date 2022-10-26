@@ -142,7 +142,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                             children: [
                               ShowTitle(
                                   title:
-                                      '${index + 1} ชิ่อผู้จอง ${orderModels[index].nameBuyer}',
+                                      '${index + 1} ชื่ออผู้จอง ${orderModels[index].nameBuyer}',
                                   textStyle: MyConstant().h2BlueStyle()),
                               TextButton(
                                 onPressed: () {
@@ -500,16 +500,14 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                                 context,
                                                                 MyConstant
                                                                     .routOwner);
-
-                                                            MyDialog()
-                                                                .normalDialog(
-                                                                    context,
-                                                                    'ตอบรับ',
-                                                                    'สำเร็จ');
                                                           },
                                                         );
-                                                        await findOwnerid();
+                                                        MyDialog().normalDialog(
+                                                            context,
+                                                            'ตอบรับ',
+                                                            'สำเร็จ');
                                                       }
+                                                      await findOwnerid();
                                                     },
                                                   );
                                                 },
@@ -732,31 +730,32 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
 
                                               // var formatter = DateFormat('dd/MM/yyyy HH:mm');
                                               var formatter = DateFormat(
-                                                  'dd/MMM/yyyy HH:mm');
+                                                  'dd/MMMM/yyyy HH:mm');
                                               // var formatter = DateFormat('dd/MM/yyyy HH:mm');
 
                                               var showDate = formatter
                                                   .formatInBuddhistCalendarThai(
                                                       now);
 
-                                              String apiDeleteProductWhereId =
+                                              String editOrderWhereIdOwner =
                                                   '${MyConstant.domain}/bsruhorpak/editOrderWhereIdOwner.php?isAdd=true&idOrder=$idOrder&status=$status';
                                               await Dio()
-                                                  .get(apiDeleteProductWhereId)
+                                                  .get(editOrderWhereIdOwner)
                                                   .then(
                                                 (value) async {
                                                   String? indasd =
                                                       '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct&dateOrder=$showDate';
                                                   Dio()
                                                       .get(indasd)
-                                                      .then((value) => null);
-                                                  String? deleteReserve =
-                                                      '${MyConstant.domain}/bsruhorpak/deleteReservetableWhereIdOrder.php?isAdd=true&idOrder=$idOrder';
-                                                  Dio()
-                                                      .get(deleteReserve)
-                                                      .then((value) async {});
-                                                  Navigator.pushNamed(context,
-                                                      MyConstant.routOwner);
+                                                      .then((value) {
+                                                    String? deleteReserve =
+                                                        '${MyConstant.domain}/bsruhorpak/deleteReservetableWhereIdOrder.php?isAdd=true&idOrder=$idOrder';
+                                                    Dio()
+                                                        .get(deleteReserve)
+                                                        .then((value) async {});
+                                                    Navigator.pushNamed(context,
+                                                        MyConstant.routOwner);
+                                                  });
 
                                                   MyDialog().normalDialog(
                                                       context,

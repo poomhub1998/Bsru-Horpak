@@ -167,7 +167,7 @@ class _History_ScreenState extends State<History_Screen> {
           Expanded(
             flex: 2,
             child: ShowTitle(
-              title: 'ผู้ใช้',
+              title: 'ชื่อผู้ใช้',
               textStyle: MyConstant().h2WhiteStyle(),
             ),
           ),

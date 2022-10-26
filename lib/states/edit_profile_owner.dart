@@ -186,13 +186,24 @@ class _EditProfileOwnerState extends State<EditProfileOwner> {
   }
 
   Future<Null> processEditProfileSeller() async {
-    if (formKey.currentState!.validate()) {
-      String apiEditProfile =
-          '${MyConstant.domain}/bsruhorpak/editProfileOwnerWhereId.php?isAdd=true&id=${userModel!.id}&user=${userController.text}&name=${nameController.text}&phone=${phoneController.text}';
-      await Dio().get(apiEditProfile).then((value) {
-        Navigator.pop(context);
-      });
-    }
+    String user = userController.text;
+
+    String path =
+        '${MyConstant.domain}/bsruhorpak/getUserWhereUser.php?isAdd=true&user=$user';
+    await Dio().get(path).then((value) {
+      print(value);
+      // if () {
+      //   MyDialog().normalDialog(
+      //       context, 'มีชื่อผู้ใช้นี้แล็ว ?', 'กรุณาเปลี่ยนชื่อผู้ใช้');
+      // } else {
+      if (formKey.currentState!.validate()) {
+        String apiEditProfile =
+            '${MyConstant.domain}/bsruhorpak/editProfileOwnerWhereId.php?isAdd=true&id=${userModel!.id}&user=${userController.text}&name=${nameController.text}&phone=${phoneController.text}';
+        Dio().get(apiEditProfile).then((value) {
+          Navigator.pop(context);
+        });
+      }
+    });
   }
 
   Row buildName(BoxConstraints constraints) {
