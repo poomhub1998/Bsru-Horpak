@@ -15,6 +15,9 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../widgets/loading_widget.dart';
 
@@ -38,17 +41,26 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
   @override
   void initState() {
     super.initState();
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
 
     findOwnerid();
   }
 
   void findCurrentTime() {
-    DateTime dateTime = DateTime.now();
-    DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-    setState(() {
-      dateTimeStr = dateFormat.format(dateTime);
-    });
+    var now = DateTime.now();
+    var toShow = now.yearInBuddhistCalendar;
+
+    // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+    var formatter = DateFormat('dd/MMM/yyyy HH:mm');
+    // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+
+    var showDate = formatter.formatInBuddhistCalendarThai(now);
+
+    // print(showDate);
+
     // print('เวลา = $dateTimeStr');
+    setState(() {});
   }
 
   Future<Null> findOwnerid() async {
@@ -158,7 +170,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                                'วันเวลา ที่จอง ${orderModels[index].dateOrder}'),
+                                'วันที่จอง ${orderModels[index].dateOrder}'),
                           ),
                           buildTitle(),
                           buildListHorpak(index),
@@ -714,6 +726,18 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
 
                                               dateTimeStr =
                                                   dateOrDer.format(dateOrder);
+                                              var now = DateTime.now();
+                                              var toShow =
+                                                  now.yearInBuddhistCalendar;
+
+                                              // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+                                              var formatter = DateFormat(
+                                                  'dd/MMM/yyyy HH:mm');
+                                              // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+
+                                              var showDate = formatter
+                                                  .formatInBuddhistCalendarThai(
+                                                      now);
 
                                               String apiDeleteProductWhereId =
                                                   '${MyConstant.domain}/bsruhorpak/editOrderWhereIdOwner.php?isAdd=true&idOrder=$idOrder&status=$status';
@@ -722,7 +746,7 @@ class _ShowOrderOwnerState extends State<ShowOrderOwner> {
                                                   .then(
                                                 (value) async {
                                                   String? indasd =
-                                                      '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct&dateOrder=$dateTimeStr';
+                                                      '${MyConstant.domain}/bsruhorpak/insertHistory.php?isAdd=true&id=$id&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&nameProduct=$nameProduct&dateOrder=$showDate';
                                                   Dio()
                                                       .get(indasd)
                                                       .then((value) => null);

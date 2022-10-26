@@ -523,9 +523,8 @@ class _AlertScreenState extends State<AlertScreen> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: ShowTitle(
-              title: ' วันเวลาที่จอง ${orderModels[index].dateOrder}'),
+          padding: const EdgeInsets.only(left: 0, bottom: 10),
+          child: ShowTitle(title: ' วันที่จอง ${orderModels[index].dateOrder}'),
         ),
       ],
     );

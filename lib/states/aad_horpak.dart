@@ -95,10 +95,10 @@ class _AddHorPakState extends State<AddHorPak> {
       appBar: AppBar(
         title: Text('เพิ่มข้อมูลหอพัก'),
         actions: [
-          IconButton(
-            onPressed: () => processAddProduct(),
-            icon: Icon(Icons.cloud_upload),
-          ),
+          // IconButton(
+          //   onPressed: () => processAddProduct(),
+          //   icon: Icon(Icons.cloud_upload),
+          // ),
         ],
       ),
       body: LayoutBuilder(

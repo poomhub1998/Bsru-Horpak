@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:bsru_horpak/models/Order_model.dart';
 import 'package:bsru_horpak/utility/my_dialog.dart';
 import 'package:bsru_horpak/widgets/loading_widget.dart';
@@ -19,6 +20,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class ShowReserve extends StatefulWidget {
   const ShowReserve({Key? key}) : super(key: key);
@@ -35,6 +39,7 @@ class _ShowReserveState extends State<ShowReserve> {
   int? total;
   String? idBuyer;
   String? dateTimeStr;
+  String? showDate;
   int index = 0;
   bool? haveData;
 
@@ -49,6 +54,9 @@ class _ShowReserveState extends State<ShowReserve> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
+    // Intl.defaultLocale = 'th';
     findCurrentTime();
     // findDeraiIdOwner();
     findUserModel();
@@ -112,10 +120,21 @@ class _ShowReserveState extends State<ShowReserve> {
   }
 
   void findCurrentTime() {
-    DateTime dateTime = DateTime.now();
-    DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm');
+    var now = DateTime.now();
+    var toShow = now.yearInBuddhistCalendar;
+
+    // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+    var formatter = DateFormat('dd/MMM/yyyy HH:mm');
+    // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+
+    var showDate = formatter.formatInBuddhistCalendarThai(now);
+
+    // print(showDate);
+
     setState(() {
-      dateTimeStr = dateFormat.format(dateTime);
+      dateTimeStr = formatter.formatInBuddhistCalendarThai(now);
+      showDate;
+      // print('sssss $showDate');
     });
     // print('เวลา = $dateTimeStr');
   }
@@ -227,12 +246,12 @@ class _ShowReserveState extends State<ShowReserve> {
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: ShowTitle(
-                title: 'เวลา :',
+                title: 'วันที่ :',
                 textStyle: MyConstant().h3Style(),
               ),
             ),
             ShowTitle(
-              title: dateTimeStr == null ? 'dd/MM/yy ' : dateTimeStr!,
+              title: dateTimeStr == null ? '' : dateTimeStr!,
               textStyle: MyConstant().h3Style(),
             ),
           ],
@@ -350,6 +369,12 @@ class _ShowReserveState extends State<ShowReserve> {
                 int idSQLite = sqliteModels[index].id!;
                 // print(
                 //     'ข้อมูล ${sqliteModels[index]} คนจอง ${userModel!.name} ไอดี${userModel!.id}, ');
+                var now = DateTime.now();
+                var toShow = now.yearInBuddhistCalendar;
+                var formatter = DateFormat('dd/MMM/yyy HH:mm');
+                // var formatter = DateFormat.yMMMMEEEEdHH:mm();
+                var showDate = formatter.formatInBuddhistCalendarThai(now);
+
                 DateTime dateOrder = DateTime.now();
 
                 DateFormat dateOrDer = DateFormat('dd/MM/yyyy HH:mm');
@@ -367,12 +392,13 @@ class _ShowReserveState extends State<ShowReserve> {
                 String priceProduct = sqliteModels[index].price;
                 String lat = sqliteModels[index].lat;
                 String lng = sqliteModels[index].lng;
+                print(showDate);
 
                 print(
-                    'idBuyer $idBuyer ผู้จอง $nameBuyer, เบอร์คนจอง $phoneBuyer idOwner $idOwner ชื่อเจ้าของหอ $nameOwner เบอร์เจ้าของหอ $phoneOwner, ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ');
+                    'idBuyer $idBuyer ผู้จอง $nameBuyer, เบอร์คนจอง $phoneBuyer idOwner $idOwner ชื่อเจ้าของหอ $nameOwner เบอร์เจ้าของหอ $phoneOwner, ชื่อหอ $name idproduct $idProduct ราคา $priceProduct ddd $showDate ');
                 // print('เวลา = $dateTimeStr');
                 String url =
-                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$dateTimeStr&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&lat=$lat&lng=$lng&status=UserOrder';
+                    '${MyConstant.domain}/bsruhorpak/insertReserve.php?isAdd=true&idBuyer=$idBuyer&nameBuyer=$nameBuyer&phoneBuyer=$phoneBuyer&dateOrder=$showDate&idOwner=$idOwner&nameOwner=$nameOwner&phoneOwner=$phoneOwner&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&lat=$lat&lng=$lng&status=UserOrder';
                 await Dio().get(url).then((value) {
                   if (value.toString() == 'true') {
                     SQLiteHelper().deleteSQLiteWhereId(idSQLite).then((value) {

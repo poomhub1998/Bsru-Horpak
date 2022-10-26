@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class MyConstant {
   static String appName = 'BSRU HORPAK';
-  static String domain = 'https://8800-49-49-233-149.ap.ngrok.io';
+  static String domain = 'https://8a35-49-49-234-224.ap.ngrok.io';
   //Route
   static String routAuthen = '/authen';
   static String routCreateAccount = '/createAccount';
