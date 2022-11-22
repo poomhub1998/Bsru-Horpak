@@ -7,7 +7,8 @@ class ProductModel {
   final String nameOwner;
   final String name;
   final String phone;
-  late final String price;
+  final String typeHorpak;
+  final String price;
   final String detail;
   final String address;
   final String lat;
@@ -19,6 +20,7 @@ class ProductModel {
     required this.nameOwner,
     required this.name,
     required this.phone,
+    required this.typeHorpak,
     required this.price,
     required this.detail,
     required this.address,
@@ -33,6 +35,7 @@ class ProductModel {
     String? nameOwner,
     String? name,
     String? phone,
+    String? typeHorpak,
     String? price,
     String? detail,
     String? address,
@@ -46,6 +49,7 @@ class ProductModel {
       nameOwner: nameOwner ?? this.nameOwner,
       name: name ?? this.name,
       phone: phone ?? this.phone,
+      typeHorpak: typeHorpak ?? this.typeHorpak,
       price: price ?? this.price,
       detail: detail ?? this.detail,
       address: address ?? this.address,
@@ -62,6 +66,7 @@ class ProductModel {
       'nameOwner': nameOwner,
       'name': name,
       'phone': phone,
+      'typeHorpak': typeHorpak,
       'price': price,
       'detail': detail,
       'address': address,
@@ -78,6 +83,7 @@ class ProductModel {
       nameOwner: map['nameOwner'] as String,
       name: map['name'] as String,
       phone: map['phone'] as String,
+      typeHorpak: map['typeHorpak'] as String,
       price: map['price'] as String,
       detail: map['detail'] as String,
       address: map['address'] as String,
@@ -94,7 +100,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, idOwner: $idOwner, nameOwner: $nameOwner, name: $name, phone: $phone, price: $price, detail: $detail, address: $address, lat: $lat, lng: $lng, images: $images)';
+    return 'ProductModel(id: $id, idOwner: $idOwner, nameOwner: $nameOwner, name: $name, phone: $phone, typeHorpak: $typeHorpak, price: $price, detail: $detail, address: $address, lat: $lat, lng: $lng, images: $images)';
   }
 
   @override
@@ -106,6 +112,7 @@ class ProductModel {
         other.nameOwner == nameOwner &&
         other.name == name &&
         other.phone == phone &&
+        other.typeHorpak == typeHorpak &&
         other.price == price &&
         other.detail == detail &&
         other.address == address &&
@@ -121,6 +128,7 @@ class ProductModel {
         nameOwner.hashCode ^
         name.hashCode ^
         phone.hashCode ^
+        typeHorpak.hashCode ^
         price.hashCode ^
         detail.hashCode ^
         address.hashCode ^

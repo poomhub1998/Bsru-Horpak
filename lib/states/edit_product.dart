@@ -25,6 +25,7 @@ class EditProduct extends StatefulWidget {
 
 class _EditProductState extends State<EditProduct> {
   ProductModel? productModel;
+  String? typeHorpak;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController detilController = TextEditingController();
@@ -49,6 +50,7 @@ class _EditProductState extends State<EditProduct> {
     phoneController.text = productModel!.phone;
     addressController.text = productModel!.address;
     detilController.text = productModel!.detail;
+    typeHorpak = productModel!.typeHorpak;
   }
 
   void convertStringToArray() {
@@ -92,6 +94,8 @@ class _EditProductState extends State<EditProduct> {
                   buildTitle('แก้ไขข้อมูลหอพัก'),
                   buildName(constraints),
                   buildPrice(constraints),
+                  buildRadiofan(constraints),
+                  buildRadioAir(constraints),
                   buildPhone(constraints),
                   buildAddress(constraints),
                   buildDetail(constraints),
@@ -224,6 +228,54 @@ class _EditProductState extends State<EditProduct> {
                 border: OutlineInputBorder(),
               ),
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildRadiofan(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: constraints.maxWidth * 0.6,
+          child: RadioListTile(
+            title: Text(
+              'ห้องพัดลม',
+              style: TextStyle(color: MyConstant.primary),
+            ),
+            value: 'ห้องพัดลม.',
+            groupValue: typeHorpak,
+            onChanged: (value) {
+              setState(() {
+                typeHorpak = value as String?;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildRadioAir(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: constraints.maxWidth * 0.6,
+          child: RadioListTile(
+            title: Text(
+              'ห้องแอร์',
+              style: TextStyle(color: MyConstant.primary),
+            ),
+            value: 'ห้องแอร์.',
+            groupValue: typeHorpak,
+            onChanged: (value) {
+              setState(() {
+                typeHorpak = value as String?;
+              });
+            },
           ),
         ),
       ],
@@ -371,7 +423,7 @@ class _EditProductState extends State<EditProduct> {
       print('image $images');
 
       String apiEditProduct =
-          '${MyConstant.domain}/bsruhorpak/editProductWhereId.php?isAdd=true&id=$id&name=$name&price=$price&phone=$phone&address=$address&detail=$detail&images=$images';
+          '${MyConstant.domain}/bsruhorpak/editProductWhereId.php?isAdd=true&id=$id&name=$name&price=$price&typeHorpak=$typeHorpak&phone=$phone&address=$address&detail=$detail&images=$images';
       await Dio().get(apiEditProduct).then((value) => Navigator.pop(context));
     }
   }

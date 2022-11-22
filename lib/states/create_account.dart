@@ -31,7 +31,9 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmpasswordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController identificationController = TextEditingController();
 
   @override
   void initState() {
@@ -66,8 +68,21 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 // buildTitle('ข้อมูลทั่วไป'),
                 buildUser(size),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 100, top: 8),
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         '* A-Z ,a-z, 0-9, ',
+                //         style: TextStyle(fontSize: 10, color: Colors.red),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 buildPassword(size),
+                buildconfirmPassword(size),
                 buildName(size),
+                buildidentification(size),
                 // buildAddress(size),
                 SizedBox(
                   height: 20,
@@ -81,7 +96,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: 20,
                 ),
 
-                buildTitle('ชนิดของ User'),
+                buildTitle('ชนิดของผู้ใช้.'),
                 buildRadioUser(size),
                 buildRadioOwner(size),
                 // buildTitle('รูปภาพ'),
@@ -272,39 +287,6 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  // Widget buildHorPakAddress(BoxConstraints constraints) {
-  //   return Container(
-  //     width: constraints.maxWidth * 0.75,
-  //     margin: EdgeInsets.only(top: 16),
-  //     child: TextFormField(
-  //       controller: addressController,
-  //       maxLines: 4,
-  //       // controller: userController,
-  //       // validator: (value) {
-  //       //   if (value!.isEmpty) {
-  //       //     return 'กรุณากรอก User';
-  //       //   } else {
-  //       //     return null;
-  //       //   }
-  //       // },
-  //       decoration: InputDecoration(
-  //         labelStyle: TextStyle(color: MyConstant.primary),
-  //         labelText: 'ที่อยู่ :',
-  //         prefixIcon: Icon(Icons.details, color: MyConstant.primary),
-  //         enabledBorder: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(30),
-  //         ),
-  //         focusedBorder: OutlineInputBorder(
-  //           borderSide: BorderSide(
-  //             color: MyConstant.primary,
-  //           ),
-  //           borderRadius: BorderRadius.circular(30),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Row buildAddress(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -412,6 +394,40 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Row buildidentification(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.6,
+          child: TextFormField(
+            controller: identificationController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก เลขบัตรประชาชน';
+              } else {}
+            },
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: MyConstant.primary),
+              labelText: 'เลขบัตรประชาชน :',
+              prefixIcon: Icon(Icons.perm_identity, color: MyConstant.primary),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: MyConstant.primary,
+                ),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildPassword(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -466,6 +482,60 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Row buildconfirmPassword(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก รหัสผ่าน';
+              }
+              if (passwordController.text != confirmpasswordController.text) {
+                return 'รหัสผ่านไม่ตรงกัน';
+              } else {}
+            },
+            controller: confirmpasswordController,
+            obscureText: statusRedeye,
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    statusRedeye = !statusRedeye;
+                  });
+                },
+                icon: statusRedeye
+                    ? Icon(
+                        Icons.remove_red_eye,
+                        color: MyConstant.primary,
+                      )
+                    : Icon(
+                        Icons.remove_red_eye_outlined,
+                        color: MyConstant.primary,
+                      ),
+              ),
+              labelStyle: TextStyle(color: MyConstant.primary),
+              labelText: 'รหัสผ่านอีกครั้ง :',
+              prefixIcon: Icon(Icons.lock, color: MyConstant.primary),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: MyConstant.primary,
+                ),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildRadioUser(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -474,7 +544,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.6,
           child: RadioListTile(
             title: Text(
-              'ผู้ใช้',
+              'ผู้เช่า',
               style: TextStyle(color: MyConstant.primary),
             ),
             value: 'buyer',
@@ -533,7 +603,6 @@ class _CreateAccountState extends State<CreateAccount> {
                       'ยังไม่ได้เลือก ชนิดของผู่ใช้',
                       'กรุณาเลือก ที่ ชนิดของผู้ใช้ ที่ต้องการ');
                 } else {
-                  print('Process Insert to Database');
                   findToken();
                   uploadPictureAndInsertData();
                 }
@@ -553,6 +622,8 @@ class _CreateAccountState extends State<CreateAccount> {
     String user = userController.text;
     String password = passwordController.text;
 
+    String identification = identificationController.text;
+
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     String? token = await firebaseMessaging.getToken();
     print('token');
@@ -564,48 +635,57 @@ class _CreateAccountState extends State<CreateAccount> {
     await Dio().get(path).then((value) async {
       print('## value ==>> $value');
       if (value.toString() == 'null') {
-        print('## user OK');
-
-        if (file == null) {
-          // No Avatar
-          processInsertMySQL(
-              name: name,
-              address: address,
-              phone: phone,
-              user: user,
-              password: password,
-              token: token);
-        } else {
-          // Have Avatar
-          print('### process Upload Avatar');
-          String apiSaveAvatar =
-              '${MyConstant.domain}/bsruhorpak/saveAvatar.php';
-          int i = Random().nextInt(100000);
-          String nameAvatar = 'avatar$i.jpg';
-          Map<String, dynamic> map = Map();
-          map['file'] =
-              await MultipartFile.fromFile(file!.path, filename: nameAvatar);
-          FormData data = FormData.fromMap(map);
-          await Dio().post(apiSaveAvatar, data: data).then((value) {
-            avatar = '/bsruhorpak/avatar/$nameAvatar';
-            processInsertMySQL(
-              name: name,
-              address: address,
-              phone: phone,
-              user: user,
-              password: password,
-            );
-          });
-        }
+        String path =
+            '${MyConstant.domain}/bsruhorpak/getUserWhereidentification.php?isAdd=true&identification=$identification';
+        await Dio().get(path).then((value) async {
+          if (value.toString() == 'null') {
+            if (file == null) {
+              // No Avatar
+              processInsertMySQL(
+                  name: name,
+                  address: address,
+                  phone: phone,
+                  user: user,
+                  password: password,
+                  identification: identification,
+                  token: token);
+            } else {
+              // Have Avatar
+              print('### process Upload Avatar');
+              String apiSaveAvatar =
+                  '${MyConstant.domain}/bsruhorpak/saveAvatar.php';
+              int i = Random().nextInt(100000);
+              String nameAvatar = 'avatar$i.jpg';
+              Map<String, dynamic> map = Map();
+              map['file'] = await MultipartFile.fromFile(file!.path,
+                  filename: nameAvatar);
+              FormData data = FormData.fromMap(map);
+              await Dio().post(apiSaveAvatar, data: data).then((value) {
+                avatar = '/bsruhorpak/avatar/$nameAvatar';
+                processInsertMySQL(
+                  name: name,
+                  address: address,
+                  phone: phone,
+                  user: user,
+                  password: password,
+                );
+              });
+            }
+          } else {
+            MyDialog().normalDialog(
+                context, 'มีเลขบัตรประชาชนนี้แล้ว ?', 'กรุณาเปลี่ยนเลข');
+          }
+        });
       } else {
         MyDialog().normalDialog(
-            context, 'มีชื่อผู้ใช้นี้แล็ว ?', 'กรุณาเปลี่ยนชื่อผู้ใช้');
+            context, 'มีชื่อผู้ใช้นี้แล็ว ', 'กรุณาเปลี่ยนชื่อผู้ใช้');
       }
     });
   }
 
   Future<Null> processInsertMySQL(
       {String? name,
+      String? identification,
 
       // String? address,
       String? phone,
@@ -616,7 +696,7 @@ class _CreateAccountState extends State<CreateAccount> {
       String? token}) async {
     print('### processInsertMySQL Work and avatar ==>> $avatar');
     String apiInsertUser =
-        '${MyConstant.domain}/bsruhorpak/insertUser.php?isAdd=true&user=$user&password=$password&name=$name&address=$address&phone=$phone&type=$typeUser&avatar=$avatar&lat=$lat&lng=$lng&token=$token';
+        '${MyConstant.domain}/bsruhorpak/insertUser.php?isAdd=true&user=$user&password=$password&name=$name&identification=$identification&address=$address&phone=$phone&type=$typeUser&avatar=$avatar&lat=$lat&lng=$lng&token=$token';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);

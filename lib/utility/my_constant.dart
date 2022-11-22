@@ -4,8 +4,8 @@ import 'package:bsru_horpak/widgets/show_image.dart';
 import 'package:flutter/material.dart';
 
 class MyConstant {
-  static String appName = 'BSRU HORPAK';
-  static String domain = 'https://fc3b-49-49-234-224.ap.ngrok.io';
+  static String appName = 'หอพักฝั่งธน';
+  static String domain = 'https://9c59-49-49-249-217.ap.ngrok.io';
   //Route
   static String routAuthen = '/authen';
   static String routCreateAccount = '/createAccount';

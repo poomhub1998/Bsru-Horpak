@@ -177,6 +177,9 @@ class _ShowProductOwnerState extends State<ShowProductOwner> {
                     ShowTitle(
                         title: cutWrod(' ${productModels[index].detail}'),
                         textStyle: MyConstant().h3Style()),
+                    ShowTitle(
+                        title: 'ประเภท: ${productModels[index].typeHorpak} ',
+                        textStyle: MyConstant().h3Style()),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

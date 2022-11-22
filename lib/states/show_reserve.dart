@@ -32,6 +32,11 @@ class ShowReserve extends StatefulWidget {
 }
 
 class _ShowReserveState extends State<ShowReserve> {
+  DateTimeRange dateRange = DateTimeRange(
+    start: DateTime.now(),
+    end: DateTime.now(),
+  );
+
   List<SQLiteModel> sqliteModels = [];
   bool load = true;
   UserModel? userModel;
@@ -197,6 +202,9 @@ class _ShowReserveState extends State<ShowReserve> {
 
   @override
   Widget build(BuildContext context) {
+    final start = dateRange.start;
+    final end = dateRange.end;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('หอพักที่คุณสนใจ'),
@@ -237,6 +245,9 @@ class _ShowReserveState extends State<ShowReserve> {
   }
 
   Column buildContent() {
+    final start = dateRange.start;
+    final end = dateRange.end;
+    final differenc = dateRange.duration;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -258,11 +269,15 @@ class _ShowReserveState extends State<ShowReserve> {
         ),
         buildHead(),
         listHorpak(),
+
+        // Text('จำนวน  ${differenc.inDays} วัน'),
         buildDivider(),
         buttonController(),
         Row(
           children: [
-            Expanded(child: SizedBox()),
+            Expanded(
+              child: SizedBox(),
+            ),
           ],
         )
       ],
@@ -331,6 +346,9 @@ class _ShowReserveState extends State<ShowReserve> {
   }
 
   ListView listHorpak() {
+    final start = dateRange.start;
+    final end = dateRange.end;
+    final differenc = dateRange.duration;
     return ListView.builder(
       shrinkWrap: true,
       physics: ScrollPhysics(),
@@ -356,10 +374,13 @@ class _ShowReserveState extends State<ShowReserve> {
           ),
           Expanded(
             flex: 2,
-            child: ShowTitle(
-              title: sqliteModels[index].phone,
-              textStyle: MyConstant().h3BlackStyle(),
+            child: ElevatedButton(
+              onPressed: pickDateRang,
+              child: Text('จำนวน ${differenc.inDays} วัน'),
             ),
+          ),
+          const SizedBox(
+            width: 12,
           ),
           Expanded(
             flex: 1,
@@ -461,6 +482,26 @@ class _ShowReserveState extends State<ShowReserve> {
               ),
             ),
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Expanded(
+          //       child: ElevatedButton(
+          //         onPressed: pickDateRang,
+          //         child: Text('${start.day}/${start.month}/${start.year}'),
+          //       ),
+          //     ),
+          //     const SizedBox(
+          //       width: 12,
+          //     ),
+          //     Expanded(
+          //       child: ElevatedButton(
+          //         onPressed: pickDateRang,
+          //         child: Text('${end.day}/${end.month}/${end.year}'),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
@@ -493,7 +534,7 @@ class _ShowReserveState extends State<ShowReserve> {
             Expanded(
               flex: 2,
               child: ShowTitle(
-                title: 'เบอร์',
+                title: 'ระยะเวลาที่จอง',
                 textStyle: MyConstant().h2WhiteStyle(),
               ),
             ),
@@ -523,5 +564,27 @@ class _ShowReserveState extends State<ShowReserve> {
         ],
       ),
     );
+  }
+
+  Future pickDateRang() async {
+    var now = DateTime.now();
+    var toShow = now.yearInBuddhistCalendar;
+
+    // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+    var formatter = DateFormat('dd/MMMM/yyyy HH:mm');
+    // var formatter = DateFormat('dd/MM/yyyy HH:mm');
+
+    var showDate = formatter.formatInBuddhistCalendarThai(now);
+    DateTimeRange? newDateRang = await showDateRangePicker(
+      context: context,
+      initialDateRange: dateRange,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+    if (newDateRang == null) return;
+    setState(() {
+      dateRange = newDateRang;
+      print(newDateRang);
+    });
   }
 }

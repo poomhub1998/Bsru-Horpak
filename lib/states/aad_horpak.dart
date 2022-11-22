@@ -114,8 +114,9 @@ class _AddHorPakState extends State<AddHorPak> {
                     buildHorPak(constraints),
                     buildPhone(constraints),
                     buildImage(constraints),
-                    // buildRadiofan(constraints),
-                    // buildRadioAir(constraints),
+                    buildTitle('ประเภทหอพัก'),
+                    buildRadiofan(constraints),
+                    buildRadioAir(constraints),
                     // DropdownButton(
                     //   value: _selected,
                     //   items: _horpaklist
@@ -180,7 +181,7 @@ class _AddHorPakState extends State<AddHorPak> {
               'ห้องแอร์',
               style: TextStyle(color: MyConstant.primary),
             ),
-            value: 'air',
+            value: 'ห้องแอร์.',
             groupValue: typeHorpak,
             onChanged: (value) {
               setState(() {
@@ -204,7 +205,7 @@ class _AddHorPakState extends State<AddHorPak> {
               'ห้องพัดลม',
               style: TextStyle(color: MyConstant.primary),
             ),
-            value: 'fan',
+            value: 'ห้องพัดลม.',
             groupValue: typeHorpak,
             onChanged: (value) {
               setState(() {
@@ -298,17 +299,17 @@ class _AddHorPakState extends State<AddHorPak> {
       width: constraints.maxHeight * 0.6,
       child: ElevatedButton(
         onPressed: () {
-          // if (formKey.currentState!.validate()) {
-          //   if (typeHorpak == null) {
-          //     print('ยังไม่ได้เลือก ชนิดของหอพัก');
-          //     MyDialog().normalDialog(context, 'ยังไม่ได้เลือก ชนิดของหอพัก',
-          //         'กรุณาเลือก ที่ ชนิดของผู้ใช้ ที่ต้องการ');
-          //   } else {
-          //     print('Process Insert to Database');
-          //     processAddProduct();
-          //   }
-          // }
-          processAddProduct();
+          if (formKey.currentState!.validate()) {
+            if (typeHorpak == null) {
+              print('ยังไม่ได้เลือก ชนิดของหอพัก');
+              MyDialog().normalDialog(context, 'ยังไม่ได้เลือก ชนิดของหอพัก',
+                  'กรุณาเลือก ที่ ชนิดของผู้ใช้ ที่ต้องการ');
+            } else {
+              print('Process Insert to Database');
+              processAddProduct();
+            }
+          }
+          // processAddProduct();
         },
         child: Text('เพิ่มข้อมูลหอพัก'),
       ),
@@ -363,7 +364,7 @@ class _AddHorPakState extends State<AddHorPak> {
                 print('รูป ==$images');
 
                 String path =
-                    '${MyConstant.domain}/bsruhorpak/insertProduct.php?isAdd=true&idOwner=$idOwner&nameOwner=$nameOwner&name=$name&phone=$phone&price=$price&detail=$detail&address=$address&lat=$lat&lng=$lng&images=$images';
+                    '${MyConstant.domain}/bsruhorpak/insertProduct.php?isAdd=true&idOwner=$idOwner&nameOwner=$nameOwner&name=$name&phone=$phone&typeHorpak=$typeHorpak&price=$price&detail=$detail&address=$address&lat=$lat&lng=$lng&images=$images';
                 await Dio().get(path).then(
                       (value) => Navigator.pop(context),
                     );
@@ -608,6 +609,14 @@ class _AddHorPakState extends State<AddHorPak> {
       child: TextFormField(
         controller: addressController,
         maxLines: 4,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'เพิ่มชื่อของหอพัก';
+          } else {
+            return null;
+          }
+        },
+
         // controller: userController,
         // validator: (value) {
         //   if (value!.isEmpty) {
@@ -626,6 +635,12 @@ class _AddHorPakState extends State<AddHorPak> {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: MyConstant.primary,
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.red,
             ),
             borderRadius: BorderRadius.circular(30),
           ),
@@ -690,6 +705,7 @@ class _AddHorPakState extends State<AddHorPak> {
 
   Row buildTitle(String title) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),

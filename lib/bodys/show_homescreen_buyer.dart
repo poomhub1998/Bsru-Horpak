@@ -38,6 +38,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
   //ตัวแปร
+
   String query = '';
   String? currentIdOwner;
   UserModel? userModel;
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final formKey = GlobalKey<FormState>();
   String? horpak;
   bool _expanded = false;
+  String? pricehorpak;
 
   List<UserModel> userModels = [];
   List<ProductModel> productModels = [];
@@ -103,6 +105,50 @@ class _HomeScreenState extends State<HomeScreen> {
     String id = preferences.getString('id')!;
     String apiGetProductWhereIdProduct =
         '${MyConstant.domain}/bsruhorpak/getProductWhereTypeOwner.php';
+    await Dio().get(apiGetProductWhereIdProduct).then(
+      (value) {
+        if (value.toString() == 'null') {
+          // No Data
+
+          setState(() {
+            load = false;
+            haveData = false;
+          });
+        } else {
+          // Have Data
+          for (var item in jsonDecode(value.data)) {
+            ProductModel model = ProductModel.fromMap(item);
+            String string = model.images;
+            string = string.substring(1, string.length - 1);
+            List<String> strings = string.split(',');
+            int i = 0;
+            for (var item in strings) {
+              strings[i] = item.trim();
+              i++;
+            }
+            lisImages.add(strings);
+
+            setState(() {
+              load = false;
+              haveData = true;
+              productModels.add(model);
+            });
+          }
+        }
+      },
+    );
+  }
+
+  Future<Null> price() async {
+    for (var pricehorpak = 1500; pricehorpak <= 2000; pricehorpak++) {
+      print(pricehorpak);
+    }
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    String id = preferences.getString('id')!;
+    String apiGetProductWhereIdProduct =
+        '${MyConstant.domain}/bsruhorpak/getProductWherePrice.php?isAdd=true&price=1500 ';
+
     await Dio().get(apiGetProductWhereIdProduct).then(
       (value) {
         if (value.toString() == 'null') {
@@ -193,20 +239,54 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.exit_to_app),
-        //     color: Colors.white,
-        //     onPressed: () async {
-        //       SharedPreferences preferences =
-        //           await SharedPreferences.getInstance();
-        //       preferences.clear().then(
-        //             (value) => Navigator.pushNamedAndRemoveUntil(
-        //                 context, MyConstant.routAuthen, (route) => false),
-        //           );
-        //     },
-        //   ),
-        // ],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            color: Colors.white,
+            onPressed: () async {
+              showDialog(
+                context: context,
+                builder: (context) => Container(
+                  child: StatefulBuilder(
+                    builder: (context, setState) => AlertDialog(
+                      title: ListTile(
+                        leading: ShowImage(path: MyConstant.logo),
+                        title: ShowTitle(
+                          title: 'เรทราคา',
+                          textStyle: MyConstant().h2Style(),
+                        ),
+                      ),
+                      content: SingleChildScrollView(
+                          child: Column(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              price();
+                              Navigator.pop(context);
+                            },
+                            child: Text('1,000-2,000'),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text('2,000-3,000'),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text('4,000-5,000'),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text('มากกว่า 5,000'),
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
         title: Text('หอพักทั้งหมด'),
       ),
       body: load
@@ -422,13 +502,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Text(NumberFormat.simpleCurrency(
                       //         locale: 'th-Th', decimalDigits: 0)
                       //     .format(10000)),
-                      buildPrice(index),
+                      // buildPrice(index),
+                      Text(
+                        (productModels[index].price),
+                      ),
+                      ShowTitle(
+                          title: cutWrod(
+                              'ประเภทห้องพัก: ${productModels[index].typeHorpak}'),
+                          textStyle: MyConstant().h3Style()),
                       ShowTitle(
                           title: 'รายละเอียด:',
                           textStyle: MyConstant().h3Style()),
                       ShowTitle(
                           title: cutWrod('  ${productModels[index].detail}'),
                           textStyle: MyConstant().h3Style()),
+
                       Row(
                         children: [
                           ShowTitle(
@@ -475,10 +563,41 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget buildTotal() {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
+    return Row(
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ShowTitle(
+                title: 'ยอดรวมสินค้า :',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: ShowTitle(
+                title: 'total' == null ? '' : myFormat.format('total'),
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+            ShowTitle(title: ' บาท')
+          ],
+        ),
+      ],
+    );
+  }
+
   ShowTitle buildPrice(int index) {
     NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
     return ShowTitle(
-        title: 'ราคา: ${productModels[index].price} บาท/เดือน',
+        title: myFormat.format(productModels[index].price),
         textStyle: MyConstant().h3Style());
   }
 
@@ -789,6 +908,30 @@ class _HomeScreenState extends State<HomeScreen> {
       productModels = productModels
           .where((productModels) =>
               productModels.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      productModels = productModels;
+    });
+  }
+
+  void searcPriceHorpak(String value) {
+    // if (value.isEmpty) {
+    //   loadValueFromAPI();
+    // }
+    // setState(() {
+    //   productModels = productModels.where((productModels) {
+    //     var elementName = productModels.name.toLowerCase();
+    //     var price = productModels.price.toLowerCase();
+    //     return elementName.contains(price);
+    //   }).toList();
+    // });
+    if (value.isEmpty) {
+      loadValueFromAPI();
+    } else {
+      productModels = productModels
+          .where((productModels) =>
+              productModels.price.toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
     setState(() {
